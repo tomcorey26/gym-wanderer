@@ -1,0 +1,68 @@
+"We take care of the legal stuff so you can focus
+on making the best gym you can
+
+Stack
+******
+or can just make web app for dude
+
+React
+Node/Express
+GraphQL
+Postgres
+React native
+
+Eslint
+TypeScript
+Google maps api for finding gyms near you
+Stripe for making payments
+socket io for chat system?
+
+
+Requirements
+******
+buisness normal state liscensing 
+strong liability insurance policy
+liabiliy release waivers to avoid lawsuits
+People have to accept reponsibility for the way they use gym 
+equipment
+terms and conditions
+
+Authorization
+**********
+Oauth 
+Facebook
+Google 
+
+Gym Owner side
+&&&&&&&&&&&&&&
+List Gym
+auto complete for adding in type of equipment
+mor info on type of payments
+form
+name,info,address,city,state,zip,phonenumber,payment options, call,doorbell,walkout
+select payment option (hourly,daily,weekly,monthly)
+Location, Price, Equipment, Are trainers available
+Available times
+Have some sort of system that checks if home gyms are legit
+require owner to fill out forms or some shit, send proof
+
+User side
+&&&&&&&&&&
+Get directions to gym
+Provide reccomended gyms based off of preferences
+Search for gyms near you
+Filter by distance, type, equipment, rating
+Give gyms ratings
+Contact gym owners via chat
+schedule time period to go 
+set wheter you care if there is other people there or not
+
+
+
+
+
+
+Money plan
+******
+Stripe
+Paypal?
