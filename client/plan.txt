@@ -1,0 +1,129 @@
+"We take care of the legal stuff so you can focus
+on making the best gym you can"
+
+
+Logo: caveman with headband and shorts on wandering.
+
+Stack
+******
+React
+Node/Express
+GraphQL
+Postgres
+React native maybe flutter idk
+Material UI
+React spring for animations
+
+Tooling
+********
+Eslint
+TypeScript
+
+External Api
+************
+Google maps api for finding gyms near you
+Stripe for making payments
+Socket io for chat system
+
+Deployment
+**********
+AWS if serious about money
+heroku or some shit if just want it to be show off
+
+Core Features
+*************
+User Account creation
+(
+    User can use either oauth or Facebook to sign up
+    Can put in custom preferences (equipment available, water available, etc) for what kind of gym they want
+
+)
+
+Homepage
+(
+
+Homepage with google maps view , user provides location information, pins of potential gyms, are shown nearby
+User can also search for specific area, and filter pins by selected radius (5miles,20miles,50miles)
+The click of the pin will bring up modal displaying information about the gym in that location (ownername,rating,distance)
+on click the corresponding gym will be highlighted in the list view
+
+A list view on the side that allows the user to view gyms in the list form
+Can filter by closest, rating, equipment etc
+on click the corresponding gym pin will be highlighted on google maps
+)
+
+Gym information modal / page
+(
+Shows photos
+Shows gym equipment
+gives user easy way of picking date and time
+fat booking button
+notifys gym owner 
+
+
+)
+
+Requirements
+************
+buisness normal state liscensing 
+strong liability insurance policy
+liabiliy release waivers to avoid lawsuits
+People have to accept reponsibility for the way they use gym 
+equipment
+terms and conditions
+
+Authorization
+**********
+Oauth 
+Facebook
+Google 
+
+Gym Owner side
+&&&&&&&&&&&&&&
+List Gym
+auto complete for adding in type of equipment
+mor info on type of payments
+form
+name,info,address,city,state,zip,phonenumber,payment options, call,doorbell,walkout
+select payment option (hourly,daily,weekly,monthly)
+Location, Price, Equipment, Are trainers available
+Available times
+Have some sort of system that checks if home gyms are legit
+require owner to fill out forms or some shit, send proof
+
+User side
+&&&&&&&&&&
+Get directions to gym
+Provide reccomended gyms based off of preferences
+Search for gyms near you
+Filter by distance, type, equipment, rating
+Give gyms ratings
+Contact gym owners via chat
+schedule time period to go 
+set wheter you care if there is other people there or not
+
+
+Objective
+*********
+Provide users with an easy to use interface for:
+Creating a gym,displaying what it has,
+diplaying it to potential cutoners,
+and recieving money for their sales
+
+Finding a gym, booking a time, Contacting owner
+finding highly rated gyms with equipment,price, and 
+schedule that they want 
+
+Target Audience
+***************
+People who:
+have a gym that they barely use and want to make money off it
+want to eventually start their own real gym but dont have enough money
+dont wanna deal with all the legal issues of owning a gym themselves
+are looking for a cheap alternative without commitment
+are on location and dont want to pay expenisve weekly fees
+
+
+
+
+
