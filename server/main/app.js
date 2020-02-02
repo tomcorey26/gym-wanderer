@@ -12,9 +12,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", (req, res) => {
-  res.send("poop");
-});
-// app.use("/users", usersRouter);
+var indexRouter = require("./routes");
+
+app.use("/", indexRouter);
 
 module.exports = app;
