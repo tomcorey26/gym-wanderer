@@ -1,0 +1,2 @@
+Have it so user can input their coordinates
+handler that checks if input location or current location

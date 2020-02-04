@@ -13,12 +13,12 @@ const App: React.FC = () => {
   }, []);
 
   const asyncFunction = async () => {
-    await axiosIntance
-      .get("/posts")
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => console.log(err));
+    // await axiosIntance
+    //   .get("/posts")
+    //   .then(res => {
+    //     console.log(res.data);
+    //   })
+    //   .catch(err => console.log(err));
   };
 
   return (
