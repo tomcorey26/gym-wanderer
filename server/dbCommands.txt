@@ -1,0 +1,15 @@
+Start homebrew postgres:
+brew services start postgresql
+
+run postgres CLI:
+psql postgres
+
+Name of Database created: mydb
+
+Connect to Database:
+\c mydb
+
+List tables:
+\dt
+
+

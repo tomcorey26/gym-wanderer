@@ -1,3 +1,5 @@
+-- https://youtu.be/ymb9gsl_x1U
+
 CREATE TABLE users (
   uid SERIAL PRIMARY KEY,
   actual_name VARCHAR(255) ,
