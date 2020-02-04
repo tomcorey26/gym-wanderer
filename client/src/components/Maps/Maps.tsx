@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Coords } from "../../types/Coords";
+import useCurrentGeolocation from "../../hooks/useCurrentLocation";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import { Key } from "../../key";
 import { libraries } from "./libraries";
-
-interface Coords {
-  lat: number;
-  lng: number;
-}
 
 const Maps: React.FC = () => {
   const location = useCurrentGeolocation();
@@ -72,30 +69,5 @@ const Maps: React.FC = () => {
     </LoadScript>
   );
 };
-
-function useCurrentGeolocation() {
-  const [center, setCenter] = useState<Coords>({ lat: 41.4901, lng: -71.3128 });
-
-  var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
-
-  function success(pos: any) {
-    var crd = pos.coords;
-    setCenter({ lat: crd.latitude, lng: crd.longitude });
-  }
-
-  function error(err: any) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(success, error, options);
-  }, []);
-
-  return center;
-}
 
 export default Maps;
