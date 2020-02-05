@@ -41,7 +41,13 @@ const Maps: React.FC = () => {
       className="search-gym-page"
       style={{ width: "100vw", height: "100vh" }}
     >
-      <div style={{ height: "40%", width: "40%", background: "blue" }}></div>
+      <div
+        className="gym-map"
+        style={{
+          height: "40%",
+          width: "60%"
+        }}
+      ></div>
       {/* <GoogleMap
         center={isUserInput ? center : location}
         zoom={zoom}
@@ -73,6 +79,7 @@ const Maps: React.FC = () => {
           />
         </Autocomplete>
       </GoogleMap> */}
+      <MapsSideScroller />
     </div>
     // </LoadScript>
   );
