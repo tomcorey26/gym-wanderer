@@ -1,0 +1,11 @@
+Create scrollable list that contains:
+blocks with gym information
+Picture,name,locaion, rating, cost per hour, type
+description
+on Hover, show 
+
+have tags like (Weightlifting, powerlifting , yoga, general purpose, etc) so 
+so people can filter for this stuff
+
+each list item could have an id and you would navigate
+to the api thing /gyms/:id based off that value

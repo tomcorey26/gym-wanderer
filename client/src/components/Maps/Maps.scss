@@ -1,0 +1,11 @@
+.search-gym-page {
+  display: flex;
+  overflow: auto;
+
+  .gym-map {
+    // in order for sticky to work must have top,bottom,left,or right property
+    position: sticky;
+    top: 0;
+    background: blue;
+  }
+}

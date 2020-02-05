@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import "./Maps.scss";
+import MapsSideScroller from "../MapsSideScroller/MapsSideScroller";
 import { Coords } from "../../types/Coords";
 import useCurrentGeolocation from "../../hooks/useCurrentLocation";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
@@ -34,41 +36,52 @@ const Maps: React.FC = () => {
   };
 
   return (
-    <LoadScript libraries={libraries} id="script-loader" googleMapsApiKey={Key}>
-      <div style={{ width: "100vw", height: "100vh" }}>
-        <GoogleMap
-          center={isUserInput ? center : location}
-          zoom={zoom}
-          mapContainerStyle={{
-            height: "40%",
-            width: "40%"
-          }}
-          id="example-map"
-        >
-          <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-            <input
-              type="text"
-              placeholder="Customized your placeholder"
-              style={{
-                boxSizing: `border-box`,
-                border: `1px solid transparent`,
-                width: `240px`,
-                height: `32px`,
-                padding: `0 12px`,
-                borderRadius: `3px`,
-                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `14px`,
-                outline: `none`,
-                textOverflow: `ellipses`,
-                position: "absolute",
-                left: "50%",
-                marginLeft: "-120px"
-              }}
-            />
-          </Autocomplete>
-        </GoogleMap>
-      </div>
-    </LoadScript>
+    // <LoadScript libraries={libraries} id="script-loader" googleMapsApiKey={Key}>
+    <div
+      className="search-gym-page"
+      style={{ width: "100vw", height: "100vh" }}
+    >
+      <div
+        className="gym-map"
+        style={{
+          height: "40%",
+          width: "60%"
+        }}
+      ></div>
+      {/* <GoogleMap
+        center={isUserInput ? center : location}
+        zoom={zoom}
+        mapContainerStyle={{
+          height: "40%",
+          width: "40%"
+        }}
+        id="example-map"
+      >
+        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+          <input
+            type="text"
+            placeholder="Customized your placeholder"
+            style={{
+              boxSizing: `border-box`,
+              border: `1px solid transparent`,
+              width: `240px`,
+              height: `32px`,
+              padding: `0 12px`,
+              borderRadius: `3px`,
+              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+              fontSize: `14px`,
+              outline: `none`,
+              textOverflow: `ellipses`,
+              position: "absolute",
+              left: "50%",
+              marginLeft: "-120px"
+            }}
+          />
+        </Autocomplete>
+      </GoogleMap> */}
+      <MapsSideScroller />
+    </div>
+    // </LoadScript>
   );
 };
 
