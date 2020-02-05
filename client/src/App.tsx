@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Maps from "./components/Maps/Maps";
 import axios from "axios";
+import "./App.css";
 
 const axiosIntance = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com"
