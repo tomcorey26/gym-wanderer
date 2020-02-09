@@ -21,8 +21,8 @@ const MapsSideScroller: React.FC<Props> = ({ gyms }) => {
   return (
     <div className="scroller-box">
       <List className={classes.root}>
-        {gyms.map(gym => (
-          <SideScrollerBox {...gym} />
+        {gyms.map((gym, i) => (
+          <SideScrollerBox key={i} {...gym} />
         ))}
       </List>
     </div>
