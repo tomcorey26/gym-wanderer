@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Coords } from "../types/Coords";
 export default function useCurrentGeolocation() {
   const [center, setCenter] = useState<Coords>({ lat: 41.4901, lng: -71.3128 });
@@ -20,7 +20,7 @@ export default function useCurrentGeolocation() {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(success, error, options);
-  }, []);
+  }, [options]);
 
   return center;
 }

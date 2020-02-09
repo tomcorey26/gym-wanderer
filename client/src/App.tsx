@@ -7,8 +7,6 @@ const axiosIntance = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com"
 });
 const App: React.FC = () => {
-  const [test, setTest] = useState<any>("");
-
   useEffect(() => {
     asyncFunction();
   }, []);

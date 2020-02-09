@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     width: "64%",
-    height: "54%"
+    height: "72%"
   },
   item: {
     height: "300px"

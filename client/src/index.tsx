@@ -46,6 +46,30 @@ new Server({
             },
             cost: 2,
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
+          },
+          {
+            type: "Yoga",
+            rating: 3.5,
+            name: "Yoga studio",
+            ownername: "yogi cynthia",
+            location: {
+              city: "Providence",
+              state: "RI"
+            },
+            cost: 3,
+            equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
+          },
+          {
+            type: "Yoga",
+            rating: 3.5,
+            name: "Yoga studio",
+            ownername: "yogi cynthia",
+            location: {
+              city: "Providence",
+              state: "RI"
+            },
+            cost: 3,
+            equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
           }
         ]
       };
