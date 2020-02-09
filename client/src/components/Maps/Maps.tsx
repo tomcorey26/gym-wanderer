@@ -6,6 +6,7 @@ import useCurrentGeolocation from "../../hooks/useCurrentLocation";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import { Key } from "../../key";
 import { libraries } from "./libraries";
+import axios from "axios";
 
 const Maps: React.FC = () => {
   const location = useCurrentGeolocation();
@@ -16,6 +17,13 @@ const Maps: React.FC = () => {
   });
   const [zoom, setZoom] = useState<number>(11);
   const [autoComplete, setAutoComplete] = useState<any>(null);
+  const [gyms, setGyms] = useState<any>([]);
+
+  useEffect(() => {
+    axios.get("/api/gyms").then((res: any) => {
+      setGyms(res.data.gyms);
+    });
+  }, []);
 
   const onLoad = (auto: any) => {
     setAutoComplete(auto);
@@ -79,7 +87,7 @@ const Maps: React.FC = () => {
           />
         </Autocomplete>
       </GoogleMap> */}
-      <MapsSideScroller />
+      <MapsSideScroller gyms={gyms} />
     </div>
     // </LoadScript>
   );

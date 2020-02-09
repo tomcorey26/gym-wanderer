@@ -12,26 +12,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MapsSideScroller: React.FC = () => {
+interface Props {
+  gyms: any;
+}
+
+const MapsSideScroller: React.FC<Props> = ({ gyms }) => {
   const classes = useStyles();
   return (
     <div className="scroller-box">
       <List className={classes.root}>
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
-        <SideScrollerBox />
+        {gyms.map(gym => (
+          <SideScrollerBox {...gym} />
+        ))}
       </List>
     </div>
   );

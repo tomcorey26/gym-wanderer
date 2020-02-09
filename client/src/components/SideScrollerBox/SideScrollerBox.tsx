@@ -24,15 +24,37 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     width: "64%",
-    height: "85%"
+    height: "54%"
   },
   item: {
     height: "300px"
   }
 }));
 
-const SideScrollerBox: React.FC = () => {
+interface Props {
+  type: string;
+  rating: number;
+  name: string;
+  ownername: string;
+  location: {
+    city: string;
+    state: string;
+  };
+  cost: number;
+  equipment: Array<string>;
+}
+
+const SideScrollerBox: React.FC<Props> = ({
+  cost,
+  equipment,
+  location,
+  name,
+  ownername,
+  rating,
+  type
+}) => {
   const classes = useStyles();
+
   return (
     <>
       <ListItem button className={classes.item} alignItems="center">
@@ -47,7 +69,7 @@ const SideScrollerBox: React.FC = () => {
               className={classes.title}
               color="textPrimary"
             >
-              Toms Dawg Pound
+              {name}
             </Typography>
           }
           secondary={
@@ -58,14 +80,14 @@ const SideScrollerBox: React.FC = () => {
                 className={classes.inline}
                 color="textPrimary"
               >
-                Tom Corey
+                {ownername}
               </Typography>
-              {" - Providence RI"}
+              {` - ${location.city}, ${location.state}`}
             </React.Fragment>
           }
         />
         <ListItemText
-          primary="Rating • 5 Stars"
+          primary={`Rating • ${rating} Stars`}
           secondary={
             <React.Fragment>
               <Typography
@@ -74,9 +96,10 @@ const SideScrollerBox: React.FC = () => {
                 className={classes.inline}
                 color="textPrimary"
               >
-                $5 / hour
-              </Typography>
-              {" Weights gym"}
+                {"$"}
+                {cost} / hour
+              </Typography>{" "}
+              {type}
             </React.Fragment>
           }
         />
