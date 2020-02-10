@@ -14,15 +14,29 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   gyms: any;
+  hoveredGymId: number;
+  onMouseOver: any;
+  onMouseLeave: any;
 }
 
-const MapsSideScroller: React.FC<Props> = ({ gyms }) => {
+const MapsSideScroller: React.FC<Props> = ({
+  gyms,
+  hoveredGymId,
+  onMouseLeave,
+  onMouseOver
+}) => {
   const classes = useStyles();
   return (
     <div style={{ width: "50%" }} className="scroller-box">
       <List className={classes.root}>
         {gyms.map((gym, i) => (
-          <SideScrollerBox key={i} {...gym} />
+          <SideScrollerBox
+            onMouseOver={() => onMouseOver(gym.id)}
+            onMouseLeave={onMouseLeave}
+            key={i}
+            isHovered={hoveredGymId === gym.id}
+            {...gym}
+          />
         ))}
       </List>
     </div>

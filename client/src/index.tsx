@@ -12,6 +12,7 @@ new Server({
       return {
         gyms: [
           {
+            id: 43284932,
             type: "Body building",
             rating: 5,
             name: "Dawg Pound",
@@ -25,6 +26,7 @@ new Server({
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
           },
           {
+            id: 840923859,
             type: "Yoga",
             rating: 3.5,
             name: "Yoga studio",
@@ -38,6 +40,7 @@ new Server({
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
           },
           {
+            id: 98423094382,
             type: "Crossfit",
             rating: 4,
             name: "crossfit fo days",
@@ -51,6 +54,7 @@ new Server({
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
           },
           {
+            id: 90238940382,
             type: "Bodybuilding",
             rating: 3.5,
             name: "dad bod lifts",
@@ -64,6 +68,7 @@ new Server({
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
           },
           {
+            id: 23958023,
             type: "Yoga",
             rating: 3.5,
             name: "Yoga studio",

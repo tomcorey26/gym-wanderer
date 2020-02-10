@@ -28,6 +28,10 @@ const useStyles = makeStyles(theme => ({
   },
   item: {
     height: "300px"
+  },
+  hover: {
+    height: "300px",
+    background: "grey"
   }
 }));
 
@@ -42,6 +46,9 @@ interface Props {
   };
   cost: number;
   equipment: Array<string>;
+  isHovered: number;
+  onMouseOver: any;
+  onMouseLeave: any;
 }
 
 const SideScrollerBox: React.FC<Props> = ({
@@ -51,13 +58,22 @@ const SideScrollerBox: React.FC<Props> = ({
   name,
   ownername,
   rating,
-  type
+  type,
+  isHovered,
+  onMouseLeave,
+  onMouseOver
 }) => {
   const classes = useStyles();
 
   return (
     <>
-      <ListItem button className={classes.item} alignItems="center">
+      <ListItem
+        button
+        className={isHovered ? classes.hover : classes.item}
+        alignItems="center"
+        onMouseLeave={onMouseLeave}
+        onMouseOver={onMouseOver}
+      >
         <ListItemAvatar className={classes.avatarItem}>
           <Avatar className={classes.avatar} alt="Remy Sharp" src={GymPic} />
         </ListItemAvatar>

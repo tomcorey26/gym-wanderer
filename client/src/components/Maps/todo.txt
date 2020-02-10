@@ -11,3 +11,11 @@ have gyms show up in a certain radius from location
 have popper hover over point when correspondign box is clicked
 create styled point
 add animations
+filter gyms based on cost range
+filter gyms based on area
+filter gyms based on type
+
+x right now i want it so when you hover on a gym the corresponding item highlights
+x check if item is hovered
+x have id of hovered item in state
+x if it matches then highlight both corresponding items

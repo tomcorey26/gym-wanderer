@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import "./Maps.scss";
 import MapsSideScroller from "../MapsSideScroller/MapsSideScroller";
 import { Coords } from "../../types/Coords";
+import { Gym } from "../../types/Gym";
 import useCurrentGeolocation from "../../hooks/useCurrentLocation";
 import GoogleMapReact from "google-map-react";
 import MapPoint from "../MapPoint/MapPoint";
@@ -17,7 +18,8 @@ const Maps: React.FC = () => {
   });
   const [zoom, setZoom] = useState<number>(11);
   const [autoComplete, setAutoComplete] = useState<any>(null);
-  const [gyms, setGyms] = useState<any>([]);
+  const [gyms, setGyms] = useState<Array<Gym>>([]);
+  const [hoveredGymId, setHoveredGymId] = useState<number>(0);
 
   useEffect(() => {
     axios.get("/api/gyms").then((res: any) => {
@@ -57,8 +59,11 @@ const Maps: React.FC = () => {
       >
         {geo.locationFound ? (
           <GoogleMapReact zoom={zoom} center={geo.position}>
-            {gyms.map(({ location, cost }, i) => (
+            {gyms.map(({ location, cost, id }, i) => (
               <MapPoint
+                isHovered={id === hoveredGymId}
+                onMouseOver={() => setHoveredGymId(id)}
+                onMouseLeave={() => setHoveredGymId(0)}
                 key={i}
                 lat={location.coordinates.lat + 0.001}
                 lng={location.coordinates.lng + 0.001}
@@ -70,7 +75,12 @@ const Maps: React.FC = () => {
           <div>Loading...</div>
         )}
       </div>
-      <MapsSideScroller gyms={gyms} />
+      <MapsSideScroller
+        onMouseOver={setHoveredGymId}
+        onMouseLeave={() => setHoveredGymId(0)}
+        gyms={gyms}
+        hoveredGymId={hoveredGymId}
+      />
     </div>
   );
 };
