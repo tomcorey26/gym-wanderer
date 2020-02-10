@@ -14,11 +14,12 @@ new Server({
           {
             type: "Body building",
             rating: 5,
-            name: "Toms Dawg Pound",
+            name: "Dawg Pound",
             ownername: "Tom Corey",
             location: {
               city: "Providence",
-              state: "RI"
+              state: "RI",
+              coordinates: { lat: 41.8185216, lng: -71.1465856 }
             },
             cost: 3,
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
@@ -30,7 +31,8 @@ new Server({
             ownername: "yogi cynthia",
             location: {
               city: "Providence",
-              state: "RI"
+              state: "RI",
+              coordinates: { lat: 41.7185216, lng: -71.3465856 }
             },
             cost: 3,
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
@@ -42,19 +44,21 @@ new Server({
             ownername: "Tryhard williams",
             location: {
               city: "Middletown",
-              state: "RI"
+              state: "RI",
+              coordinates: { lat: 41.9185216, lng: -71.3465856 }
             },
             cost: 2,
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
           },
           {
-            type: "Yoga",
+            type: "Bodybuilding",
             rating: 3.5,
-            name: "Yoga studio",
+            name: "dad bod lifts",
             ownername: "yogi cynthia",
             location: {
               city: "Providence",
-              state: "RI"
+              state: "RI",
+              coordinates: { lat: 41.8185216, lng: -71.9465856 }
             },
             cost: 3,
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]
@@ -66,7 +70,8 @@ new Server({
             ownername: "yogi cynthia",
             location: {
               city: "Providence",
-              state: "RI"
+              state: "RI",
+              coordinates: { lat: 41.8185216, lng: -71.3465856 }
             },
             cost: 3,
             equipment: ["Olympic Barbell", "Power Rack", "Bench", "Dumbells"]

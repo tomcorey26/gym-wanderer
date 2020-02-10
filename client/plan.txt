@@ -59,6 +59,7 @@ Shows gym equipment
 gives user easy way of picking date and time
 fat booking button
 notifys gym owner 
+be able to save gym to favorites
 
 
 )

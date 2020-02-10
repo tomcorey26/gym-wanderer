@@ -4,19 +4,9 @@ import MapsSideScroller from "../MapsSideScroller/MapsSideScroller";
 import { Coords } from "../../types/Coords";
 import useCurrentGeolocation from "../../hooks/useCurrentLocation";
 import GoogleMapReact from "google-map-react";
+import MapPoint from "../MapPoint/MapPoint";
 import { Key } from "../../key";
 import axios from "axios";
-
-interface poop {
-  lat: any;
-  lng: any;
-  text: any;
-}
-const AnyReactComponent: React.FC<poop> = ({ text }) => (
-  <div style={{ width: "100px", height: "100px", background: "grey" }}>
-    {text}
-  </div>
-);
 
 const Maps: React.FC = () => {
   const geo = useCurrentGeolocation();
@@ -61,17 +51,20 @@ const Maps: React.FC = () => {
       <div
         className="gym-map"
         style={{
-          height: "40%",
+          height: "100%",
           width: "50%"
         }}
       >
         {geo.locationFound ? (
           <GoogleMapReact zoom={zoom} center={geo.position}>
-            <AnyReactComponent
-              lat={geo.position.lat}
-              lng={geo.position.lng}
-              text="ey buddy"
-            />
+            {gyms.map(({ location, cost }, i) => (
+              <MapPoint
+                key={i}
+                lat={location.coordinates.lat + 0.001}
+                lng={location.coordinates.lng + 0.001}
+                text={`$ ${cost}/hr`}
+              />
+            ))}
           </GoogleMapReact>
         ) : (
           <div>Loading...</div>

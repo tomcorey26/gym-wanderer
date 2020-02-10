@@ -4,6 +4,10 @@ autocomplete stuff:
 can specify radius and stuff like that
 x Have it so user can input their coordinates
 x handler that checks if input location or current location
-have something that caches the api request so you dont have to make it everytime the page 
-loads
-points on map based on nearby gyms dawg
+x have something that caches the api request so you dont have to make it everytime the page 
+x add points to the map
+have points show up on the map based off of which gyms are nearby
+have gyms show up in a certain radius from location
+have popper hover over point when correspondign box is clicked
+create styled point
+add animations
