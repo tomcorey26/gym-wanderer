@@ -19,7 +19,7 @@ interface Props {
 const MapsSideScroller: React.FC<Props> = ({ gyms }) => {
   const classes = useStyles();
   return (
-    <div className="scroller-box">
+    <div style={{ width: "50%" }} className="scroller-box">
       <List className={classes.root}>
         {gyms.map((gym, i) => (
           <SideScrollerBox key={i} {...gym} />

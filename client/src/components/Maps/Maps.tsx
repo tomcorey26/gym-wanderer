@@ -3,13 +3,23 @@ import "./Maps.scss";
 import MapsSideScroller from "../MapsSideScroller/MapsSideScroller";
 import { Coords } from "../../types/Coords";
 import useCurrentGeolocation from "../../hooks/useCurrentLocation";
-import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
+import GoogleMapReact from "google-map-react";
 import { Key } from "../../key";
-import { libraries } from "./libraries";
 import axios from "axios";
 
+interface poop {
+  lat: any;
+  lng: any;
+  text: any;
+}
+const AnyReactComponent: React.FC<poop> = ({ text }) => (
+  <div style={{ width: "100px", height: "100px", background: "grey" }}>
+    {text}
+  </div>
+);
+
 const Maps: React.FC = () => {
-  const location = useCurrentGeolocation();
+  const geo = useCurrentGeolocation();
   const [isUserInput, setIsUserInput] = useState<boolean>(false);
   const [center, setCenter] = useState<Coords>({
     lat: 0,
@@ -44,54 +54,32 @@ const Maps: React.FC = () => {
   };
 
   return (
-    <LoadScript libraries={libraries} id="script-loader" googleMapsApiKey={Key}>
+    <div
+      className="search-gym-page"
+      style={{ width: "100vw", height: "100vh" }}
+    >
       <div
-        className="search-gym-page"
-        style={{ width: "100vw", height: "100vh" }}
+        className="gym-map"
+        style={{
+          height: "40%",
+          width: "50%"
+        }}
       >
-        <div
-          className="gym-map"
-          style={{
-            height: "40%",
-            width: "60%"
-          }}
-        >
-          <GoogleMap
-            center={isUserInput ? center : location}
-            zoom={zoom}
-            mapContainerStyle={{
-              height: "100%",
-              width: "100%"
-            }}
-            id="example-map"
-          >
-            <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-              <input
-                type="text"
-                placeholder="Customized your placeholder"
-                style={{
-                  boxSizing: `border-box`,
-                  border: `1px solid transparent`,
-                  width: `240px`,
-                  height: `32px`,
-                  padding: `0 12px`,
-                  borderRadius: `3px`,
-                  boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                  fontSize: `14px`,
-                  outline: `none`,
-                  textOverflow: `ellipses`,
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: "-120px"
-                }}
-              />
-            </Autocomplete>
-          </GoogleMap>
-        </div>
-        <MapsSideScroller gyms={gyms} />
+        {geo.locationFound ? (
+          <GoogleMapReact zoom={zoom} center={geo.position}>
+            <AnyReactComponent
+              lat={geo.position.lat}
+              lng={geo.position.lng}
+              text="ey buddy"
+            />
+          </GoogleMapReact>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
-    </LoadScript>
+      <MapsSideScroller gyms={gyms} />
+    </div>
   );
 };
-
+//{"lat":41.8288777,"lng":-71.39347599999999}
 export default Maps;

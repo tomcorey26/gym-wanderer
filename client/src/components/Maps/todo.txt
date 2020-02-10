@@ -2,9 +2,8 @@ https://react-google-maps-api-docs.netlify.com/
 
 autocomplete stuff:
 can specify radius and stuff like that
-https://developers.google.com/places/web-service/autocomplete
-Have it so user can input their coordinates
-handler that checks if input location or current location
-
+x Have it so user can input their coordinates
+x handler that checks if input location or current location
 have something that caches the api request so you dont have to make it everytime the page 
 loads
+points on map based on nearby gyms dawg

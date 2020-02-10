@@ -6,6 +6,7 @@ import "./App.css";
 const axiosIntance = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com"
 });
+
 const App: React.FC = () => {
   useEffect(() => {
     asyncFunction();
@@ -26,5 +27,4 @@ const App: React.FC = () => {
     </div>
   );
 };
-
 export default App;
