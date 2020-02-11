@@ -1,26 +1,32 @@
 import { useState, useEffect } from "react";
-import { Coords } from "../types/Coords";
+
 export default function useCurrentGeolocation() {
-  const [center, setCenter] = useState<Coords>({ lat: 41.4901, lng: -71.3128 });
+  const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const [error, setError] = useState<string | null>(null);
+  const [locationFound, setLocationFound] = useState<boolean>(false);
 
-  var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
+  //only want location to be loaded when geolocation is found
+  const onChange = ({ coords }) => {
+    if (!locationFound) setLocationFound(true);
+
+    setPosition({
+      lat: coords.latitude,
+      lng: coords.longitude
+    });
   };
-
-  function success(pos: any) {
-    var crd = pos.coords;
-    setCenter({ lat: crd.latitude, lng: crd.longitude });
-  }
-
-  function error(err: any) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
-
+  const onError = error => {
+    setError(error.message);
+  };
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(success, error, options);
-  }, [options]);
+    const geo = navigator.geolocation;
+    if (!geo) {
+      setError("Geolocation is not supported");
+      return;
+    }
+    let watcher = geo.watchPosition(onChange, onError);
 
-  return center;
+    return () => geo.clearWatch(watcher);
+  }, []);
+
+  return { position, locationFound, error };
 }

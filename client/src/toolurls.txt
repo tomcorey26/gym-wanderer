@@ -1,0 +1,27 @@
+https://www.json-generator.com/
+
+[
+  '{{repeat(30)}}',
+  {
+    _id: '{{objectId()}}',
+    isActive: '{{bool()}}',
+    rating: '{{integer(1, 5)}}',
+    ownerName: '{{firstName()}} {{surname()}}',
+    gymName: '{{company().toUpperCase()}}',
+    email: '{{email()}}',
+    phone: '+1 {{phone()}}',
+    location: {
+      city: '{{city()}}',
+      state: '{{state()}}',
+      coordinates: {
+        lat: '{{floating(41.000001, 46)}}',
+		lng: '{{floating(-50, -72)}}' 
+      }
+    },
+    cost: '{{floating(2, 10, 0, "$0,0.00")}}',
+    equipment: '{{random("Olympic Barbell", "Power rack", "Bench", "Dumbells")}}',
+    type: '{{random("Bodybuilding", "Yoga", "Crossfit", "General Purpose")}}',
+    about: '{{lorem(1, "paragraphs")}}',
+    registered: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}'
+  }
+]

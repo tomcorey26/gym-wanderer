@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Maps from "./components/Maps/Maps";
+import Routes from "./Routes";
 import axios from "axios";
 import "./App.css";
 
 const axiosIntance = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com"
 });
+
 const App: React.FC = () => {
   useEffect(() => {
     asyncFunction();
@@ -22,9 +23,8 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <Maps />
+      <Routes />
     </div>
   );
 };
-
 export default App;

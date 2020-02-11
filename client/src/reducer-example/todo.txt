@@ -1,0 +1,23 @@
+https://react-google-maps-api-docs.netlify.com/
+
+autocomplete stuff:
+can specify radius and stuff like that
+x Have it so user can input their coordinates
+x handler that checks if input location or current location
+x have something that caches the api request so you dont have to make it everytime the page 
+x add points to the map
+have points show up on the map based off of which gyms are nearby
+have gyms show up in a certain radius from location
+have popper hover over point when correspondign box is clicked
+create styled point
+add animations
+filter gyms based on cost range
+filter gyms based on area
+filter gyms based on type
+add tags to the bottom of sidescrollerboxes like bodybuilding,
+https://material-ui.com/components/chips/
+
+x right now i want it so when you hover on a gym the corresponding item highlights
+x check if item is hovered
+x have id of hovered item in state
+x if it matches then highlight both corresponding items
