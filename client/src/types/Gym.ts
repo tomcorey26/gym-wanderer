@@ -2,9 +2,12 @@ import { Coords } from "./Coords";
 
 export interface Gym {
   id: number;
-  type: string;
-  name: string;
-  ownername: string;
+  isActive: boolean;
+  rating: number;
+  ownerName: string;
+  gymName: string;
+  email: string;
+  phone: string;
   location: {
     city: string;
     state: string;
@@ -12,4 +15,7 @@ export interface Gym {
   };
   cost: number;
   equipment: Array<string>;
+  type: string;
+  about: string;
+  registered: string;
 }

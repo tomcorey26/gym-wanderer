@@ -14,6 +14,8 @@ add animations
 filter gyms based on cost range
 filter gyms based on area
 filter gyms based on type
+add tags to the bottom of sidescrollerboxes like bodybuilding,
+https://material-ui.com/components/chips/
 
 x right now i want it so when you hover on a gym the corresponding item highlights
 x check if item is hovered

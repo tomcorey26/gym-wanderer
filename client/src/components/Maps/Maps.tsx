@@ -67,7 +67,7 @@ const Maps: React.FC = () => {
                 key={i}
                 lat={location.coordinates.lat + 0.001}
                 lng={location.coordinates.lng + 0.001}
-                text={`$ ${cost}/hr`}
+                text={`${cost}/hr`}
               />
             ))}
           </GoogleMapReact>

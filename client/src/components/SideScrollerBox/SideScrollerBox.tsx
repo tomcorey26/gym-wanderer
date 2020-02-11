@@ -7,6 +7,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import GymPic from "../../assets/gymPic.jpg";
+import { Coords } from "../../types/Coords";
 
 const useStyles = makeStyles(theme => ({
   inline: {
@@ -36,16 +37,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  type: string;
+  id: number;
+  isActive: boolean;
   rating: number;
-  name: string;
-  ownername: string;
+  ownerName: string;
+  gymName: string;
+  email: string;
+  phone: string;
   location: {
     city: string;
     state: string;
+    coordinates: Coords;
   };
   cost: number;
   equipment: Array<string>;
+  type: string;
+  about: string;
+  registered: string;
   isHovered: number;
   onMouseOver: any;
   onMouseLeave: any;
@@ -55,8 +63,8 @@ const SideScrollerBox: React.FC<Props> = ({
   cost,
   equipment,
   location,
-  name,
-  ownername,
+  gymName,
+  ownerName,
   rating,
   type,
   isHovered,
@@ -85,7 +93,7 @@ const SideScrollerBox: React.FC<Props> = ({
               className={classes.title}
               color="textPrimary"
             >
-              {name}
+              {gymName}
             </Typography>
           }
           secondary={
@@ -96,7 +104,7 @@ const SideScrollerBox: React.FC<Props> = ({
                 className={classes.inline}
                 color="textPrimary"
               >
-                {ownername}
+                {ownerName}
               </Typography>
               {` - ${location.city}, ${location.state}`}
             </React.Fragment>
@@ -112,7 +120,6 @@ const SideScrollerBox: React.FC<Props> = ({
                 className={classes.inline}
                 color="textPrimary"
               >
-                {"$"}
                 {cost} / hour
               </Typography>{" "}
               {type}
