@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Maps from "./components/Maps/Maps";
+import Routes from "./Routes";
 import axios from "axios";
 import "./App.css";
 
@@ -23,7 +23,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <Maps />
+      <Routes />
     </div>
   );
 };

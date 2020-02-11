@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useReducer } from "react";
-import "./Maps.scss";
-import MapsSideScroller from "../MapsSideScroller/MapsSideScroller";
-import { Coords } from "../../types/Coords";
-import { Gym } from "../../types/Gym";
-import useCurrentGeolocation from "../../hooks/useCurrentLocation";
+import MapsSideScroller from "../components/MapsSideScroller";
+import { Coords } from "../types/Coords";
+import { Gym } from "../types/Gym";
+import useCurrentGeolocation from "../hooks/useCurrentLocation";
 import GoogleMapReact from "google-map-react";
-import MapPoint from "../MapPoint/MapPoint";
-import { Key } from "../../key";
+import MapPoint from "../components/MapPoint";
+import { Key } from "../key";
 import axios from "axios";
 
 const Maps: React.FC = () => {
   const geo = useCurrentGeolocation();
+
   const [isUserInput, setIsUserInput] = useState<boolean>(false);
   const [center, setCenter] = useState<Coords>({
     lat: 0,
@@ -48,13 +48,21 @@ const Maps: React.FC = () => {
   return (
     <div
       className="search-gym-page"
-      style={{ width: "100vw", height: "100vh" }}
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        overflow: "auto"
+      }}
     >
       <div
         className="gym-map"
         style={{
           height: "100%",
-          width: "50%"
+          width: "50%",
+          position: "sticky",
+          top: 0,
+          background: "blue"
         }}
       >
         {geo.locationFound ? (

@@ -1,6 +1,5 @@
 import React from "react";
-import "./MapsSideScroller.scss";
-import SideScrollerBox from "../SideScrollerBox/SideScrollerBox";
+import SideScrollerBox from "./SideScrollerBox";
 
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
