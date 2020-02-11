@@ -1,4 +1,4 @@
-import { Coords } from "../../types/Coords";
+import { Coords } from "../types/Coords";
 type State = {
   counter: number;
   isUserInput: any;

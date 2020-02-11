@@ -1,8 +1,8 @@
 import React from "react";
 import SideScrollerBox from "./SideScrollerBox";
-
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
+import { useRouter } from "../hooks/useRouter";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,11 +25,14 @@ const MapsSideScroller: React.FC<Props> = ({
   onMouseOver
 }) => {
   const classes = useStyles();
+  const router = useRouter();
+
   return (
     <div style={{ width: "50%" }} className="scroller-box">
       <List className={classes.root}>
         {gyms.map((gym, i) => (
           <SideScrollerBox
+            onClick={() => router.push(`/gyms/${gym.id}`)}
             onMouseOver={() => onMouseOver(gym.id)}
             onMouseLeave={onMouseLeave}
             key={i}

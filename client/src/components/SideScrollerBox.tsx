@@ -57,6 +57,7 @@ interface Props {
   isHovered: number;
   onMouseOver: any;
   onMouseLeave: any;
+  onClick: any;
 }
 
 const SideScrollerBox: React.FC<Props> = ({
@@ -69,7 +70,8 @@ const SideScrollerBox: React.FC<Props> = ({
   type,
   isHovered,
   onMouseLeave,
-  onMouseOver
+  onMouseOver,
+  onClick
 }) => {
   const classes = useStyles();
 
@@ -81,6 +83,7 @@ const SideScrollerBox: React.FC<Props> = ({
         alignItems="center"
         onMouseLeave={onMouseLeave}
         onMouseOver={onMouseOver}
+        onClick={onClick}
       >
         <ListItemAvatar className={classes.avatarItem}>
           <Avatar className={classes.avatar} alt="Remy Sharp" src={GymPic} />
