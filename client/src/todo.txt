@@ -1,0 +1,10 @@
+Create Nav bar
+Create home page
+
+Make the search bar work so that 
+when you press enter it also goes to the search page
+might have somethign to do with parse()
+
+Make Gym search responsive
+Create user sign up form
+Create user dash board
