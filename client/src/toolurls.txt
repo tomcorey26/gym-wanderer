@@ -1,5 +1,10 @@
 https://www.json-generator.com/
-
+https://material-ui.com/components/grid-list/
+for gym details page
+https://material-ui.com/components/autocomplete/
+autocomplete
+https://developers.google.com/maps/documentation/geocoding/intro
+getting latitude and longitude
 [
   '{{repeat(30)}}',
   {

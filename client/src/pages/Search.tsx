@@ -8,7 +8,7 @@ import MapPoint from "../components/MapPoint";
 import { Key } from "../key";
 import axios from "axios";
 
-const Maps: React.FC = () => {
+const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
 
   const [isUserInput, setIsUserInput] = useState<boolean>(false);
@@ -93,4 +93,4 @@ const Maps: React.FC = () => {
   );
 };
 //{"lat":41.8288777,"lng":-71.39347599999999}
-export default Maps;
+export default Search;
