@@ -7,6 +7,8 @@ import GoogleMapReact from "google-map-react";
 import MapPoint from "../components/MapPoint";
 import { Key } from "../key";
 import axios from "axios";
+import SearchFilter from "../components/SearchFilter";
+import { useInputValue } from "../hooks/useInputValue";
 
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
@@ -20,12 +22,17 @@ const Search: React.FC = () => {
   const [autoComplete, setAutoComplete] = useState<any>(null);
   const [gyms, setGyms] = useState<Array<Gym>>([]);
   const [hoveredGymId, setHoveredGymId] = useState<number>(0);
+  const { value, onChange } = useInputValue("");
 
   useEffect(() => {
     axios.get("/api/gyms").then((res: any) => {
       setGyms(res.data.gyms);
     });
   }, []);
+
+  //another use effect that finds the elements with id and highlights them
+  //based off of current state
+  //need some should component updates
 
   const onLoad = (auto: any) => {
     setAutoComplete(auto);
@@ -35,6 +42,7 @@ const Search: React.FC = () => {
     if (!isUserInput) {
       setIsUserInput(true);
     }
+
     if (autoComplete !== null) {
       let place = autoComplete.getPlace();
       let lat = place.geometry.location.lat();
@@ -44,6 +52,13 @@ const Search: React.FC = () => {
       console.log("Autocomplete is not loaded yet!");
     }
   };
+
+  let filteredGyms = gyms;
+  if (value) {
+    filteredGyms = gyms.filter(gym =>
+      gym.gymName.toLowerCase().includes(value.toLowerCase())
+    );
+  }
 
   return (
     <div
@@ -67,7 +82,7 @@ const Search: React.FC = () => {
       >
         {geo.locationFound ? (
           <GoogleMapReact zoom={zoom} center={geo.position}>
-            {gyms.map(({ location, cost, id }, i) => (
+            {filteredGyms.map(({ location, cost, id }, i) => (
               <MapPoint
                 isHovered={id === hoveredGymId}
                 onMouseOver={() => setHoveredGymId(id)}
@@ -83,12 +98,15 @@ const Search: React.FC = () => {
           <div>Loading...</div>
         )}
       </div>
-      <MapsSideScroller
-        onMouseOver={setHoveredGymId}
-        onMouseLeave={() => setHoveredGymId(0)}
-        gyms={gyms}
-        hoveredGymId={hoveredGymId}
-      />
+      <div style={{ width: "50%" }} className="scroller-box">
+        <SearchFilter value={value} onChange={onChange} />
+        <MapsSideScroller
+          onMouseOver={setHoveredGymId}
+          onMouseLeave={() => setHoveredGymId(0)}
+          gyms={filteredGyms}
+          hoveredGymId={hoveredGymId}
+        />
+      </div>
     </div>
   );
 };

@@ -28,7 +28,7 @@ const MapsSideScroller: React.FC<Props> = ({
   const router = useRouter();
 
   return (
-    <div style={{ width: "50%" }} className="scroller-box">
+    <>
       <List className={classes.root}>
         {gyms.map((gym, i) => (
           <SideScrollerBox
@@ -41,7 +41,7 @@ const MapsSideScroller: React.FC<Props> = ({
           />
         ))}
       </List>
-    </div>
+    </>
   );
 };
 
