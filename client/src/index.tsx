@@ -4,6 +4,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Server } from "miragejs";
 import { mockGymsApi } from "./mock";
+import "./styles/globals.scss";
 
 new Server({
   routes() {
