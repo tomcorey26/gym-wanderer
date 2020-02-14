@@ -34,6 +34,13 @@ const Search: React.FC = () => {
   //based off of current state
   //need some should component updates
 
+  const isWithinDistance = (center: Coords, point: Coords, distance: number) => {
+    let withinLong = (point.lng > (center.lng - distance)) && (point.lng < (center.lng + distance));
+    let withinLat = (point.lat > (center.lat - distance)) && (point.lat < (center.lat + distance));
+
+    return withinLong && withinLat;
+  }
+
   const onLoad = (auto: any) => {
     setAutoComplete(auto);
   };
@@ -83,20 +90,21 @@ const Search: React.FC = () => {
         {geo.locationFound ? (
           <GoogleMapReact zoom={zoom} center={geo.position}>
             {filteredGyms.map(({ location, cost, id }, i) => (
-              <MapPoint
-                isHovered={id === hoveredGymId}
-                onMouseOver={() => setHoveredGymId(id)}
-                onMouseLeave={() => setHoveredGymId(0)}
-                key={i}
-                lat={location.coordinates.lat + 0.001}
-                lng={location.coordinates.lng + 0.001}
-                text={`${cost}/hr`}
-              />
+              isWithinDistance(geo.position, location.coordinates, 10) ?
+                <MapPoint
+                  isHovered={id === hoveredGymId}
+                  onMouseOver={() => setHoveredGymId(id)}
+                  onMouseLeave={() => setHoveredGymId(0)}
+                  key={i}
+                  lat={location.coordinates.lat + 0.001}
+                  lng={location.coordinates.lng + 0.001}
+                  text={`${cost}/hr`}
+                /> : null
             ))}
           </GoogleMapReact>
         ) : (
-          <div>Loading...</div>
-        )}
+            <div>Loading...</div>
+          )}
       </div>
       <div style={{ width: "50%" }} className="scroller-box">
         <SearchFilter value={value} onChange={onChange} />
