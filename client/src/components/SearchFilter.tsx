@@ -23,7 +23,7 @@ const SearchFilter: React.FC<Props> = ({ value, onChange }) => {
   const classes = useStyles();
 
   return (
-    <div className="center">
+    <div style={{ width: "70%" }} className="center">
       <TextField
         value={value}
         onChange={onChange}

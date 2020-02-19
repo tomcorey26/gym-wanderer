@@ -5,6 +5,7 @@ import { Gym } from "../types/Gym";
 import useCurrentGeolocation from "../hooks/useCurrentLocation";
 import GoogleMapReact from "google-map-react";
 import MapPoint from "../components/MapPoint";
+import RadiusSelect from "../components/RadiusSelect";
 import { Key } from "../key";
 import axios from "axios";
 import SearchFilter from "../components/SearchFilter";
@@ -12,12 +13,12 @@ import { useInputValue } from "../hooks/useInputValue";
 
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
-
   const [isUserInput, setIsUserInput] = useState<boolean>(false);
   const [center, setCenter] = useState<Coords>({
     lat: 0,
     lng: 0
   });
+  const [radiusDist, setRadiusDist] = useState<any>(10);
   const [zoom, setZoom] = useState<number>(11);
   const [autoComplete, setAutoComplete] = useState<any>(null);
   const [gyms, setGyms] = useState<Array<Gym>>([]);
@@ -34,12 +35,18 @@ const Search: React.FC = () => {
   //based off of current state
   //need some should component updates
 
-  const isWithinDistance = (center: Coords, point: Coords, distance: number) => {
-    let withinLong = (point.lng > (center.lng - distance)) && (point.lng < (center.lng + distance));
-    let withinLat = (point.lat > (center.lat - distance)) && (point.lat < (center.lat + distance));
+  const isWithinDistance = (
+    center: Coords,
+    point: Coords,
+    distance: number
+  ) => {
+    let withinLong =
+      point.lng > center.lng - distance && point.lng < center.lng + distance;
+    let withinLat =
+      point.lat > center.lat - distance && point.lat < center.lat + distance;
 
     return withinLong && withinLat;
-  }
+  };
 
   const onLoad = (auto: any) => {
     setAutoComplete(auto);
@@ -89,8 +96,12 @@ const Search: React.FC = () => {
       >
         {geo.locationFound ? (
           <GoogleMapReact zoom={zoom} center={geo.position}>
-            {filteredGyms.map(({ location, cost, id }, i) => (
-              isWithinDistance(geo.position, location.coordinates, 10) ?
+            {filteredGyms.map(({ location, cost, id }, i) =>
+              isWithinDistance(
+                geo.position,
+                location.coordinates,
+                radiusDist
+              ) ? (
                 <MapPoint
                   isHovered={id === hoveredGymId}
                   onMouseOver={() => setHoveredGymId(id)}
@@ -99,15 +110,19 @@ const Search: React.FC = () => {
                   lat={location.coordinates.lat + 0.001}
                   lng={location.coordinates.lng + 0.001}
                   text={`${cost}/hr`}
-                /> : null
-            ))}
+                />
+              ) : null
+            )}
           </GoogleMapReact>
         ) : (
-            <div>Loading...</div>
-          )}
+          <div>Loading...</div>
+        )}
       </div>
       <div style={{ width: "50%" }} className="scroller-box">
-        <SearchFilter value={value} onChange={onChange} />
+        <div style={{ display: "flex" }} className="top-bar">
+          <SearchFilter value={value} onChange={onChange} />
+          <RadiusSelect radiusDist={radiusDist} setRadiusDist={setRadiusDist} />
+        </div>
         <MapsSideScroller
           onMouseOver={setHoveredGymId}
           onMouseLeave={() => setHoveredGymId(0)}
