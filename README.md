@@ -7,11 +7,13 @@ GraphQL
 PostGresql
 
 # How to run
-git clone https://github.com/tomcorey26/gym-wanderer.git
 
-cd gym-wanderer
 
-cd client && npm i
+`git clone https://github.com/tomcorey26/gym-wanderer.git`
 
-npm start
+`cd gym-wanderer`
+
+`cd client && npm i`
+
+`npm start`
 
