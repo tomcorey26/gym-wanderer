@@ -50,4 +50,4 @@ const MapPoint: React.FC<Props> = ({
   );
 };
 
-export default MapPoint;
+export default React.memo(MapPoint);

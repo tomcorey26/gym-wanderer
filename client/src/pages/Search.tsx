@@ -13,14 +13,9 @@ import { useInputValue } from "../hooks/useInputValue";
 
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
-  const [isUserInput, setIsUserInput] = useState<boolean>(false);
-  const [center, setCenter] = useState<Coords>({
-    lat: 0,
-    lng: 0
-  });
+
   const [radiusDist, setRadiusDist] = useState<any>(10);
   const [zoom, setZoom] = useState<number>(11);
-  const [autoComplete, setAutoComplete] = useState<any>(null);
   const [gyms, setGyms] = useState<Array<Gym>>([]);
   const [hoveredGymId, setHoveredGymId] = useState<number>(0);
   const { value, onChange } = useInputValue("");
@@ -30,10 +25,6 @@ const Search: React.FC = () => {
       setGyms(res.data.gyms);
     });
   }, []);
-
-  //another use effect that finds the elements with id and highlights them
-  //based off of current state
-  //need some should component updates
 
   const isWithinDistance = (
     center: Coords,
@@ -46,25 +37,6 @@ const Search: React.FC = () => {
       point.lat > center.lat - distance && point.lat < center.lat + distance;
 
     return withinLong && withinLat;
-  };
-
-  const onLoad = (auto: any) => {
-    setAutoComplete(auto);
-  };
-
-  const onPlaceChanged = () => {
-    if (!isUserInput) {
-      setIsUserInput(true);
-    }
-
-    if (autoComplete !== null) {
-      let place = autoComplete.getPlace();
-      let lat = place.geometry.location.lat();
-      let long = place.geometry.location.lng();
-      setCenter({ lat: lat, lng: long });
-    } else {
-      console.log("Autocomplete is not loaded yet!");
-    }
   };
 
   let filteredGyms = gyms;
