@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -8,6 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import GymPic from "../assets/gymPic.jpg";
 import { Coords } from "../types/Coords";
+import { SearchContext } from "../context/SearchState";
 
 const useStyles = makeStyles(theme => ({
   inline: {
@@ -54,9 +55,6 @@ interface Props {
   type: string;
   about: string;
   registered: string;
-  isHovered: number;
-  onMouseOver: any;
-  onMouseLeave: any;
   onClick: any;
 }
 
@@ -68,21 +66,24 @@ const SideScrollerBox: React.FC<Props> = ({
   ownerName,
   rating,
   type,
-  isHovered,
-  onMouseLeave,
-  onMouseOver,
-  onClick
+  onClick,
+  id
 }) => {
   const classes = useStyles();
+  const { dispatch, hoveredGymId } = useContext(SearchContext);
 
   return (
     <>
       <ListItem
         button
-        className={isHovered ? classes.hover : classes.item}
+        className={hoveredGymId === id ? classes.hover : classes.item}
         alignItems="center"
-        onMouseLeave={onMouseLeave}
-        onMouseOver={onMouseOver}
+        onMouseLeave={() =>
+          dispatch({ type: "UPDATE_HOVERED_GYM_ID", hoveredGymId: 0 })
+        }
+        onMouseOver={() =>
+          dispatch({ type: "UPDATE_HOVERED_GYM_ID", hoveredGymId: id })
+        }
         onClick={onClick}
       >
         <ListItemAvatar className={classes.avatarItem}>

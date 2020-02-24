@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import { SearchContext } from "../context/SearchState";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,21 +19,22 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface Props {
-  setRadiusDist: any;
-  radiusDist: number;
-}
-const RadiusSelect: React.FC<Props> = ({ setRadiusDist, radiusDist }) => {
+const RadiusSelect: React.FC = () => {
   const classes = useStyles();
+  const { dispatch, radiusDist } = useContext(SearchContext);
 
   const inputLabel = React.useRef<HTMLLabelElement>(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
+
   React.useEffect(() => {
     setLabelWidth(inputLabel.current!.offsetWidth);
   }, []);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setRadiusDist(event.target.value as string);
+    dispatch({
+      type: "UPDATE_RADIUS_DISTANCE",
+      radius: event.target.value as number
+    });
   };
 
   return (
