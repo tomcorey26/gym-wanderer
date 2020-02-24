@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import SideScrollerBox from "./SideScrollerBox";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "../hooks/useRouter";
+import { SearchContext } from "../context/SearchState";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,30 +14,19 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   gyms: any;
-  hoveredGymId: number;
-  onMouseOver: any;
-  onMouseLeave: any;
 }
 
-const MapsSideScroller: React.FC<Props> = ({
-  gyms,
-  hoveredGymId,
-  onMouseLeave,
-  onMouseOver
-}) => {
+const MapsSideScroller: React.FC<Props> = ({ gyms }) => {
   const classes = useStyles();
   const router = useRouter();
-
   return (
     <>
       <List className={classes.root}>
         {gyms.map((gym, i) => (
           <SideScrollerBox
             onClick={() => router.push(`/gyms/${gym.id}`)}
-            onMouseOver={() => onMouseOver(gym.id)}
-            onMouseLeave={onMouseLeave}
+            id={gym.id}
             key={i}
-            isHovered={hoveredGymId === gym.id}
             {...gym}
           />
         ))}
