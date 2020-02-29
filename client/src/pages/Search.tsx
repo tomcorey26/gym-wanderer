@@ -1,17 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import MapsSideScroller from "../components/MapsSideScroller";
 import { Coords } from "../types/Coords";
-import { Gym } from "../types/Gym";
 import useCurrentGeolocation from "../hooks/useCurrentLocation";
 import GoogleMapReact from "google-map-react";
 import MapPoint from "../components/MapPoint";
 import RadiusSelect from "../components/RadiusSelect";
-import { Key } from "../key";
+// import { Key } from "../key";
 import axios from "axios";
 import SearchFilter from "../components/SearchFilter";
 import { useInputValue } from "../hooks/useInputValue";
 import { SearchContext } from "../context/SearchState";
-
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
   const { gyms, radiusDist, zoom, dispatch } = useContext(SearchContext);

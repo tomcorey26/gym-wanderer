@@ -8,7 +8,6 @@ const GymDetail: React.FC = () => {
   const id = router.match.params.id;
 
   useEffect(() => {
-    console.log(router.match.param);
     let h1: any = document.getElementById("param");
     h1.textContent = id;
   }, [id]);

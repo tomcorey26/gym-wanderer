@@ -7,20 +7,20 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
-import { Key } from "../key";
+// import { Key } from "../key";
 import { useRouter } from "../hooks/useRouter";
 
-function loadScript(src: string, position: HTMLElement | null, id: string) {
-  if (!position) {
-    return;
-  }
+// function loadScript(src: string, position: HTMLElement | null, id: string) {
+//   if (!position) {
+//     return;
+//   }
 
-  const script = document.createElement("script");
-  script.setAttribute("async", "");
-  script.setAttribute("id", id);
-  script.src = src;
-  position.appendChild(script);
-}
+//   const script = document.createElement("script");
+//   script.setAttribute("async", "");
+//   script.setAttribute("id", id);
+//   script.src = src;
+//   position.appendChild(script);
+// }
 
 const autocompleteService = { current: null };
 

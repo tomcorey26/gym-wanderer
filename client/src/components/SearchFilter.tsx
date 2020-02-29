@@ -1,5 +1,4 @@
 import React from "react";
-import { useInputValue } from "../hooks/useInputValue";
 import SearchIcon from "@material-ui/icons/Search";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";

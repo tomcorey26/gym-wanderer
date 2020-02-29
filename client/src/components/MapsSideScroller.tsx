@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import SideScrollerBox from "./SideScrollerBox";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "../hooks/useRouter";
-import { SearchContext } from "../context/SearchState";
 
 const useStyles = makeStyles(theme => ({
   root: {

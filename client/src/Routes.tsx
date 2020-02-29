@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Search from "./pages/Search";
 import GymDetail from "./pages/GymDetail";
 import Home from "./pages/Home";
+import CreateGym from "./pages/CreateGym";
 import { SearchProvider } from "./context/SearchState";
 
 const Routes: React.FC = () => {
@@ -10,10 +11,13 @@ const Routes: React.FC = () => {
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
-        <SearchProvider>
-          <Route path="/search" component={Search} />
-        </SearchProvider>
+        <Route path="/search">
+          <SearchProvider>
+            <Search />
+          </SearchProvider>
+        </Route>
         <Route path="/gyms/:id" component={GymDetail} />
+        <Route path="/newgym" component={CreateGym} />
       </Switch>
     </Router>
   );

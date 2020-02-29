@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Routes from "./Routes";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import axios from "axios";
+import Navbar from "./components/Navbar";
+// import axios from "axios";
 
-const axiosIntance = axios.create({
-  baseURL: "https://jsonplaceholder.typicode.com"
-});
+// const axiosIntance = axios.create({
+//   baseURL: "https://jsonplaceholder.typicode.com"
+// });
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
+      <Navbar />
       <CssBaseline />
       <Routes />
     </div>

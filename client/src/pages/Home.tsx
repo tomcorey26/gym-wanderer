@@ -1,6 +1,5 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Navbar from "../components/Navbar";
 import MapsAutoComplete from "../components/MapsAutoComplete";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -30,12 +29,11 @@ interface HomeProps {}
 //when the call to action is clicked
 //we want to be redirected to the search page
 
-const Home: React.FC<HomeProps> = ({}) => {
+const Home: React.FC<HomeProps> = () => {
   const classes = useStyles();
 
   return (
     <>
-      <Navbar />
       <Container className={classes.main} maxWidth="xl">
         <Container className={classes.secondary}>
           <Typography className={classes.item} variant="h4" component="h2">

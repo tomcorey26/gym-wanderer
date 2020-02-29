@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import { Gym } from "../types/Gym";
 
 type Actions =
   | { type: "UPDATE_RADIUS_DISTANCE"; radius: number }
@@ -10,7 +11,7 @@ type Actions =
 type State = {
   radiusDist: number;
   zoom: number;
-  gyms: any;
+  gyms: Gym[];
   hoveredGymId: number;
   searchQuery: string;
 };
@@ -46,26 +47,26 @@ export const SearchContext = createContext<any>(initialState);
 //Provider component
 export const SearchProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(SearchReducer, initialState);
+  console.log("in context", dispatch);
+  // function updateRadiusDistance(radius) {
+  //   dispatch({ type: "UPDATE_RADIUS_DISTANCE", radius: radius });
+  // }
 
-  function updateRadiusDistance(radius) {
-    dispatch({ type: "UPDATE_RADIUS_DISTANCE", radius: radius });
-  }
+  // function updateZoom(zoom) {
+  //   dispatch({ type: "UPDATE_ZOOM", zoom: zoom });
+  // }
 
-  function updateZoom(zoom) {
-    dispatch({ type: "UPDATE_ZOOM", zoom: zoom });
-  }
+  // function updateGymResults(gyms) {
+  //   dispatch({ type: "UPDATE_GYM_RESULTS", gyms: gyms });
+  // }
 
-  function updateGymResults(gyms) {
-    dispatch({ type: "UPDATE_GYM_RESULTS", gyms: gyms });
-  }
+  // function updateHoveredGymId(id) {
+  //   dispatch({ type: "UPDATE_HOVERED_GYM_ID", hoveredGymId: id });
+  // }
 
-  function updateHoveredGymId(id) {
-    dispatch({ type: "UPDATE_HOVERED_GYM_ID", hoveredGymId: id });
-  }
-
-  function updateSearchQuery(query) {
-    dispatch({ type: "UPDATE_SEARCH_QUERY", searchQuery: query });
-  }
+  // function updateSearchQuery(query) {
+  //   dispatch({ type: "UPDATE_SEARCH_QUERY", searchQuery: query });
+  // }
   return (
     <SearchContext.Provider
       value={{
