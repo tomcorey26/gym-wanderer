@@ -22,7 +22,7 @@ const GymPicGallery: React.FC<GymPicGalleryProps> = ({photos}) => {
   };
 
   return (
-    <div style={{width: "50vw"}}>      
+    <div style={{width: "100vw"}}>      
     <Gallery photos={photos} onClick={openLightbox} />
     <ModalGateway>
       {viewerIsOpen ? (

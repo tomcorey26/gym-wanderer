@@ -15,7 +15,7 @@ export const photos = [
       height: 4
     },
     {
-      src: "https://images.unsplash.com/photo-1561214078-f3247647fc5e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      src: "",
       width: 3,
       height: 4
     },

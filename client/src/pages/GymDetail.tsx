@@ -1,5 +1,6 @@
 import React, { useState,useCallback } from "react";
 import GymPicGallery from '../components/GymPicGallery'
+import GymReservationForm from '../components/GymReservationForm'
 import {photos} from '../assets/photos'
 
 interface GymDetailProps {}
@@ -15,11 +16,10 @@ const GymDetail: React.FC = () => {
   
 
   return (
-    <div >
+    <div>
       <GymPicGallery photos={photos}/>
-      
+      <GymReservationForm /> 
     </div>
-
   );
   };
 
