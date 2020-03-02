@@ -48,6 +48,7 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
-    "miragejs": "^0.1.33"
+    "miragejs": "^0.1.33",
+    "react-test-renderer": "^16.13.0"
   }
 }
