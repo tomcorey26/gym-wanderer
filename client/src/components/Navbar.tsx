@@ -20,6 +20,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { purple } from "@material-ui/core/colors";
+import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -187,7 +188,9 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Gym Wanderer
+            <Link style={{ color: "white", textDecoration: "none" }} href="/">
+              Gym Wanderer
+            </Link>
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

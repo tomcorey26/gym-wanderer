@@ -1,123 +1,117 @@
-import React from 'react'
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, Box, Divider, Chip } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import Rating from '@material-ui/lab/Rating';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap-grid.min.css";
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+import { DateTimePicker } from "@material-ui/pickers";
+import {
+  Box,
+  makeStyles,
+  Theme,
+  createStyles,
+  Paper,
+  Typography,
+  Divider,
+  TextField,
+  Button
+} from "@material-ui/core";
+import MomentUtils from "@date-io/moment";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     paper: {
+      marginTop: 18,
       padding: theme.spacing(2),
-      margin: 'auto',
-      maxWidth: 800,
+      maxHeight: 400,
+      width: 300,
+      position: "sticky",
+      top: 20
     },
     topSpace: {
       marginTop: 10
     },
-    chips: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      padding: theme.spacing(0.5),
+    inputArea: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      marginTop: 10
     },
-    chip: {
-      margin: theme.spacing(0.5)
+    inputLine: {
+      marginTop: 30
     },
-    description: {
-      padding: 10
+    reserveButton: {
+      cursor: "pointer",
+      width: 250
     }
-  }),
+  })
 );
-interface GymReservationFormProps {
-
+{
+  /* <Typography gutterBottom variant="caption">
+          <Box fontWeight={500}>Select Date</Box>
+        </Typography>
+        <SingleDatePicker
+          date={date}
+          onDateChange={date => setDate(date)}
+          focused={focused}
+          onFocusChange={({ focused }) => setFocused(focused)}
+          id="fart"
+        /> */
 }
+{
+  /* <Typography gutterBottom variant="caption">
+          <Box fontWeight={500}>Select Time</Box>
+        </Typography> */
+}
+interface GymReservationFormProps {}
 
-const GymReservationForm: React.FC<GymReservationFormProps> = ({}) => {
-    const classes = useStyles();
-    const [value, setValue] = React.useState<number | null>(2);
-    const [chipData, setChipData] = React.useState<any>([
-      { key: 0, label: 'Olympic Barbell' },
-      { key: 1, label: 'Free Weights' },
-      { key: 2, label: 'Wide Space' },
-      { key: 3, label: 'New Equipment' },
-      { key: 4, label: 'Private' },
-    ]);
+const GymReservationForm: React.FC<GymReservationFormProps> = () => {
+  const [date, setDate] = useState<any>(new Date().getDate());
+  // const [time, setTime] = useState<any>();j
+  // const [focused, setFocused] = useState<any>(null);
 
-    return (
-      <div style={{width:'100%',display:'flex', justifyContent:'center'}}>
-        <div className={classes.root}>
-          <Box className={classes.paper}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm container>
-                <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-                    <Typography gutterBottom variant="h3" >
-                      <Box fontWeight={500}>
-                        Gym Name 
-                      </Box>
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                      <Box fontWeight={500}>
-                        $7/hr <span style={{fontWeight: 20}}>per person</span> 
-                      </Box>
-                      <Box className={classes.topSpace}>
-                        <Rating
-                          name="simple-controlled"
-                          value={value}
-                          onChange={(event, newValue) => {
-                              setValue(newValue);
-                          }}
-                        /> 
-                      </Box>
-                    </Typography>
-                    <Box className={classes.chips}>
-                      {chipData.map(data => {
-                        let icon = <FitnessCenterIcon />;
+  const classes = useStyles();
 
-                        // if (data.label === 'React') {
-                        //   icon = <TagFacesIcon />;
-                        // }
-
-                        return (
-                          <Chip
-                            key={data.key}
-                            icon={icon}
-                            label={data.label}
-                            className={classes.chip}
-                          />
-                        );
-                      })}
-                    </Box>
-                  </Grid>
-                  <Divider />
-
-                  <Grid item>
-                    <Box className={classes.description}>
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta neque laudantium ex incidunt suscipit libero commodi corporis necessitatibus, esse reiciendis id omnis expedita, qui quae vel ipsum. Adipisci, natus? Quisquam doloribus rem soluta. Unde veniam perferendis ipsum excepturi corrupti impedit facere laudantium a ratione amet sunt tempora dolorum ullam rem architecto aliquam praesentium, neque tenetur ab magnam! Temporibus earum doloribus facilis voluptatem deserunt praesentium odio dolorem, facere impedit incidunt in excepturi quidem beatae quasi laudantium blanditiis, ullam repellendus ducimus quas ea quos eum quis. Nam earum omnis beatae quas possimus! Cum vitae at dolore aut, soluta quidem libero nesciunt voluptate dolorem? Eum unde blanditiis officia sed libero? Iure ratione qui quidem voluptatibus pariatur eos neque, corrupti, impedit nemo quis ullam illum sit nesciunt autem. Enim nam vitae labore optio, aperiam rem ad magnam in? Corrupti, corporis! Similique laudantium illo minima impedit quae veritatis ducimus quibusdam ea iure molestias voluptate iste, in esse dignissimos tenetur sit cum porro cumque odit qui delectus? Accusamus voluptatem ipsum, ratione nihil quia, inventore quisquam magnam reiciendis aperiam rem eveniet ea laborum nisi doloribus enim dolor delectus ipsa ullam sed. Tempore fugit, quia illo qui voluptatum ratione eius nulla veniam suscipit quos, modi repellat facere ullam!
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Avatar>M</Avatar>
-                </Grid>
-              </Grid>
-            </Grid>
-          {/* <CardHeader
-            action={
-              
-            }
-            title="$2/hr"
-            subheader="Owner Name"
-          />
-        */}
-
+  return (
+    <Paper className={classes.paper}>
+      <Typography gutterBottom variant="h5">
+        <Box fontWeight={500}>Reserve a Time</Box>
+      </Typography>
+      <Divider />
+      <Box className={classes.inputArea}>
+        <Box className={classes.inputLine}>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker
+              label="Select Date and Time"
+              inputVariant="outlined"
+              value={date}
+              onChange={setDate}
+            />
+          </MuiPickersUtilsProvider>
         </Box>
-      </div>
-    </div>
-    );
-}
-export default GymReservationForm
+
+        <Box className={classes.inputLine}>
+          <TextField
+            id="outlined-number"
+            label="Guests"
+            type="number"
+            InputLabelProps={{
+              shrink: true
+            }}
+            variant="outlined"
+          />
+        </Box>
+
+        <Box className={classes.inputLine}>
+          <Button
+            className={classes.reserveButton}
+            variant="contained"
+            color="secondary"
+          >
+            Reserve Gym
+          </Button>
+        </Box>
+      </Box>
+    </Paper>
+  );
+};
+export default GymReservationForm;
