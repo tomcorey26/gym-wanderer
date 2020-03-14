@@ -39,6 +39,10 @@ import { sendRefreshToken } from './sendRefreshToken';
       return res.send({ ok: false, accessToken: '' });
     }
 
+    if (user.tokenVersion !== payload.tokenVersion) {
+      return res.send({ ok: false, accessToken: '' });
+    }
+
     //send refresh token
     sendRefreshToken(res, createRefreshToken(user));
 
@@ -47,7 +51,6 @@ import { sendRefreshToken } from './sendRefreshToken';
   });
 
   await createConnection();
-
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver]
