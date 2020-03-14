@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import Routes from "./Routes";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Navbar from "./components/Navbar";
+import React, { useEffect } from 'react';
+import Routes from './Routes';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Navbar from './components/Navbar';
+import { useHelloQuery } from './generated/graphql';
 // import axios from "axios";
 
 // const axiosIntance = axios.create({
@@ -9,24 +10,18 @@ import Navbar from "./components/Navbar";
 // });
 
 const App: React.FC = () => {
-  useEffect(() => {
-    asyncFunction();
-  }, []);
+  const { data, loading } = useHelloQuery();
 
-  const asyncFunction = async () => {
-    // await axiosIntance
-    //   .get("/posts")
-    //   .then(res => {
-    //     console.log(res.data);
-    //   })
-    //   .catch(err => console.log(err));
-  };
+  if (loading || !data) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className="App">
-      <Navbar />
+      <h1>{data.hello}</h1>
+      {/* <Navbar />
       <CssBaseline />
-      <Routes />
+      <Routes /> */}
     </div>
   );
 };
