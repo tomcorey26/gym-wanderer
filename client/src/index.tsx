@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import * as serviceWorker from './serviceWorker';
 import { Server } from 'miragejs';
 import { mockGymsApi } from './mock';
 import './styles/globals.scss';
+import Routes from './Routes';
 
 /////////////////////////
 /* THIS BREAKS GRAPHQL */
@@ -29,7 +29,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <Routes />
   </ApolloProvider>,
   document.getElementById('root')
 );
