@@ -5,6 +5,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './userResolver';
 import { createConnection } from 'typeorm';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { verify } from 'jsonwebtoken';
 import { User } from './entity/User';
@@ -14,6 +15,12 @@ import { sendRefreshToken } from './sendRefreshToken';
 //lambda function (it calls itself!)
 (async () => {
   const app = express();
+  app.use(
+    cors({
+      origin: 'http://localhost:3000',
+      credentials: true
+    })
+  );
   app.use(cookieParser());
   app.get('/', (_req, res) => res.send('yo'));
   app.post('/refresh_token', async (req, res) => {
@@ -58,7 +65,7 @@ import { sendRefreshToken } from './sendRefreshToken';
     context: ({ req, res }) => ({ req, res })
   });
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: false });
 
   app.listen(4000, () => {
     console.log('express server started');

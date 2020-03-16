@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import * as serviceWorker from './serviceWorker';
 import { Server } from 'miragejs';
 import { mockGymsApi } from './mock';
 import './styles/globals.scss';
+import Routes from './Routes';
+import { getAccessToken } from './accessToken';
 
 /////////////////////////
 /* THIS BREAKS GRAPHQL */
@@ -24,12 +25,23 @@ import './styles/globals.scss';
 // });
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'http://localhost:4000/graphql',
+  credentials: 'include',
+  request: operation => {
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      operation.setContext({
+        headers: {
+          authorization: `bearer ${accessToken}`
+        }
+      });
+    }
+  }
 });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <Routes />
   </ApolloProvider>,
   document.getElementById('root')
 );
