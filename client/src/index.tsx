@@ -7,6 +7,7 @@ import { Server } from 'miragejs';
 import { mockGymsApi } from './mock';
 import './styles/globals.scss';
 import Routes from './Routes';
+import { getAccessToken } from './accessToken';
 
 /////////////////////////
 /* THIS BREAKS GRAPHQL */
@@ -24,7 +25,18 @@ import Routes from './Routes';
 // });
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'http://localhost:4000/graphql',
+  credentials: 'include',
+  request: operation => {
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      operation.setContext({
+        headers: {
+          authorization: `bearer ${accessToken}`
+        }
+      });
+    }
+  }
 });
 
 ReactDOM.render(

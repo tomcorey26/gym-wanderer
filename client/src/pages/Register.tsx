@@ -42,7 +42,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
           placeholder="password"
           onChange={e => setPassword(e.target.value)}
         />
-        <button type="submit"> login</button>
+        <button type="submit">login </button>
       </div>
     </form>
   );

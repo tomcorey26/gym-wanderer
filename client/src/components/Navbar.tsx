@@ -146,6 +146,9 @@ export default function Navbar() {
       <NavLink to="/register" style={menuItemStyle}>
         <MenuItem onClick={handleMenuClose}>Register</MenuItem>
       </NavLink>
+      <NavLink to="/bye" style={menuItemStyle}>
+        <MenuItem onClick={handleMenuClose}>bye</MenuItem>
+      </NavLink>
     </Menu>
   );
 
