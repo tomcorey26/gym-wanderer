@@ -64,6 +64,8 @@ const requestLink = new ApolloLink(
 
 //This is our new apollo client without react boost
 //the http link makes the actual request for us
+//The token refresh logic gets called on every new
+//graph ql request
 const client = new ApolloClient({
   link: ApolloLink.from([
     new TokenRefreshLink({
@@ -97,8 +99,11 @@ const client = new ApolloClient({
         setAccessToken(accessToken);
       },
       handleError: err => {
+        // this gets called when it trys to fetch an access token
+        //and theres an eror
         // full control over handling token fetch Error
         console.warn('Your refresh token is invalid. Try to relogin');
+        console.error(err);
         // your custom action here
         // user.logout();
       }
