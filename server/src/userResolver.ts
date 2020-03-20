@@ -49,7 +49,7 @@ export class UserResolver {
     const authorization = context.req.headers['authorization'];
 
     if (!authorization) {
-      throw null;
+      return null;
     }
 
     try {
@@ -105,5 +105,13 @@ export class UserResolver {
       accessToken: createAccessToken(user),
       user
     };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { res }: MyContext) {
+    //sends back an empty cookie so the user
+    sendRefreshToken(res, '');
+    //can also use res.clearcookie
+    return true;
   }
 }
