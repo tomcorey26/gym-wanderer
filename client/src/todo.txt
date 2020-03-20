@@ -1,10 +1,41 @@
 x Create Nav bar
 x Create home page
+x Create user sign up form
+
+Create a Gym(CORE USE WORK ON THIS FIRST)
+************
+User can create a Gym page
+Users can find it by searching by name or location
+
+Reserve Times at gym (CORE USE WORK ON THIS FIRST)
+********************
+Users can search for gym by area/name and buy monthly membership
+Gym Owner will get notification of memberships, can have automated messages be sent
+User will also cet notification for reservation and email
+Both user and owner can see duration of member ships
+User can choose auto renewal? idk gotta be careful about credit card storage 
+
+Set up stripe
+*************
+
+Gym Events page
+***************
+user can view gym events and classes and sign up for them
+users can books sessions with personal trainers
+
+
+Messaging Service
+****************
+Users have an iterface to message gym owner
+users can just message other users by user name
+
+ideas
+*****
+showcase page where gyms owners can have videos and pictures of their
+gym making it look cool and shit
 
 Make the search bar work so that 
 when you press enter it also goes to the search page
 might have somethign to do with parse()
-
-Make Gym search responsive
-Create user sign up form
+Make Gym wandere responsive
 Create user dash board
