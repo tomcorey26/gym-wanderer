@@ -21,7 +21,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { purple } from '@material-ui/core/colors';
 import { NavLink, Link } from 'react-router-dom';
-import { useMeQuery } from '../generated/graphql';
+import { useMeQuery, useLogoutMutation } from '../generated/graphql';
+import { setAccessToken } from '../accessToken';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -98,7 +99,8 @@ export default function Navbar() {
     mobileMoreAnchorEl,
     setMobileMoreAnchorEl
   ] = React.useState<null | HTMLElement>(null);
-  const { data, loading } = useMeQuery({ fetchPolicy: 'network-only' });
+  const { data, loading } = useMeQuery();
+  const [logout, { client }] = useLogoutMutation();
 
   let body: any = null;
   if (loading) {
@@ -154,6 +156,19 @@ export default function Navbar() {
       <NavLink to="/login" style={menuItemStyle}>
         <MenuItem onClick={handleMenuClose}>Login</MenuItem>
       </NavLink>
+      {!loading && data && data.me ? (
+        <MenuItem
+          onClick={async () => {
+            handleMenuClose();
+            await logout();
+            setAccessToken('');
+            await client!.resetStore();
+          }}
+        >
+          Logout
+        </MenuItem>
+      ) : null}
+
       <NavLink to="/register" style={menuItemStyle}>
         <MenuItem onClick={handleMenuClose}>Register</MenuItem>
       </NavLink>
@@ -236,7 +251,7 @@ export default function Navbar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {body}
+            <div>{body}</div>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
