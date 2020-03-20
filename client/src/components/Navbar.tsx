@@ -21,6 +21,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { purple } from '@material-ui/core/colors';
 import { NavLink, Link } from 'react-router-dom';
+import { useMeQuery } from '../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,6 +98,16 @@ export default function Navbar() {
     mobileMoreAnchorEl,
     setMobileMoreAnchorEl
   ] = React.useState<null | HTMLElement>(null);
+  const { data, loading } = useMeQuery({ fetchPolicy: 'network-only' });
+
+  let body: any = null;
+  if (loading) {
+    body = null;
+  } else if (data && data.me) {
+    body = <div>You are logged in as {data.me.email}</div>;
+  } else {
+    body = <div>not logged in</div>;
+  }
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -225,6 +236,7 @@ export default function Navbar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            {body}
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
