@@ -8,12 +8,12 @@ import {
   Ctx,
   UseMiddleware
 } from 'type-graphql';
-import { User } from './entity/User';
+import { User } from '../entity/User';
 import { hash, compare } from 'bcryptjs';
-import { MyContext } from './MyContext';
-import { createRefreshToken, createAccessToken } from './auth';
-import { isAuth } from './isAuth';
-import { sendRefreshToken } from './sendRefreshToken';
+import { MyContext } from '../MyContext';
+import { createRefreshToken, createAccessToken } from '../auth';
+import { isAuth } from '../isAuth';
+import { sendRefreshToken } from '../sendRefreshToken';
 import { verify } from 'jsonwebtoken';
 
 @ObjectType()

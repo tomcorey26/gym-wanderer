@@ -1,0 +1,4 @@
+to write vanilla sql with type orm you can use
+getConnect.query()
+ex: getConnect().query(`select * from posts`)
+this is how youre gonna do relation stuff
