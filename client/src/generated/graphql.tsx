@@ -46,7 +46,7 @@ export type Query = {
 
 export type User = {
    __typename?: 'User';
-  id: Scalars['Int'];
+  id: Scalars['String'];
   email: Scalars['String'];
 };
 
