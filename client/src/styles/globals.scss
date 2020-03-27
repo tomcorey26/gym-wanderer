@@ -1,4 +1,23 @@
-.center {
+@mixin flexify {
+}
+
+@mixin flexify-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin center {
   display: flex;
   justify-content: center;
+}
+
+.register-form-container {
+  @include center();
+  .register-form {
+    @include flexify-col();
+    width: 50%;
+    background: lightblue;
+    padding: 20px;
+  }
 }

@@ -4,7 +4,9 @@
   "description": "Rent out your personal home gym, or find some of your own",
   "main": "index.js",
   "dependencies": {
-    "concurrently": "^5.1.0"
+    "concurrently": "^5.1.0",
+    "formik": "^2.1.4",
+    "yup": "^0.28.3"
   },
   "devDependencies": {},
   "scripts": {

@@ -65,14 +65,20 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async register(
     @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('password') password: string,
+    @Arg('age') age: number,
+    @Arg('first_name') first_name: string,
+    @Arg('last_name') last_name: string
   ) {
     const hashedPassword = await hash(password, 12);
 
     try {
       await User.insert({
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        age,
+        first_name,
+        last_name
       });
     } catch (err) {
       console.log(err);
