@@ -1,10 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable
+} from 'typeorm';
 import { Field } from 'type-graphql';
+import { User } from './User';
 
 //adding "baseEntitiy" allows us to use crud operations
 // for this table in the data base in our resolver
+//foo
 @Entity()
-export class Gym extends BaseEntity {
+export class Gyms {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,4 +39,12 @@ export class Gym extends BaseEntity {
 
   @Column()
   date_created: string;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  owners: User[];
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  members: User[];
 }
