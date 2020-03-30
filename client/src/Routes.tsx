@@ -27,7 +27,7 @@ const Routes: React.FC = () => {
         {data.users.map(x => {
           return (
             <li key={x.id}>
-              {x.email}, {x.id}
+              {x.email}, {x.first_name} {x.last_name} {x.age}
             </li>
           );
         })}

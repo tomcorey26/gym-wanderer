@@ -2,5 +2,8 @@ query Users {
   users {
     id
     email
+    age
+    first_name
+    last_name
   }
 }

@@ -22,10 +22,14 @@ export type Mutation = {
   register: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
+  createGym: Scalars['Boolean'];
 };
 
 
 export type MutationRegisterArgs = {
+  last_name: Scalars['String'];
+  first_name: Scalars['String'];
+  age: Scalars['Float'];
   password: Scalars['String'];
   email: Scalars['String'];
 };
@@ -34,6 +38,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   email: Scalars['String'];
+};
+
+
+export type MutationCreateGymArgs = {
+  title: Scalars['String'];
 };
 
 export type Query = {
@@ -47,7 +56,10 @@ export type Query = {
 export type User = {
    __typename?: 'User';
   id: Scalars['String'];
+  first_name: Scalars['String'];
+  last_name: Scalars['String'];
   email: Scalars['String'];
+  age: Scalars['Float'];
 };
 
 export type ByeQueryVariables = {};
@@ -104,8 +116,11 @@ export type MeQuery = (
 );
 
 export type RegisterMutationVariables = {
-  email: Scalars['String'];
+  last_name: Scalars['String'];
+  first_name: Scalars['String'];
+  age: Scalars['Float'];
   password: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -121,7 +136,7 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email'>
+    & Pick<User, 'id' | 'email' | 'age' | 'first_name' | 'last_name'>
   )> }
 );
 
@@ -286,8 +301,8 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $password: String!) {
-  register(email: $email, password: $password)
+    mutation Register($last_name: String!, $first_name: String!, $age: Float!, $password: String!, $email: String!) {
+  register(email: $email, password: $password, first_name: $first_name, last_name: $last_name, age: $age)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
@@ -305,8 +320,11 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
  * @example
  * const [registerMutation, { data, loading, error }] = useRegisterMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      last_name: // value for 'last_name'
+ *      first_name: // value for 'first_name'
+ *      age: // value for 'age'
  *      password: // value for 'password'
+ *      email: // value for 'email'
  *   },
  * });
  */
@@ -321,6 +339,9 @@ export const UsersDocument = gql`
   users {
     id
     email
+    age
+    first_name
+    last_name
   }
 }
     `;
