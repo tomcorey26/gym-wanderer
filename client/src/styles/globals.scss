@@ -13,11 +13,16 @@
 }
 
 .register-form-container {
-  @include center();
+  @include flexify-col();
   .register-form {
     @include flexify-col();
     width: 50%;
     background: lightblue;
     padding: 20px;
   }
+}
+
+.progress_bar_piece {
+  flex-grow: 1;
+  border: 1px solid black;
 }
