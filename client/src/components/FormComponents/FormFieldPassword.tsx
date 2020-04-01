@@ -12,6 +12,9 @@ export const FormFieldPassword: React.FC<FieldProps & TextFieldProps> = ({
       id="outlined-basic"
       variant="outlined"
       type="password"
+      size="small"
+      fullWidth
+      style={{ margin: 8 }}
       placeholder={placeholder}
       {...field}
     />
