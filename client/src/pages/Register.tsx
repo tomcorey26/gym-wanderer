@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useRegisterMutation } from '../generated/graphql';
 import { RouteComponentProps } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
-import { TextField, Button, Checkbox, Container } from '@material-ui/core';
+import { Button, Checkbox, Container } from '@material-ui/core';
 import { PageProgress } from '../components/PageProgress';
 import { FormField } from '../components/FormComponents/FormField';
-import { FormFieldPassword } from '../components/FormComponents/FormFieldPassword';
 //have preferences on seperate page
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
@@ -78,8 +77,8 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
                 <Field
                   placeholder="Password"
                   name="password"
-                  type="input"
-                  component={FormFieldPassword}
+                  type="password"
+                  component={FormField}
                 />
                 {/* 
                   <div>

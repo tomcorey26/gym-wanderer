@@ -5,7 +5,8 @@ import { TextFieldProps } from '@material-ui/core/TextField/TextField';
 
 export const FormField: React.FC<FieldProps & TextFieldProps> = ({
   placeholder,
-  field
+  field,
+  type
 }) => {
   return (
     <TextField
@@ -16,6 +17,7 @@ export const FormField: React.FC<FieldProps & TextFieldProps> = ({
       variant="outlined"
       placeholder={placeholder}
       {...field}
+      type={type}
     />
   );
 };
