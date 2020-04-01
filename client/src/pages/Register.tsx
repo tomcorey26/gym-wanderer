@@ -4,6 +4,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button, Checkbox, Container } from '@material-ui/core';
 import { PageProgress } from '../components/PageProgress';
+import { FormField } from '../components/FormComponents/FormField';
+import { FormFieldPassword } from '../components/FormComponents/FormFieldPassword';
 //have preferences on seperate page
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
@@ -11,6 +13,19 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const pageCount = 3;
   const [currentPage, setCurrentPage] = useState(0);
   const [register] = useRegisterMutation();
+
+  const submitUser = async ({ email, password, firstName, lastName, age }) => {
+    const response = await register({
+      variables: {
+        email,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+        age: parseInt(age)
+      }
+    });
+    console.log(response);
+  };
 
   return (
     <Formik
@@ -22,33 +37,14 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         email: '',
         password: ''
       }}
-      onSubmit={async (
-        { email, password, firstName, lastName, age },
-        { setSubmitting }
-      ) => {
-        // console.log('submit: ', data);
+      onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
-        console.log('form submitted');
-        await new Promise(resolve => {
-          setTimeout(() => {
-            resolve('resolved');
-          }, 2000);
-        });
-        const response = await register({
-          variables: {
-            email,
-            password,
-            first_name: firstName,
-            last_name: lastName,
-            age: parseInt(age)
-          }
-        });
-        console.log(response);
-        history.push('/');
+        await submitUser(values);
         setSubmitting(false);
+        history.push('/');
       }}
     >
-      {({ values, handleSubmit, isSubmitting }) => (
+      {({ values, isSubmitting }) => (
         <Container maxWidth="sm">
           <Form>
             <div className="register-form-container">
@@ -58,32 +54,32 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
                   placeholder="First Name"
                   name="firstName"
                   type="input"
-                  as={TextField}
+                  component={FormField}
                 />
                 <Field
                   placeholder="Last Name"
                   name="lastName"
                   type="input"
-                  as={TextField}
+                  component={FormField}
                 />
                 <Field
                   placeholder="Age"
                   name="age"
                   type="input"
-                  as={TextField}
+                  component={FormField}
                 />
 
                 <Field
                   placeholder="Email"
                   name="email"
                   type="input"
-                  as={TextField}
+                  component={FormField}
                 />
                 <Field
                   placeholder="Password"
                   name="password"
                   type="input"
-                  as={TextField}
+                  component={FormFieldPassword}
                 />
                 {/* 
                   <div>
