@@ -5,7 +5,7 @@ import GymDetail from './pages/GymDetail';
 import Home from './pages/Home';
 import CreateGym from './pages/CreateGym';
 import { SearchProvider } from './context/SearchState';
-import { Register } from './pages/Register';
+import { Register } from './pages/Register/Register';
 import { Login } from './pages/Login';
 import Navbar from './components/Navbar';
 import { CssBaseline } from '@material-ui/core';
