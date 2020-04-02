@@ -13,7 +13,6 @@ export const FormField: React.FC<FieldProps & TextFieldProps> = ({
       size="small"
       fullWidth
       style={{ margin: 8 }}
-      id="outlined-basic"
       variant="outlined"
       placeholder={placeholder}
       {...field}

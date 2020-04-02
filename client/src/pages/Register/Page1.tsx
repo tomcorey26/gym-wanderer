@@ -19,7 +19,7 @@ export const Page1: React.FC<Page1Props> = () => {
         type="input"
         component={FormField}
       />
-      <Field placeholder="Age" name="age" type="input" component={FormField} />
+      <Field placeholder="Age" name="age" type="number" component={FormField} />
 
       <Field
         placeholder="Email"

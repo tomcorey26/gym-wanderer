@@ -32,6 +32,16 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
     console.log(response);
   };
 
+  const positionButtons = () => {
+    if (currentPage === 0) {
+      return 'flex-end';
+    } else if (currentPage === pages.length - 1) {
+      return 'flex-start';
+    } else {
+      return 'space-between';
+    }
+  };
+
   return (
     <Formik
       initialValues={{
@@ -56,6 +66,33 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
               <PageProgress pageNum={currentPage} pageCount={pages.length} />
               <div className="register-form">
                 {pages[currentPage]}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: positionButtons(),
+                    width: '100%'
+                  }}
+                >
+                  {currentPage !== 0 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setCurrentPage(page => (page -= 1))}
+                    >
+                      Prev Page
+                    </Button>
+                  )}
+
+                  {pages.length - 1 !== currentPage && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setCurrentPage(page => (page += 1))}
+                    >
+                      next Page
+                    </Button>
+                  )}
+                </div>
                 {pages.length - 1 === currentPage && (
                   <Button
                     disabled={isSubmitting}
@@ -64,28 +101,6 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
                     color="secondary"
                   >
                     Register
-                  </Button>
-                )}
-
-                {pages.length - 1 !== currentPage && (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setCurrentPage(page => (page += 1))}
-                  >
-                    next Page
-                  </Button>
-                )}
-
-                {currentPage !== 0 && (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setCurrentPage(page => (page -= 1))}
-                  >
-                    Prev Page
                   </Button>
                 )}
               </div>
