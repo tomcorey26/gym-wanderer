@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useRegisterMutation } from '../../generated/graphql';
-import { RouteComponentProps } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
-import { Button, Checkbox, Container } from '@material-ui/core';
-import { PageProgress } from '../../components/PageProgress';
-import { FormField } from '../../components/FormComponents/FormField';
-import { Page1 } from './Page1';
-import { Page2 } from './Page2';
-import { Page3 } from './Page3';
+import React, { useState } from "react";
+import { useRegisterMutation } from "../../generated/graphql";
+import { RouteComponentProps } from "react-router-dom";
+import { Formik, Form } from "formik";
+import { Button, Container } from "@material-ui/core";
+import { PageProgress } from "../../components/PageProgress";
+import { Page1 } from "./Page1";
+import { Page2 } from "./Page2";
+import { Page3 } from "./Page3";
+import { usePageControl } from "../../hooks/usePageControl";
 
 //have preferences on seperate page
 //we get route props because this component is passed
@@ -18,6 +18,10 @@ const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [register] = useRegisterMutation();
+  const { positionCSS, showNext, showPrevious, showSubmit } = usePageControl(
+    currentPage,
+    pages.length
+  );
 
   const submitUser = async ({ email, password, firstName, lastName, age }) => {
     const response = await register({
@@ -26,37 +30,27 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         password,
         first_name: firstName,
         last_name: lastName,
-        age: parseInt(age)
-      }
+        age: parseInt(age),
+      },
     });
     console.log(response);
-  };
-
-  const positionButtons = () => {
-    if (currentPage === 0) {
-      return 'flex-end';
-    } else if (currentPage === pages.length - 1) {
-      return 'flex-start';
-    } else {
-      return 'space-between';
-    }
   };
 
   return (
     <Formik
       initialValues={{
-        firstName: '',
-        lastName: '',
-        age: '',
+        firstName: "",
+        lastName: "",
+        age: "",
         exerciseTypes: [],
-        email: '',
-        password: ''
+        email: "",
+        password: "",
       }}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
         await submitUser(values);
         setSubmitting(false);
-        history.push('/');
+        history.push("/");
       }}
     >
       {({ values, isSubmitting }) => (
@@ -68,32 +62,32 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
                 {pages[currentPage]}
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: positionButtons(),
-                    width: '100%'
+                    display: "flex",
+                    justifyContent: positionCSS,
+                    width: "100%",
                   }}
                 >
-                  {currentPage !== 0 && (
+                  {showPrevious && (
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => setCurrentPage(page => (page -= 1))}
+                      onClick={() => setCurrentPage((page) => (page -= 1))}
                     >
                       Prev Page
                     </Button>
                   )}
 
-                  {pages.length - 1 !== currentPage && (
+                  {showNext && (
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => setCurrentPage(page => (page += 1))}
+                      onClick={() => setCurrentPage((page) => (page += 1))}
                     >
                       next Page
                     </Button>
                   )}
                 </div>
-                {pages.length - 1 === currentPage && (
+                {showSubmit && (
                   <Button
                     disabled={isSubmitting}
                     type="submit"
