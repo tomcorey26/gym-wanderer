@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     formControl: {
       margin: theme.spacing(3),
+      display: "flex",
+      flexDirection: "row",
     },
   })
 );
@@ -29,31 +31,58 @@ export const Page2: React.FC<Page2Props> = ({}) => {
 
   return (
     <>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Choose Exercise Preferences</FormLabel>
-        <FormGroup>
-          <CheckboxField
-            label="Bodybuilding"
-            name="exerciseTypes"
-            type="checkbox"
-            value="Bodybuilding"
-            as={Checkbox}
-          />
-          <CheckboxField
-            label="CrossFit"
-            name="exerciseTypes"
-            type="checkbox"
-            value="CrossFit"
-            as={Checkbox}
-          />
-          <CheckboxField
-            label="Yoga"
-            name="exerciseTypes"
-            type="checkbox"
-            value="Yoga"
-            as={Checkbox}
-          />
-        </FormGroup>
+      <FormLabel component="legend">Choose Exercise Preferences</FormLabel>
+      <FormControl component="div" className={classes.formControl}>
+        <div>
+          <FormGroup>
+            <CheckboxField
+              label="Bodybuilding"
+              name="exerciseTypes"
+              type="checkbox"
+              value="Bodybuilding"
+              as={Checkbox}
+            />
+            <CheckboxField
+              label="CrossFit"
+              name="exerciseTypes"
+              type="checkbox"
+              value="CrossFit"
+              as={Checkbox}
+            />
+            <CheckboxField
+              label="Yoga"
+              name="exerciseTypes"
+              type="checkbox"
+              value="Yoga"
+              as={Checkbox}
+            />
+          </FormGroup>
+        </div>
+        <div>
+          <FormGroup>
+            <CheckboxField
+              label="Parkour"
+              name="exerciseTypes"
+              type="checkbox"
+              value="Parkour"
+              as={Checkbox}
+            />
+            <CheckboxField
+              label="General"
+              name="exerciseTypes"
+              type="checkbox"
+              value="General"
+              as={Checkbox}
+            />
+            <CheckboxField
+              label="Boxing"
+              name="exerciseTypes"
+              type="checkbox"
+              value="Boxing"
+              as={Checkbox}
+            />
+          </FormGroup>
+        </div>
       </FormControl>
     </>
   );
