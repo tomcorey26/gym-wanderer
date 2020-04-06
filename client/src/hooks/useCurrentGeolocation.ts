@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function useCurrentGeolocation() {
+export const useCurrentGeolocation = () => {
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const [error, setError] = useState<string | null>(null);
   const [locationFound, setLocationFound] = useState<boolean>(false);
@@ -11,10 +11,10 @@ export default function useCurrentGeolocation() {
 
     setPosition({
       lat: coords.latitude,
-      lng: coords.longitude
+      lng: coords.longitude,
     });
   };
-  const onError = error => {
+  const onError = (error) => {
     setError(error.message);
   };
   useEffect(() => {
@@ -29,4 +29,4 @@ export default function useCurrentGeolocation() {
   }, []);
 
   return { position, locationFound, error };
-}
+};

@@ -2,13 +2,13 @@ import React from "react";
 import SideScrollerBox from "./SideScrollerBox";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
-import { useRouter } from "../hooks/useRouter";
+import { useRouter } from "../hooks";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    backgroundColor: theme.palette.background.paper
-  }
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 interface Props {

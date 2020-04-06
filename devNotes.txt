@@ -1,0 +1,13 @@
+Google maps key linked to tombcorey
+
+MapsAutoComplete uses the 
+
+Places api
+**********
+For loading auto complete I think on HOMEPAGE
+
+Maps Javascript api?
+********************
+For loading the map on SEARCH
+
+un comment loadscript on line 59 to actually use api

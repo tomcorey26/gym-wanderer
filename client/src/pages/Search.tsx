@@ -1,14 +1,13 @@
 import React, { useEffect, useContext } from "react";
 import MapsSideScroller from "../components/MapsSideScroller";
 import { Coords } from "../types/Coords";
-import useCurrentGeolocation from "../hooks/useCurrentLocation";
+import { useCurrentGeolocation, useInputValue } from "../hooks";
 import GoogleMapReact from "google-map-react";
 import MapPoint from "../components/MapPoint";
 import RadiusSelect from "../components/RadiusSelect";
 // import { Key } from "../key";
 import axios from "axios";
 import SearchFilter from "../components/SearchFilter";
-import { useInputValue } from "../hooks/useInputValue";
 import { SearchContext } from "../context/SearchState";
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
@@ -40,7 +39,7 @@ const Search: React.FC = () => {
   );
   //Filter gym results based off query
   if (value) {
-    filteredGyms = filteredGyms.filter(gym =>
+    filteredGyms = filteredGyms.filter((gym) =>
       gym.gymName.toLowerCase().includes(value.toLowerCase())
     );
   }
@@ -52,7 +51,7 @@ const Search: React.FC = () => {
         width: "100vw",
         height: "100vh",
         display: "flex",
-        overflow: "auto"
+        overflow: "auto",
       }}
     >
       <div
@@ -61,7 +60,7 @@ const Search: React.FC = () => {
           height: "100%",
           width: "35%",
           position: "sticky",
-          top: 0
+          top: 0,
         }}
       >
         {geo.locationFound ? (

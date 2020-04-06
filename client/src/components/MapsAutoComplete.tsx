@@ -7,28 +7,28 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
-// import { Key } from "../key";
-import { useRouter } from "../hooks/useRouter";
+import { Key } from "../key";
+import { useRouter } from "../hooks";
 
-// function loadScript(src: string, position: HTMLElement | null, id: string) {
-//   if (!position) {
-//     return;
-//   }
+function loadScript(src: string, position: HTMLElement | null, id: string) {
+  if (!position) {
+    return;
+  }
 
-//   const script = document.createElement("script");
-//   script.setAttribute("async", "");
-//   script.setAttribute("id", id);
-//   script.src = src;
-//   position.appendChild(script);
-// }
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
+  script.src = src;
+  position.appendChild(script);
+}
 
 const autocompleteService = { current: null };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.text.secondary,
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
 interface PlaceType {
@@ -121,18 +121,18 @@ export default function GoogleMaps() {
         width: "80%",
         marginLeft: "auto",
         marginRight: "auto",
-        marginTop: "1.5rem"
+        marginTop: "1.5rem",
       }}
-      getOptionLabel={option =>
+      getOptionLabel={(option) =>
         typeof option === "string" ? option : option.description
       }
-      filterOptions={x => x}
+      filterOptions={(x) => x}
       options={options}
       autoComplete
       includeInputInList
       freeSolo
       disableOpenOnFocus
-      renderInput={params => (
+      renderInput={(params) => (
         <TextField
           {...params}
           label="Search for Gyms"
@@ -141,14 +141,14 @@ export default function GoogleMaps() {
           onChange={handleChange}
         />
       )}
-      renderOption={option => {
+      renderOption={(option) => {
         const matches =
           option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
           matches.map((match: any) => [
             match.offset,
-            match.offset + match.length
+            match.offset + match.length,
           ])
         );
 
