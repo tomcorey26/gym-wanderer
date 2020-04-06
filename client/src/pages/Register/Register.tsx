@@ -9,12 +9,34 @@ import { Page2 } from "./Page2";
 import { Page3 } from "./Page3";
 import { usePageControl } from "../../hooks";
 import { isObjectEmpty } from "../../utils";
+import * as Yup from "yup";
 
 //have preferences on seperate page
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
 
 const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
+
+const RegisterSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  lastName: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string()
+    .required("Please Enter your password")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
+  confirmPassword: Yup.string()
+    .required()
+    .oneOf([Yup.ref("password"), null], "Passwords must match"),
+});
 
 export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -46,6 +68,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         exerciseTypes: [],
         email: "",
         password: "",
+        confirmPassword: "",
       }}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -53,30 +76,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         setSubmitting(false);
         history.push("/");
       }}
-      validate={(values) => {
-        const errors: Record<string, string> = {};
-        const required = ["firstName", "lastName", "email", "password"];
-
-        //required fields
-        required.forEach((field) => {
-          if (!values[field]) {
-            errors[field] = "Required";
-          }
-        });
-
-        //email
-        if (!values.email) {
-          errors.email = "Required";
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address";
-        }
-
-        //password length
-
-        return errors;
-      }}
+      validationSchema={RegisterSchema}
     >
       {({ values, isSubmitting, errors }) => (
         <Container maxWidth="sm">

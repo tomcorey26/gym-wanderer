@@ -28,6 +28,12 @@ export const Page1: React.FC<Page1Props> = () => {
         type="password"
         as={FormField}
       />
+      <FormField
+        placeholder="Confirm Password"
+        name="confirmPassword"
+        type="password"
+        as={FormField}
+      />
     </>
   );
 };
