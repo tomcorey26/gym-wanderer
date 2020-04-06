@@ -1,37 +1,32 @@
-import React from 'react';
-import { Field } from 'formik';
-import { FormField } from '../../components/FormComponents/FormField';
+import React from "react";
+import { Field } from "formik";
+import { FormField } from "../../components/FormComponents/FormField";
 
 interface Page1Props {}
 
 export const Page1: React.FC<Page1Props> = () => {
   return (
     <>
-      <Field
+      <FormField
         placeholder="First Name"
         name="firstName"
         type="input"
-        component={FormField}
+        as={FormField}
       />
-      <Field
+      <FormField
         placeholder="Last Name"
         name="lastName"
         type="input"
-        component={FormField}
+        as={FormField}
       />
-      <Field placeholder="Age" name="age" type="number" component={FormField} />
+      {/* <Field placeholder="Age" name="age" type="number" component={FormField} /> */}
 
-      <Field
-        placeholder="Email"
-        name="email"
-        type="input"
-        component={FormField}
-      />
-      <Field
+      <FormField placeholder="Email" name="email" type="input" as={FormField} />
+      <FormField
         placeholder="Password"
         name="password"
         type="password"
-        component={FormField}
+        as={FormField}
       />
     </>
   );

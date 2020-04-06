@@ -52,8 +52,32 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         setSubmitting(false);
         history.push("/");
       }}
+      validate={(values) => {
+        const errors: Record<string, string> = {};
+        const required = ["firstName", "lastName", "email", "password"];
+
+        //required fields
+        required.forEach((field) => {
+          if (!values[field]) {
+            errors[field] = "Required";
+          }
+        });
+
+        //email
+        if (!values.email) {
+          errors.email = "Required";
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+        ) {
+          errors.email = "Invalid email address";
+        }
+
+        //password length
+
+        return errors;
+      }}
     >
-      {({ values, isSubmitting }) => (
+      {({ values, isSubmitting, errors }) => (
         <Container maxWidth="sm">
           <Form>
             <div className="register-form-container">
@@ -100,6 +124,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
               </div>
             </div>
             <pre>{JSON.stringify(values, null, 2)}</pre>
+            <pre>{JSON.stringify(errors, null, 2)}</pre>
           </Form>
         </Container>
       )}
