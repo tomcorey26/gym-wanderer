@@ -7,7 +7,8 @@ import { PageProgress } from "../../components/PageProgress";
 import { Page1 } from "./Page1";
 import { Page2 } from "./Page2";
 import { Page3 } from "./Page3";
-import { usePageControl } from "../../hooks/usePageControl";
+import { usePageControl } from "../../hooks";
+import { isObjectEmpty } from "../../utils";
 
 //have preferences on seperate page
 //we get route props because this component is passed
@@ -113,7 +114,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
                 </div>
                 {showSubmit && (
                   <Button
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !isObjectEmpty(errors)}
                     type="submit"
                     variant="contained"
                     color="secondary"
