@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { ObjectType, Field, Int, ID } from 'type-graphql';
+import { Preferences } from './Preferences';
 
 //field is from type grapql so we can get graphql types
 //@ column is from typeorm, you put in postgres types
@@ -31,4 +39,9 @@ export class User extends BaseEntity {
 
   @Column('int', { default: 0 })
   tokenVersion: number;
+
+  @Field(() => Preferences)
+  @OneToOne(() => Preferences)
+  @JoinColumn()
+  preferences: Preferences;
 }

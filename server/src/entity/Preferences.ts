@@ -1,31 +1,33 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  JoinColumn
-} from 'typeorm';
-import { User } from './User';
-import { Field } from 'type-graphql';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Field, ObjectType } from 'type-graphql';
 
+@ObjectType()
 @Entity()
-export class Preferences {
+export class Preferences extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
   @Column()
-  Yoga: boolean;
+  yoga: boolean;
 
   @Field()
   @Column()
-  Crossfit: boolean;
+  crossfit: boolean;
 
   @Field()
   @Column()
-  Bodybuilding: boolean;
+  bodybuilding: boolean;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
+  @Field()
+  @Column()
+  parkour: boolean;
+
+  @Field()
+  @Column()
+  general: boolean;
+
+  @Field()
+  @Column()
+  boxing: boolean;
 }

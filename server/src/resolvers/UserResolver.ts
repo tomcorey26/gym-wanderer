@@ -6,7 +6,8 @@ import {
   ObjectType,
   Field,
   Ctx,
-  UseMiddleware
+  UseMiddleware,
+  InputType,
 } from 'type-graphql';
 import { User } from '../entity/User';
 import { hash, compare } from 'bcryptjs';
@@ -15,6 +16,7 @@ import { createRefreshToken, createAccessToken } from '../auth';
 import { isAuth } from '../isAuth';
 import { sendRefreshToken } from '../sendRefreshToken';
 import { verify } from 'jsonwebtoken';
+import { Preferences } from '../entity/Preferences';
 
 @ObjectType()
 class LoginResponse {
@@ -22,6 +24,27 @@ class LoginResponse {
   accessToken: string;
   @Field(() => User)
   user: User;
+}
+
+@InputType()
+class PreferencesInput {
+  @Field()
+  yoga: boolean;
+
+  @Field()
+  crossfit: boolean;
+
+  @Field()
+  bodybuilding: boolean;
+
+  @Field()
+  parkour: boolean;
+
+  @Field()
+  general: boolean;
+
+  @Field()
+  boxing: boolean;
 }
 
 @Resolver()
@@ -68,18 +91,23 @@ export class UserResolver {
     @Arg('password') password: string,
     @Arg('age') age: number,
     @Arg('first_name') first_name: string,
-    @Arg('last_name') last_name: string
+    @Arg('last_name') last_name: string,
+    @Arg('preferences') preferences: PreferencesInput
   ) {
     const hashedPassword = await hash(password, 12);
 
     try {
-      await User.insert({
+      const prefs = Preferences.create({ ...preferences });
+      await prefs.save();
+      const user = User.create({
         email,
         password: hashedPassword,
         age,
         first_name,
-        last_name
+        last_name,
+        preferences: prefs,
       });
+      await user.save();
     } catch (err) {
       console.log(err);
       return false;
@@ -109,7 +137,7 @@ export class UserResolver {
 
     return {
       accessToken: createAccessToken(user),
-      user
+      user,
     };
   }
 
