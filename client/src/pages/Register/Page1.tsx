@@ -1,6 +1,7 @@
 import React from "react";
 import { Field } from "formik";
 import { FormField } from "../../components/FormComponents/FormField";
+import { BirthdayField } from "../../components/FormComponents/BirthdayField";
 
 interface Page1Props {}
 
@@ -19,7 +20,8 @@ export const Page1: React.FC<Page1Props> = () => {
         type="input"
         as={FormField}
       />
-      {/* <Field placeholder="Age" name="age" type="number" component={FormField} /> */}
+
+      <BirthdayField name="age" type="date" label="Birthday" />
 
       <FormField placeholder="Email" name="email" type="input" as={FormField} />
       <FormField

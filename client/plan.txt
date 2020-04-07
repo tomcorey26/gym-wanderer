@@ -42,10 +42,10 @@ User Account creation
 Homepage
 (
 
-Homepage with google maps view , user provides location information, pins of potential gyms, are shown nearby
+ [x] Homepage with google maps view , user provides location information, pins of potential gyms, are shown nearby
 User can also search for specific area, and filter pins by selected radius (5miles,20miles,50miles)
-The click of the pin will bring up modal displaying information about the gym in that location (ownername,rating,distance)
-on click the corresponding gym will be highlighted in the list view
+The  of the pin will bring up modal displaying information about the gym in that location (ownername,rating,distance)
+[x] on hoverthe corresponding gym will be highlighted in the list view
 
 A list view on the side that allows the user to view gyms in the list form
 Can filter by closest, rating, equipment etc
@@ -60,7 +60,6 @@ gives user easy way of picking date and time
 fat booking button
 notifys gym owner 
 be able to save gym to favorites
-
 
 )
 

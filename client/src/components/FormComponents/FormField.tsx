@@ -14,7 +14,6 @@ export const FormField: React.FC<FormFieldProps> = ({
   ...props
 }) => {
   const [field, meta] = useField<{}>(props);
-  console.log(meta);
   const errorText = meta.error && meta.touched ? meta.error : "";
 
   return (

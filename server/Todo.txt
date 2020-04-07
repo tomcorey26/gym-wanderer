@@ -1,0 +1,21 @@
+[x] Create table for Preferences
+Create mutation for Preferences
+
+Create Column/Dropover for user profile pic
+
+
+
+Create diagram of database
+Get rid of age Column in user
+
+Gym
+Posts
+Comments
+Reviews
+Members
+
+Reservations/Payments page
+Gym post service
+Chat service
+ReviewService
+
