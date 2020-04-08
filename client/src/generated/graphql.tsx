@@ -27,9 +27,10 @@ export type Mutation = {
 
 
 export type MutationRegisterArgs = {
+  birthday?: Maybe<Scalars['String']>;
+  preferences: PreferencesInput;
   last_name: Scalars['String'];
   first_name: Scalars['String'];
-  age: Scalars['Float'];
   password: Scalars['String'];
   email: Scalars['String'];
 };
@@ -45,6 +46,25 @@ export type MutationCreateGymArgs = {
   title: Scalars['String'];
 };
 
+export type Preferences = {
+   __typename?: 'Preferences';
+  yoga: Scalars['Boolean'];
+  crossfit: Scalars['Boolean'];
+  bodybuilding: Scalars['Boolean'];
+  parkour: Scalars['Boolean'];
+  general: Scalars['Boolean'];
+  boxing: Scalars['Boolean'];
+};
+
+export type PreferencesInput = {
+  yoga: Scalars['Boolean'];
+  crossfit: Scalars['Boolean'];
+  bodybuilding: Scalars['Boolean'];
+  parkour: Scalars['Boolean'];
+  general: Scalars['Boolean'];
+  boxing: Scalars['Boolean'];
+};
+
 export type Query = {
    __typename?: 'Query';
   hello: Scalars['String'];
@@ -55,11 +75,12 @@ export type Query = {
 
 export type User = {
    __typename?: 'User';
-  id: Scalars['String'];
+  id: Scalars['ID'];
   first_name: Scalars['String'];
   last_name: Scalars['String'];
   email: Scalars['String'];
-  age: Scalars['Float'];
+  birthday?: Maybe<Scalars['String']>;
+  preferences: Preferences;
 };
 
 export type ByeQueryVariables = {};
@@ -118,9 +139,10 @@ export type MeQuery = (
 export type RegisterMutationVariables = {
   last_name: Scalars['String'];
   first_name: Scalars['String'];
-  age: Scalars['Float'];
+  birthday?: Maybe<Scalars['String']>;
   password: Scalars['String'];
   email: Scalars['String'];
+  preferences: PreferencesInput;
 };
 
 
@@ -136,7 +158,7 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'age' | 'first_name' | 'last_name'>
+    & Pick<User, 'id' | 'email' | 'birthday' | 'first_name' | 'last_name'>
   )> }
 );
 
@@ -301,8 +323,8 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($last_name: String!, $first_name: String!, $age: Float!, $password: String!, $email: String!) {
-  register(email: $email, password: $password, first_name: $first_name, last_name: $last_name, age: $age)
+    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $password: String!, $email: String!, $preferences: PreferencesInput!) {
+  register(email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
@@ -322,9 +344,10 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
  *   variables: {
  *      last_name: // value for 'last_name'
  *      first_name: // value for 'first_name'
- *      age: // value for 'age'
+ *      birthday: // value for 'birthday'
  *      password: // value for 'password'
  *      email: // value for 'email'
+ *      preferences: // value for 'preferences'
  *   },
  * });
  */
@@ -339,7 +362,7 @@ export const UsersDocument = gql`
   users {
     id
     email
-    age
+    birthday
     first_name
     last_name
   }

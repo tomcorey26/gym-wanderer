@@ -1,7 +1,7 @@
-import React from "react";
-import { Field } from "formik";
-import { FormField } from "../../components/FormComponents/FormField";
-import { BirthdayField } from "../../components/FormComponents/BirthdayField";
+import React from 'react';
+import { Field } from 'formik';
+import { FormField } from '../../components/FormComponents/FormField';
+import { BirthdayField } from '../../components/FormComponents/BirthdayField';
 
 interface Page1Props {}
 
@@ -21,7 +21,7 @@ export const Page1: React.FC<Page1Props> = () => {
         as={FormField}
       />
 
-      <BirthdayField name="age" type="date" label="Birthday" />
+      <BirthdayField name="birthday" type="date" label="Birthday" />
 
       <FormField placeholder="Email" name="email" type="input" as={FormField} />
       <FormField

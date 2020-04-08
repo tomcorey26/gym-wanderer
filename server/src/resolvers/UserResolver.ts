@@ -89,10 +89,10 @@ export class UserResolver {
   async register(
     @Arg('email') email: string,
     @Arg('password') password: string,
-    @Arg('age') age: number,
     @Arg('first_name') first_name: string,
     @Arg('last_name') last_name: string,
-    @Arg('preferences') preferences: PreferencesInput
+    @Arg('preferences') preferences: PreferencesInput,
+    @Arg('birthday', () => String, { nullable: true }) birthday?: string
   ) {
     const hashedPassword = await hash(password, 12);
 
@@ -102,7 +102,7 @@ export class UserResolver {
       const user = User.create({
         email,
         password: hashedPassword,
-        age,
+        birthday,
         first_name,
         last_name,
         preferences: prefs,

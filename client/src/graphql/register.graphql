@@ -1,15 +1,17 @@
 mutation Register(
   $last_name: String!
   $first_name: String!
-  $age: Float!
+  $birthday: String
   $password: String!
   $email: String!
+  $preferences: PreferencesInput!
 ) {
   register(
     email: $email
     password: $password
     first_name: $first_name
     last_name: $last_name
-    age: $age
+    preferences: $preferences
+    birthday: $birthday
   )
 }

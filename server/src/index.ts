@@ -29,6 +29,7 @@ import { GymResolver } from './resolvers/GymResolver';
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, GymResolver],
+      validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),
   });

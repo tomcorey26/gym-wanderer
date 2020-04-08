@@ -24,10 +24,10 @@ const Routes: React.FC = () => {
       <Navbar />
       <div>
         <span>users</span>
-        {data.users.map(x => {
+        {data.users.map((x) => {
           return (
             <li key={x.id}>
-              {x.email}, {x.first_name} {x.last_name} {x.age}
+              {x.email}, {x.first_name} {x.last_name} {x.birthday}
             </li>
           );
         })}
