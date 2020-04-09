@@ -11,6 +11,7 @@ import { usePageControl } from '../../hooks';
 import { isObjectEmpty } from '../../utils';
 import * as Yup from 'yup';
 import { prefArrToBoolObj } from '../../utils/prefArrToBoolObj';
+import { FormContainer } from '../../components/FormComponents/FormContainer';
 
 //have preferences on seperate page
 //we get route props because this component is passed
@@ -100,55 +101,52 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
       validationSchema={RegisterSchema}
     >
       {({ values, isSubmitting, errors }) => (
-        <Container maxWidth="sm">
-          <Form>
-            <div className="register-form-container">
-              <PageProgress pageNum={currentPage} pageCount={pages.length} />
-              <div className="register-form">
-                {pages[currentPage]}
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: positionCSS,
-                    width: '100%',
-                  }}
-                >
-                  {showPrevious && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setCurrentPage((page) => (page -= 1))}
-                    >
-                      Prev Page
-                    </Button>
-                  )}
+        <FormContainer
+          pageProgress
+          pageNum={currentPage}
+          pageCount={pages.length}
+        >
+          {pages[currentPage]}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: positionCSS,
+              width: '100%',
+            }}
+          >
+            {showPrevious && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setCurrentPage((page) => (page -= 1))}
+              >
+                Prev Page
+              </Button>
+            )}
 
-                  {showNext && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setCurrentPage((page) => (page += 1))}
-                    >
-                      next Page
-                    </Button>
-                  )}
-                </div>
-                {showSubmit && (
-                  <Button
-                    disabled={isSubmitting || !isObjectEmpty(errors)}
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                  >
-                    Register
-                  </Button>
-                )}
-              </div>
-            </div>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
-          </Form>
-        </Container>
+            {showNext && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setCurrentPage((page) => (page += 1))}
+              >
+                next Page
+              </Button>
+            )}
+          </div>
+          {showSubmit && (
+            <Button
+              disabled={isSubmitting || !isObjectEmpty(errors)}
+              type="submit"
+              variant="contained"
+              color="secondary"
+            >
+              Register
+            </Button>
+          )}
+          <pre>{JSON.stringify(values, null, 2)}</pre>
+          <pre>{JSON.stringify(errors, null, 2)}</pre>
+        </FormContainer>
       )}
     </Formik>
   );
