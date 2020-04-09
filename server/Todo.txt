@@ -1,21 +1,31 @@
 [x] Create table for Preferences
-Create mutation for Preferences
+[x]Create mutation for Preferences
 
-Create Column/Dropover for user profile pic
-
+Create query for fetching user by id 
+and list their Preferences
 
 
 Create diagram of database
-Get rid of age Column in user
 
+Tables
+------
 Gym
-Posts
+Posts 1toM
+Comments 1toMany
+Review 1 to many (use SQL SUM/AVG function for average rating)
+Members Many to many
+Owners many to many
+
+User
+Gym
 Comments
-Reviews
-Members
+Owners
+
 
 Reservations/Payments page
 Gym post service
 Chat service
 ReviewService
 
+Extra
+Create Column/Dropover for user profile pic
