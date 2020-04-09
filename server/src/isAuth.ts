@@ -10,7 +10,6 @@ export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
   if (!authorization) {
     throw new Error('not authenticated');
   }
-
   try {
     const token = authorization.split(' ')[1];
     //the payload is whatever we used to sign our token

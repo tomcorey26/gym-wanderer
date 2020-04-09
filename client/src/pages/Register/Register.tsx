@@ -12,6 +12,7 @@ import { isObjectEmpty } from '../../utils';
 import * as Yup from 'yup';
 import { prefArrToBoolObj } from '../../utils/prefArrToBoolObj';
 import { FormContainer } from '../../components/FormComponents/FormContainer';
+import { useRequireNoUser } from '../../hooks/useRequireNoUser';
 
 //have preferences on seperate page
 //we get route props because this component is passed
@@ -52,6 +53,7 @@ const RegisterSchema = Yup.object().shape({
 });
 
 export const Register: React.FC<RouteComponentProps> = ({ history }) => {
+  const isUserLoggedIn = useRequireNoUser();
   const [currentPage, setCurrentPage] = useState(0);
   const [register] = useRegisterMutation();
   const { positionCSS, showNext, showPrevious, showSubmit } = usePageControl(
