@@ -8,33 +8,17 @@ interface Page1Props {}
 export const Page1: React.FC<Page1Props> = () => {
   return (
     <>
-      <FormField
-        placeholder="First Name"
-        name="firstName"
-        type="input"
-        as={FormField}
-      />
-      <FormField
-        placeholder="Last Name"
-        name="lastName"
-        type="input"
-        as={FormField}
-      />
+      <FormField placeholder="First Name" name="firstName" type="input" />
+      <FormField placeholder="Last Name" name="lastName" type="input" />
 
       <BirthdayField name="birthday" type="date" label="Birthday" />
 
-      <FormField placeholder="Email" name="email" type="input" as={FormField} />
-      <FormField
-        placeholder="Password"
-        name="password"
-        type="password"
-        as={FormField}
-      />
+      <FormField placeholder="Email" name="email" type="input" />
+      <FormField placeholder="Password" name="password" type="password" />
       <FormField
         placeholder="Confirm Password"
         name="confirmPassword"
         type="password"
-        as={FormField}
       />
     </>
   );
