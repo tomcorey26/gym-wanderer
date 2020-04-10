@@ -1,3 +1,8 @@
+For graphql you have to first generate hooks
+Then you have to run typescript to generate Javascript
+If you still cant import the stuff do
+CMD + SHIFT + P "Restart Ts Server"
+
 Google maps key linked to tombcorey
 
 MapsAutoComplete uses the 
@@ -11,3 +16,4 @@ Maps Javascript api?
 For loading the map on SEARCH
 
 un comment loadscript on line 59 to actually use api
+

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { useLoginMutation, MeDocument, MeQuery } from '../generated/graphql';
+import { useLoginMutation, MeDocument, MeQuery } from '@gw/controllers';
 import { setAccessToken } from '../accessToken';
 import { Formik } from 'formik';
 import { FormContainer } from '../components/FormComponents/FormContainer';
