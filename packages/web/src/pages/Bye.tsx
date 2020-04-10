@@ -1,11 +1,11 @@
 import React from 'react';
-import { useByeQuery } from '../generated/graphql';
+import { useByeQuery } from '@gw/controllers';
 
 interface ByeProps {}
 
 export const Bye: React.FC<ByeProps> = ({}) => {
   const { data, error, loading } = useByeQuery({
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   });
 
   if (loading) {

@@ -9,7 +9,7 @@ import { Register } from './pages/Register/Register';
 import { Login } from './pages/Login';
 import Navbar from './components/Navbar';
 import { CssBaseline } from '@material-ui/core';
-import { useUsersQuery } from './generated/graphql';
+import { useUsersQuery } from '@gw/controllers';
 import { Bye } from './pages/Bye';
 
 const Routes: React.FC = () => {

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useRegisterMutation } from '../../generated/graphql';
+import { useRegisterMutation } from '@gw/controllers';
 import { RouteComponentProps } from 'react-router-dom';
-import { Formik, Form } from 'formik';
-import { Button, Container } from '@material-ui/core';
-import { PageProgress } from '../../components/PageProgress';
+import { Formik } from 'formik';
+import { Button } from '@material-ui/core';
 import { Page1 } from './Page1';
 import { Page2 } from './Page2';
 import { Page3 } from './Page3';
@@ -38,9 +37,7 @@ const RegisterSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  email: Yup.string()
-    .email('Invalid email')
-    .required('Required'),
+  email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
     .required('Please Enter your password')
     .matches(
