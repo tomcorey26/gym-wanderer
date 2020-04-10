@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "gym-wanderer",
+  "version": "1.0.0",
+  "description": "Rent out your personal home gym, or find some of your own",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomcorey26/gym-wanderer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomcorey26/gym-wanderer/issues"
+  },
+  "homepage": "https://github.com/tomcorey26/gym-wanderer#readme",
+  "workspaces": [
+    "packages/*"
+  ]
+}
