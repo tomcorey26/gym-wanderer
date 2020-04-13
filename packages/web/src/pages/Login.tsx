@@ -10,16 +10,17 @@ import { FormField } from '../components/FormComponents/FormField';
 
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
+const mock = {
+  email: 'devito@gmail.com',
+  password: 'Test123@',
+};
 export const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [login] = useLoginMutation();
   const showSubmit = true;
 
   return (
     <Formik
-      initialValues={{
-        email: '',
-        password: '',
-      }}
+      initialValues={mock}
       onSubmit={async ({ email, password }, { setSubmitting }) => {
         setSubmitting(true);
         const response = await login({

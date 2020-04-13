@@ -9,6 +9,17 @@ import { Resolver, Mutation, Arg } from 'type-graphql';
 //like if the value might be null sometimes
 // if null you have to pass third param to @arg
 // {nullable:true}
+// @ArgsType()
+// class GetRecipesArgs {
+//   @Field(type => Int, { nullable: true })
+//   skip?: number;
+
+//   @Field(type => Int, { nullable: true })
+//   take?: number;
+
+//   @Field({ nullable: true })
+//   title?: string;
+// }
 
 @Resolver()
 export class GymResolver {

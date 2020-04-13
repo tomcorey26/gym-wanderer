@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRegisterMutation } from '@gw/controllers';
+import { useRegisterMutation, UsersDocument } from '@gw/controllers';
 import { RouteComponentProps } from 'react-router-dom';
 import { Formik } from 'formik';
 import { Button } from '@material-ui/core';
@@ -76,21 +76,14 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         birthday: birthday,
         preferences: prefArrToBoolObj(exerciseTypes),
       },
+      refetchQueries: [{ query: UsersDocument }],
     });
     console.log(response);
   };
 
   return (
     <Formik
-      initialValues={{
-        firstName: '',
-        lastName: '',
-        birthday: '',
-        exerciseTypes: [],
-        email: '',
-        password: '',
-        confirmPassword: '',
-      }}
+      initialValues={mockUser}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
         await submitUser(values);
