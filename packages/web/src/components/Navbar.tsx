@@ -106,9 +106,9 @@ export default function Navbar() {
   if (loading) {
     body = null;
   } else if (data && data.me) {
-    body = <div>You are logged in as {data.me.email}</div>;
+    body = <span>{data.me.email}</span>;
   } else {
-    body = <div>not logged in</div>;
+    body = <span>not logged in</span>;
   }
 
   const isMenuOpen = Boolean(anchorEl);
@@ -251,7 +251,6 @@ export default function Navbar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <div>{body}</div>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
@@ -262,6 +261,7 @@ export default function Navbar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <IconButton>{body}</IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"

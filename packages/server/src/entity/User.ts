@@ -5,9 +5,12 @@ import {
   BaseEntity,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Preferences } from './Preferences';
+import { Gyms } from './Gym';
+import { Reviews } from './Reviews';
 
 //field is from type grapql so we can get graphql types
 //@ column is from typeorm, you put in postgres types
@@ -44,4 +47,12 @@ export class User extends BaseEntity {
   @OneToOne(() => Preferences)
   @JoinColumn()
   preferences: Preferences;
+
+  @Field(() => Gyms, { nullable: true })
+  @OneToOne(() => Gyms)
+  @JoinColumn()
+  gym: Gyms;
+
+  @OneToMany(() => Reviews, (review) => review.creator)
+  reviews: Reviews[];
 }
