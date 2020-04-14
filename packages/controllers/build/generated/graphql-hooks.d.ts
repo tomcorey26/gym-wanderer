@@ -9,6 +9,19 @@ export declare type Scalars = {
     Int: number;
     Float: number;
 };
+export declare type Gyms = {
+    __typename?: 'Gyms';
+    id: Scalars['String'];
+    gym_name: Scalars['String'];
+    description: Scalars['String'];
+    membership_cost: Scalars['Int'];
+    isOpen: Scalars['Boolean'];
+    date_created: Scalars['String'];
+    ownerId: Scalars['String'];
+    owners: Array<User>;
+    members: Array<User>;
+    reviews: Array<Reviews>;
+};
 export declare type LoginResponse = {
     __typename?: 'LoginResponse';
     accessToken: Scalars['String'];
@@ -28,6 +41,7 @@ export declare type MutationRegisterArgs = {
     first_name: Scalars['String'];
     password: Scalars['String'];
     email: Scalars['String'];
+    username: Scalars['String'];
 };
 export declare type MutationLoginArgs = {
     password: Scalars['String'];
@@ -60,14 +74,23 @@ export declare type Query = {
     users: Array<User>;
     me?: Maybe<User>;
 };
+export declare type Reviews = {
+    __typename?: 'Reviews';
+    rating: Scalars['Int'];
+    text: Scalars['String'];
+    creator: User;
+    gym: Gyms;
+};
 export declare type User = {
     __typename?: 'User';
     id: Scalars['ID'];
     first_name: Scalars['String'];
     last_name: Scalars['String'];
     email: Scalars['String'];
+    username: Scalars['String'];
     birthday?: Maybe<Scalars['String']>;
     preferences: Preferences;
+    gym?: Maybe<Gyms>;
 };
 export declare type ByeQueryVariables = {};
 export declare type ByeQuery = ({
@@ -108,6 +131,7 @@ export declare type RegisterMutationVariables = {
     last_name: Scalars['String'];
     first_name: Scalars['String'];
     birthday?: Maybe<Scalars['String']>;
+    username: Scalars['String'];
     password: Scalars['String'];
     email: Scalars['String'];
     preferences: PreferencesInput;
@@ -250,6 +274,7 @@ export declare type RegisterMutationFn = ApolloReactCommon.MutationFunction<Regi
  *      last_name: // value for 'last_name'
  *      first_name: // value for 'first_name'
  *      birthday: // value for 'birthday'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *      email: // value for 'email'
  *      preferences: // value for 'preferences'

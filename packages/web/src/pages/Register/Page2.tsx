@@ -37,21 +37,21 @@ export const Page2: React.FC<Page2Props> = ({}) => {
           <FormGroup>
             <CheckboxField
               label="Bodybuilding"
-              name="exerciseTypes"
+              name="preferences"
               type="checkbox"
               value="bodybuilding"
               as={Checkbox}
             />
             <CheckboxField
               label="CrossFit"
-              name="exerciseTypes"
+              name="preferences"
               type="checkbox"
               value="crossfit"
               as={Checkbox}
             />
             <CheckboxField
               label="Yoga"
-              name="exerciseTypes"
+              name="preferences"
               type="checkbox"
               value="yoga"
               as={Checkbox}
@@ -62,21 +62,21 @@ export const Page2: React.FC<Page2Props> = ({}) => {
           <FormGroup>
             <CheckboxField
               label="Parkour"
-              name="exerciseTypes"
+              name="preferences"
               type="checkbox"
               value="parkour"
               as={Checkbox}
             />
             <CheckboxField
               label="General"
-              name="exerciseTypes"
+              name="preferences"
               type="checkbox"
               value="general"
               as={Checkbox}
             />
             <CheckboxField
               label="Boxing"
-              name="exerciseTypes"
+              name="preferences"
               type="checkbox"
               value="boxing"
               as={Checkbox}

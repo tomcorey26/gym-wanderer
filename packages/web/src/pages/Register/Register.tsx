@@ -12,30 +12,55 @@ import * as Yup from 'yup';
 import { prefArrToBoolObj } from '../../utils/prefArrToBoolObj';
 import { FormContainer } from '../../components/FormComponents/FormContainer';
 import { useRequireNoUser } from '../../hooks/useRequireNoUser';
+import { FormPageControl } from '../../components/FormPageControl';
 
 //have preferences on seperate page
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
 
 const mockUser = {
-  firstName: 'Danny',
-  lastName: 'Devito',
+  first_name: 'Danny',
+  last_name: 'Devito',
+  username: 'dvito',
   birthday: '1944-11-14',
-  exerciseTypes: [],
+  preferences: [],
   email: 'devito@gmail.com',
   password: 'Test123@',
   confirmPassword: 'Test123@',
 };
+
+interface Preferences {
+  bodybuilding: boolean;
+  crossfit: boolean;
+  yoga: boolean;
+  parkour: boolean;
+  general: boolean;
+  boxing: boolean;
+}
+interface RegisterInput {
+  first_name: string;
+  last_name: string;
+  username: string;
+  birthday: string;
+  preferences: Preferences;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 
 const RegisterSchema = Yup.object().shape({
-  firstName: Yup.string()
+  first_name: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  lastName: Yup.string()
+  last_name: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
+    .required('Required'),
+  username: Yup.string()
+    .min(5, 'Too Short!')
+    .max(20, 'Too Long!')
     .required('Required'),
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
@@ -50,32 +75,15 @@ const RegisterSchema = Yup.object().shape({
 });
 
 export const Register: React.FC<RouteComponentProps> = ({ history }) => {
-  const isUserLoggedIn = useRequireNoUser();
   const [currentPage, setCurrentPage] = useState(0);
+  const isUserLoggedIn = useRequireNoUser();
   const [register] = useRegisterMutation();
-  const { positionCSS, showNext, showPrevious, showSubmit } = usePageControl(
-    currentPage,
-    pages.length
-  );
 
-  const submitUser = async ({
-    email,
-    password,
-    firstName,
-    lastName,
-    birthday,
-    exerciseTypes,
-  }) => {
+  const submitUser = async (values: RegisterInput) => {
     //convert exercise types to true false object
+    console.log(values);
     const response = await register({
-      variables: {
-        email,
-        password,
-        first_name: firstName,
-        last_name: lastName,
-        birthday: birthday,
-        preferences: prefArrToBoolObj(exerciseTypes),
-      },
+      variables: values,
       refetchQueries: [{ query: UsersDocument }],
     });
     console.log(response);
@@ -85,8 +93,12 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
     <Formik
       initialValues={mockUser}
       onSubmit={async (values, { setSubmitting }) => {
+        const submitValues = {
+          ...values,
+          preferences: prefArrToBoolObj(values.preferences),
+        };
         setSubmitting(true);
-        await submitUser(values);
+        await submitUser(submitValues);
         setSubmitting(false);
         history.push('/');
       }}
@@ -99,43 +111,13 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
           pageCount={pages.length}
         >
           {pages[currentPage]}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: positionCSS,
-              width: '100%',
-            }}
-          >
-            {showPrevious && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setCurrentPage((page) => (page -= 1))}
-              >
-                Prev Page
-              </Button>
-            )}
-
-            {showNext && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setCurrentPage((page) => (page += 1))}
-              >
-                next Page
-              </Button>
-            )}
-          </div>
-          {showSubmit && (
-            <Button
-              disabled={isSubmitting || !isObjectEmpty(errors)}
-              type="submit"
-              variant="contained"
-              color="secondary"
-            >
-              Register
-            </Button>
-          )}
+          <FormPageControl
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            length={pages.length}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
           <pre>{JSON.stringify(values, null, 2)}</pre>
           <pre>{JSON.stringify(errors, null, 2)}</pre>
         </FormContainer>

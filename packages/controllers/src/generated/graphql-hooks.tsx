@@ -11,6 +11,20 @@ export type Scalars = {
   Float: number;
 };
 
+export type Gyms = {
+   __typename?: 'Gyms';
+  id: Scalars['String'];
+  gym_name: Scalars['String'];
+  description: Scalars['String'];
+  membership_cost: Scalars['Int'];
+  isOpen: Scalars['Boolean'];
+  date_created: Scalars['String'];
+  ownerId: Scalars['String'];
+  owners: Array<User>;
+  members: Array<User>;
+  reviews: Array<Reviews>;
+};
+
 export type LoginResponse = {
    __typename?: 'LoginResponse';
   accessToken: Scalars['String'];
@@ -33,6 +47,7 @@ export type MutationRegisterArgs = {
   first_name: Scalars['String'];
   password: Scalars['String'];
   email: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
@@ -73,14 +88,24 @@ export type Query = {
   me?: Maybe<User>;
 };
 
+export type Reviews = {
+   __typename?: 'Reviews';
+  rating: Scalars['Int'];
+  text: Scalars['String'];
+  creator: User;
+  gym: Gyms;
+};
+
 export type User = {
    __typename?: 'User';
   id: Scalars['ID'];
   first_name: Scalars['String'];
   last_name: Scalars['String'];
   email: Scalars['String'];
+  username: Scalars['String'];
   birthday?: Maybe<Scalars['String']>;
   preferences: Preferences;
+  gym?: Maybe<Gyms>;
 };
 
 export type ByeQueryVariables = {};
@@ -140,6 +165,7 @@ export type RegisterMutationVariables = {
   last_name: Scalars['String'];
   first_name: Scalars['String'];
   birthday?: Maybe<Scalars['String']>;
+  username: Scalars['String'];
   password: Scalars['String'];
   email: Scalars['String'];
   preferences: PreferencesInput;
@@ -323,8 +349,8 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $password: String!, $email: String!, $preferences: PreferencesInput!) {
-  register(email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)
+    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {
+  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
@@ -345,6 +371,7 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
  *      last_name: // value for 'last_name'
  *      first_name: // value for 'first_name'
  *      birthday: // value for 'birthday'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *      email: // value for 'email'
  *      preferences: // value for 'preferences'

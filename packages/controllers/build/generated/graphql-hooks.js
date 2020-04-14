@@ -132,7 +132,7 @@ function useMeLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.MeDocument, baseOptions);
 }
 exports.useMeLazyQuery = useMeLazyQuery;
-exports.RegisterDocument = graphql_tag_1.default(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "], ["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "])));
+exports.RegisterDocument = graphql_tag_1.default(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "], ["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "])));
 /**
  * __useRegisterMutation__
  *
@@ -149,6 +149,7 @@ exports.RegisterDocument = graphql_tag_1.default(templateObject_6 || (templateOb
  *      last_name: // value for 'last_name'
  *      first_name: // value for 'first_name'
  *      birthday: // value for 'birthday'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *      email: // value for 'email'
  *      preferences: // value for 'preferences'
