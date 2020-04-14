@@ -3,7 +3,6 @@ import Container from '@material-ui/core/Container';
 import MapsAutoComplete from '../components/MapsAutoComplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { foo } from '@gw/controllers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

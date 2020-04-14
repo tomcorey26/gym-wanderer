@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
-// import { Key } from "../key";
+import { key } from '../key';
 import { useRouter } from '../hooks';
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
@@ -57,9 +57,9 @@ export default function GoogleMaps() {
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       // loadScript(
-      //   `https://maps.googleapis.com/maps/api/js?key=${Key}&libraries=places`,
-      //   document.querySelector("head"),
-      //   "google-maps"
+      //   `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`,
+      //   document.querySelector('head'),
+      //   'google-maps'
       // );
     }
 
@@ -70,10 +70,15 @@ export default function GoogleMaps() {
     setInputValue(event.target.value);
   };
 
-  const keyPress = (event: any) => {
-    if (event.key === 'Enter') {
-      console.log('enter');
-      // router.history.push(`/search/?place_id=${option.place_id}`);
+  const handleAutoChange = (
+    event: ChangeEvent<{}>,
+    value: PlaceType | null
+  ) => {
+    event.preventDefault();
+    if (value && value.hasOwnProperty('place_id')) {
+      router.history.push(`/search/?place_id=${value.place_id}`);
+    } else {
+      console.log(value + 'is not a valid place');
     }
   };
 
@@ -126,11 +131,13 @@ export default function GoogleMaps() {
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
       }
+      autoHighlight
       filterOptions={(x) => x}
       options={options}
       autoComplete
       includeInputInList
       freeSolo
+      onChange={handleAutoChange}
       // disableOpenOnFocus
       renderInput={(params) => (
         <TextField
@@ -156,10 +163,6 @@ export default function GoogleMaps() {
           <Grid
             container
             alignItems="center"
-            onClick={() => {
-              router.history.push(`/search/?place_id=${option.place_id}`);
-            }}
-            onKeyPress={keyPress}
             onSubmit={() => console.log('aye')}
           >
             <Grid item>
