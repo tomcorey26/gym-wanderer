@@ -8,26 +8,26 @@ export class Preferences extends BaseEntity {
   id: number;
 
   @Field()
-  @Column()
+  @Column('boolean')
   yoga: boolean;
 
   @Field()
-  @Column()
+  @Column('boolean')
   crossfit: boolean;
 
   @Field()
-  @Column()
+  @Column('boolean')
   bodybuilding: boolean;
 
   @Field()
-  @Column()
+  @Column('boolean')
   parkour: boolean;
 
   @Field()
-  @Column()
+  @Column('boolean')
   general: boolean;
 
   @Field()
-  @Column()
+  @Column('boolean')
   boxing: boolean;
 }

@@ -6,6 +6,7 @@ import {
   JoinTable,
   BaseEntity,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm';
 import { Field, Int, ObjectType } from 'type-graphql';
 import { User } from './User';
@@ -34,25 +35,28 @@ export class Gyms extends BaseEntity {
   membership_cost: number;
 
   @Field()
-  @Column()
+  @Column('boolean', { default: false })
   isOpen: boolean;
 
   @Field()
-  @Column()
+  @CreateDateColumn()
   date_created: string;
 
   @Field()
   @Column()
   ownerId: string;
 
+  @Field(() => User)
   @ManyToMany(() => User)
   @JoinTable()
   owners: User[];
 
+  @Field(() => User)
   @ManyToMany(() => User)
   @JoinTable()
   members: User[];
 
+  @Field(() => Reviews)
   @OneToMany(() => Reviews, (review) => review.gym)
   reviews: Reviews[];
 }
