@@ -8,19 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 import { key } from '../key';
-import { useRouter } from '../hooks';
-
-function loadScript(src: string, position: HTMLElement | null, id: string) {
-  if (!position) {
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
-  script.src = src;
-  position.appendChild(script);
-}
+import { useRouter, useGoogleMapsApi } from '../hooks';
 
 const autocompleteService = { current: null };
 
@@ -48,23 +36,11 @@ interface PlaceType {
 
 //Uncomment line 59-63 to use the api
 export default function GoogleMaps() {
+  const isGoogleMapsApiLoaded = useGoogleMapsApi();
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<PlaceType[]>([]);
-  const loaded = React.useRef(false);
   const router = useRouter();
-
-  if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
-      // loadScript(
-      //   `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`,
-      //   document.querySelector('head'),
-      //   'google-maps'
-      // );
-    }
-
-    loaded.current = true;
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);

@@ -1,7 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import MapsSideScroller from '../components/MapsSideScroller';
 import { Coords } from '../types/Coords';
-import { useCurrentGeolocation, useInputValue } from '../hooks';
+import {
+  useCurrentGeolocation,
+  useInputValue,
+  useGoogleMapsApi,
+} from '../hooks';
 import GoogleMapReact from 'google-map-react';
 import MapPoint from '../components/MapPoint';
 import RadiusSelect from '../components/RadiusSelect';
@@ -9,6 +13,7 @@ import { key } from '../key';
 import axios from 'axios';
 import SearchFilter from '../components/SearchFilter';
 import { SearchContext } from '../context/SearchState';
+
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
   const { gyms, radiusDist, zoom, dispatch } = useContext(SearchContext);
@@ -63,7 +68,14 @@ const Search: React.FC = () => {
           top: 0,
         }}
       >
-        <GoogleMapReact zoom={zoom} center={geo.position}>
+        <GoogleMapReact
+          zoom={zoom}
+          center={geo.position}
+          bootstrapURLKeys={{
+            key: key,
+            libraries: 'places',
+          }}
+        >
           {filteredGyms.map(({ location, cost, id }, i) => (
             <MapPoint
               key={i}
