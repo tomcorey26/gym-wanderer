@@ -87,6 +87,7 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   async register(
+    @Arg('username') username: string,
     @Arg('email') email: string,
     @Arg('password') password: string,
     @Arg('first_name') first_name: string,
@@ -95,11 +96,12 @@ export class UserResolver {
     @Arg('birthday', () => String, { nullable: true }) birthday?: string
   ) {
     const hashedPassword = await hash(password, 12);
-
+    console.log(username);
     try {
       const prefs = Preferences.create({ ...preferences });
       await prefs.save();
       const user = User.create({
+        username,
         email,
         password: hashedPassword,
         birthday,

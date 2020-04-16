@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Search from './pages/Search';
 import GymDetail from './pages/GymDetail';
 import Home from './pages/Home';
-import CreateGym from './pages/CreateGym';
+import { CreateGym } from './pages/CreateGym/CreateGym';
 import { SearchProvider } from './context/SearchState';
 import { Register } from './pages/Register/Register';
 import { Login } from './pages/Login';

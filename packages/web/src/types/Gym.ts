@@ -1,10 +1,10 @@
-import { Coords } from "./Coords";
+import { Coords } from './Coords';
 
 export interface Gym {
   id: number;
   isActive: boolean;
   rating: number;
-  ownerName: string;
+  owner: string;
   gymName: string;
   email: string;
   phone: string;

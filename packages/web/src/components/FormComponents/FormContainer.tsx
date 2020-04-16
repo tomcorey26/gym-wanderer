@@ -8,6 +8,7 @@ interface FormContainerProps {
   pageProgress?: true;
   pageNum?: number;
   pageCount?: number;
+  title?: string;
 }
 
 export const FormContainer: React.FC<FormContainerProps> = ({
@@ -15,6 +16,7 @@ export const FormContainer: React.FC<FormContainerProps> = ({
   pageProgress,
   pageCount,
   pageNum,
+  title,
 }) => {
   if (pageProgress && (typeof pageNum === 'undefined' || !pageCount)) {
     throw Error('Must provide page Count and Current page ');
@@ -24,6 +26,7 @@ export const FormContainer: React.FC<FormContainerProps> = ({
     <Container maxWidth="sm">
       <Form>
         <div className="register-form-container">
+          <h1>{title}</h1>
           {pageProgress && (
             <PageProgress pageNum={pageNum!} pageCount={pageCount!} />
           )}
