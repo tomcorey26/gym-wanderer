@@ -11,6 +11,7 @@ import {
 import { Field, Int, ObjectType } from 'type-graphql';
 import { User } from './User';
 import { Reviews } from './Reviews';
+import { Coordinates } from '../Types';
 
 //adding "baseEntitiy" allows us to use crud operations
 // for this table in the data base in our resolver
@@ -35,16 +36,25 @@ export class Gyms extends BaseEntity {
   membership_cost: number;
 
   @Field()
+  @Column({ unique: true })
+  ownerId: string;
+
+  @Field()
+  @Column()
+  location: string;
+
+  @Field(() => Coordinates)
+  @Column('json')
+  coordinates: Coordinates;
+
+  /*AUTO GENERATED STUFF */
+  @Field()
   @Column('boolean', { default: false })
   isOpen: boolean;
 
   @Field()
   @CreateDateColumn()
   date_created: string;
-
-  @Field()
-  @Column()
-  ownerId: string;
 
   @Field(() => User)
   @ManyToMany(() => User)

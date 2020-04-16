@@ -34,16 +34,16 @@ const cache = new InMemoryCache({});
 //This is basically just setting a header
 const requestLink = new ApolloLink(
   (operation, forward) =>
-    new Observable(observer => {
+    new Observable((observer) => {
       let handle: any;
       Promise.resolve(operation)
-        .then(operation => {
+        .then((operation) => {
           const accessToken = getAccessToken();
           if (accessToken) {
             operation.setContext({
               headers: {
-                authorization: `bearer ${accessToken}`
-              }
+                authorization: `bearer ${accessToken}`,
+              },
             });
           }
         })
@@ -51,7 +51,7 @@ const requestLink = new ApolloLink(
           handle = forward(operation).subscribe({
             next: observer.next.bind(observer),
             error: observer.error.bind(observer),
-            complete: observer.complete.bind(observer)
+            complete: observer.complete.bind(observer),
           });
         })
         .catch(observer.error.bind(observer));
@@ -92,13 +92,13 @@ const client = new ApolloClient({
       fetchAccessToken: () => {
         return fetch('http://localhost:4000/refresh_token', {
           method: 'POST',
-          credentials: 'include'
+          credentials: 'include',
         });
       },
-      handleFetch: accessToken => {
+      handleFetch: (accessToken) => {
         setAccessToken(accessToken);
       },
-      handleError: err => {
+      handleError: (err) => {
         // this gets called when it trys to fetch an access token
         //and theres an eror
         // full control over handling token fetch Error
@@ -106,7 +106,7 @@ const client = new ApolloClient({
         console.error(err);
         // your custom action here
         // user.logout();
-      }
+      },
     }),
     onError(({ graphQLErrors, networkError }) => {
       console.log(graphQLErrors);
@@ -115,10 +115,12 @@ const client = new ApolloClient({
     requestLink,
     new HttpLink({
       uri: 'http://localhost:4000/graphql',
-      credentials: 'include'
-    })
+      credentials: 'include',
+    }),
   ]),
-  cache
+  cache,
+  typeDefs: [],
+  resolvers: {},
 });
 
 ReactDOM.render(
