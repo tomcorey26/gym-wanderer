@@ -36,7 +36,7 @@ interface PlaceType {
 
 //Uncomment line 59-63 to use the api
 export default function GoogleMaps() {
-  const isGoogleMapsApiLoaded = useGoogleMapsApi();
+  // const isGoogleMapsApiLoaded = useGoogleMapsApi();
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<PlaceType[]>([]);
