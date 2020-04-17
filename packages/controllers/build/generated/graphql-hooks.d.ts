@@ -35,8 +35,8 @@ export declare type Gyms = {
 };
 export declare type LoginResponse = {
     __typename?: 'LoginResponse';
-    accessToken: Scalars['String'];
     user: User;
+    accessToken: Scalars['String'];
 };
 export declare type Mutation = {
     __typename?: 'Mutation';
@@ -130,7 +130,14 @@ export declare type LoginMutation = ({
     } & Pick<LoginResponse, 'accessToken'> & {
         user: ({
             __typename?: 'User';
-        } & Pick<User, 'id' | 'email'>);
+        } & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'> & {
+            preferences: ({
+                __typename?: 'Preferences';
+            } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
+            gym: Maybe<({
+                __typename?: 'Gyms';
+            } & Pick<Gyms, 'isOpen' | 'gym_name'>)>;
+        });
     });
 });
 export declare type LogoutMutationVariables = {};
