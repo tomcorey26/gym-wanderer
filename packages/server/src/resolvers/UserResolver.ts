@@ -20,10 +20,11 @@ import { Preferences } from '../entity/Preferences';
 
 @ObjectType()
 class LoginResponse {
-  @Field()
-  accessToken: string;
   @Field(() => User)
   user: User;
+
+  @Field()
+  accessToken: string;
 }
 
 @InputType()
@@ -78,7 +79,9 @@ export class UserResolver {
     try {
       const token = authorization.split(' ')[1];
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-      return User.findOne(payload.userId, { relations: ['gym'] });
+      return User.findOne(payload.userId, {
+        relations: ['gym', 'preferences'],
+      });
     } catch (err) {
       console.log(err);
       return null;
@@ -123,7 +126,10 @@ export class UserResolver {
     @Arg('password') password: string,
     @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: { email },
+      relations: ['gym', 'preferences'],
+    });
 
     if (!user) {
       throw new Error('Could not find User');
