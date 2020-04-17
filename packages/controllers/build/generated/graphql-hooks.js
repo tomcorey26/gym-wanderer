@@ -108,7 +108,7 @@ function useLogoutMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.LogoutDocument, baseOptions);
 }
 exports.useLogoutMutation = useLogoutMutation;
-exports.MeDocument = graphql_tag_1.default(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    query Me {\n  me {\n    id\n    email\n  }\n}\n    "], ["\n    query Me {\n  me {\n    id\n    email\n  }\n}\n    "])));
+exports.MeDocument = graphql_tag_1.default(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    query Me {\n  me {\n    id\n    email\n    first_name\n    last_name\n    username\n    birthday\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      isOpen\n      gym_name\n    }\n  }\n}\n    "], ["\n    query Me {\n  me {\n    id\n    email\n    first_name\n    last_name\n    username\n    birthday\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      isOpen\n      gym_name\n    }\n  }\n}\n    "])));
 /**
  * __useMeQuery__
  *
@@ -132,7 +132,31 @@ function useMeLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.MeDocument, baseOptions);
 }
 exports.useMeLazyQuery = useMeLazyQuery;
-exports.RegisterDocument = graphql_tag_1.default(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "], ["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "])));
+exports.MyGymDocument = graphql_tag_1.default(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    query MyGym {\n  myGym {\n    ownerId\n    gym_name\n    description\n    membership_cost\n    location\n    coordinates {\n      lat\n      lng\n    }\n    isOpen\n    date_created\n  }\n}\n    "], ["\n    query MyGym {\n  myGym {\n    ownerId\n    gym_name\n    description\n    membership_cost\n    location\n    coordinates {\n      lat\n      lng\n    }\n    isOpen\n    date_created\n  }\n}\n    "])));
+/**
+ * __useMyGymQuery__
+ *
+ * To run a query within a React component, call `useMyGymQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyGymQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyGymQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+function useMyGymQuery(baseOptions) {
+    return ApolloReactHooks.useQuery(exports.MyGymDocument, baseOptions);
+}
+exports.useMyGymQuery = useMyGymQuery;
+function useMyGymLazyQuery(baseOptions) {
+    return ApolloReactHooks.useLazyQuery(exports.MyGymDocument, baseOptions);
+}
+exports.useMyGymLazyQuery = useMyGymLazyQuery;
+exports.RegisterDocument = graphql_tag_1.default(templateObject_7 || (templateObject_7 = __makeTemplateObject(["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "], ["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "])));
 /**
  * __useRegisterMutation__
  *
@@ -160,7 +184,7 @@ function useRegisterMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.RegisterDocument, baseOptions);
 }
 exports.useRegisterMutation = useRegisterMutation;
-exports.UsersDocument = graphql_tag_1.default(templateObject_7 || (templateObject_7 = __makeTemplateObject(["\n    query Users {\n  users {\n    id\n    email\n    birthday\n    first_name\n    last_name\n  }\n}\n    "], ["\n    query Users {\n  users {\n    id\n    email\n    birthday\n    first_name\n    last_name\n  }\n}\n    "])));
+exports.UsersDocument = graphql_tag_1.default(templateObject_8 || (templateObject_8 = __makeTemplateObject(["\n    query Users {\n  users {\n    id\n    email\n    birthday\n    first_name\n    last_name\n  }\n}\n    "], ["\n    query Users {\n  users {\n    id\n    email\n    birthday\n    first_name\n    last_name\n  }\n}\n    "])));
 /**
  * __useUsersQuery__
  *
@@ -184,4 +208,4 @@ function useUsersLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.UsersDocument, baseOptions);
 }
 exports.useUsersLazyQuery = useUsersLazyQuery;
-var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5, templateObject_6, templateObject_7;
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5, templateObject_6, templateObject_7, templateObject_8;

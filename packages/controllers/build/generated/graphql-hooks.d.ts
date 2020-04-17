@@ -9,15 +9,26 @@ export declare type Scalars = {
     Int: number;
     Float: number;
 };
+export declare type Coordinates = {
+    __typename?: 'Coordinates';
+    lat: Scalars['Float'];
+    lng: Scalars['Float'];
+};
+export declare type CoordinatesInput = {
+    lat: Scalars['Float'];
+    lng: Scalars['Float'];
+};
 export declare type Gyms = {
     __typename?: 'Gyms';
     id: Scalars['String'];
     gym_name: Scalars['String'];
     description: Scalars['String'];
     membership_cost: Scalars['Int'];
+    ownerId: Scalars['String'];
+    location: Scalars['String'];
+    coordinates: Coordinates;
     isOpen: Scalars['Boolean'];
     date_created: Scalars['String'];
-    ownerId: Scalars['String'];
     owners: Array<User>;
     members: Array<User>;
     reviews: Array<Reviews>;
@@ -48,7 +59,12 @@ export declare type MutationLoginArgs = {
     email: Scalars['String'];
 };
 export declare type MutationCreateGymArgs = {
-    title: Scalars['String'];
+    gym_name: Scalars['String'];
+    description: Scalars['String'];
+    membership_cost: Scalars['Float'];
+    ownerId: Scalars['String'];
+    location: Scalars['String'];
+    coordinates: CoordinatesInput;
 };
 export declare type Preferences = {
     __typename?: 'Preferences';
@@ -73,6 +89,8 @@ export declare type Query = {
     bye: Scalars['String'];
     users: Array<User>;
     me?: Maybe<User>;
+    myGym?: Maybe<Gyms>;
+    gyms: Array<Gyms>;
 };
 export declare type Reviews = {
     __typename?: 'Reviews';
@@ -125,7 +143,26 @@ export declare type MeQuery = ({
 } & {
     me: Maybe<({
         __typename?: 'User';
-    } & Pick<User, 'id' | 'email'>)>;
+    } & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'> & {
+        preferences: ({
+            __typename?: 'Preferences';
+        } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
+        gym: Maybe<({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'isOpen' | 'gym_name'>)>;
+    })>;
+});
+export declare type MyGymQueryVariables = {};
+export declare type MyGymQuery = ({
+    __typename?: 'Query';
+} & {
+    myGym: Maybe<({
+        __typename?: 'Gyms';
+    } & Pick<Gyms, 'ownerId' | 'gym_name' | 'description' | 'membership_cost' | 'location' | 'isOpen' | 'date_created'> & {
+        coordinates: ({
+            __typename?: 'Coordinates';
+        } & Pick<Coordinates, 'lat' | 'lng'>);
+    })>;
 });
 export declare type RegisterMutationVariables = {
     last_name: Scalars['String'];
@@ -256,6 +293,27 @@ export declare function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export declare type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export declare type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export declare type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
+export declare const MyGymDocument: import("graphql").DocumentNode;
+/**
+ * __useMyGymQuery__
+ *
+ * To run a query within a React component, call `useMyGymQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyGymQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyGymQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export declare function useMyGymQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyGymQuery, MyGymQueryVariables>): ApolloReactCommon.QueryResult<MyGymQuery, MyGymQueryVariables>;
+export declare function useMyGymLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyGymQuery, MyGymQueryVariables>): ApolloReactHooks.QueryTuple<MyGymQuery, MyGymQueryVariables>;
+export declare type MyGymQueryHookResult = ReturnType<typeof useMyGymQuery>;
+export declare type MyGymLazyQueryHookResult = ReturnType<typeof useMyGymLazyQuery>;
+export declare type MyGymQueryResult = ApolloReactCommon.QueryResult<MyGymQuery, MyGymQueryVariables>;
 export declare const RegisterDocument: import("graphql").DocumentNode;
 export declare type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 /**
