@@ -11,7 +11,7 @@ import {
 } from 'type-graphql';
 import { isAuth } from '../isAuth';
 import { Gyms } from '../entity/Gym';
-import { Coordinates } from '../Types';
+import { Coordinates, GymTypes } from '../Types';
 import { MyContext } from '../MyContext';
 
 //type-graphql can ususally infer the type of paramaters except for some exceptions
@@ -27,6 +27,9 @@ class CreateGymArgs {
   @Field()
   description: string;
 
+  @Field(() => GymTypes) // it's very important
+  type: GymTypes;
+
   @Field(() => Float)
   membership_cost: number;
 
@@ -38,6 +41,9 @@ class CreateGymArgs {
 
   @Field(() => Coordinates)
   coordinates: Coordinates;
+
+  @Field(() => [String])
+  equipment: string[];
 }
 
 @Resolver()

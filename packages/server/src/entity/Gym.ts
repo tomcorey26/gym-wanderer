@@ -11,7 +11,7 @@ import {
 import { Field, Int, ObjectType } from 'type-graphql';
 import { User } from './User';
 import { Reviews } from './Reviews';
-import { Coordinates } from '../Types';
+import { Coordinates, GymTypes } from '../Types';
 
 //adding "baseEntitiy" allows us to use crud operations
 // for this table in the data base in our resolver
@@ -32,7 +32,7 @@ export class Gyms extends BaseEntity {
   description: string;
 
   @Field(() => Int)
-  @Column({ type: 'numeric', precision: 2 })
+  @Column({ type: 'money' })
   membership_cost: number;
 
   @Field()
@@ -43,9 +43,17 @@ export class Gyms extends BaseEntity {
   @Column()
   location: string;
 
+  @Field(() => [String])
+  @Column('simple-array')
+  equipment: string[];
+
   @Field(() => Coordinates)
   @Column('json')
   coordinates: Coordinates;
+
+  @Field(() => GymTypes) // it's very important
+  @Column('enum', { name: 'type', enum: GymTypes })
+  type: GymTypes;
 
   /*AUTO GENERATED STUFF */
   @Field()

@@ -1,0 +1,17 @@
+mutation CreateGym(
+  $gym_name: String!
+  $description: String!
+  $membership_cost: Float!
+  $ownerId: String!
+  $location: String!
+  $coordinates: CoordinatesInput!
+) {
+  createGym(
+    gym_name: $gym_name
+    description: $description
+    membership_cost: $membership_cost
+    ownerId: $ownerId
+    location: $location
+    coordinates: $coordinates
+  )
+}

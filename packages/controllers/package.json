@@ -5,8 +5,9 @@
   "typings": "build/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "gen": "graphql-codegen --config codegen.yml"
+    "build": "npm run gen && tsc",
+    "gen": "graphql-codegen --config codegen.yml",
+    "psql": "psql -h localhost -d wanderer-db -U tom"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.13.0",
