@@ -261,6 +261,11 @@ export default function Navbar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            {!loading && data && data.me && !data.me.gym ? (
+              <Link to="/newgym">
+                <IconButton>CreateGym</IconButton>
+              </Link>
+            ) : null}
             <IconButton>{body}</IconButton>
             <IconButton
               edge="end"
