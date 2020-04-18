@@ -30,13 +30,25 @@ export type Gyms = {
   membership_cost: Scalars['Int'];
   ownerId: Scalars['String'];
   location: Scalars['String'];
+  equipment: Array<Scalars['String']>;
   coordinates: Coordinates;
+  type: GymTypes;
   isOpen: Scalars['Boolean'];
   date_created: Scalars['String'];
   owners: Array<User>;
   members: Array<User>;
   reviews: Array<Reviews>;
 };
+
+/** The types of gyms available on gym wanderer */
+export enum GymTypes {
+  Yoga = 'yoga',
+  Crossfit = 'crossfit',
+  Bodybuilding = 'bodybuilding',
+  Parkour = 'parkour',
+  General = 'general',
+  Boxing = 'boxing'
+}
 
 export type LoginResponse = {
    __typename?: 'LoginResponse';
@@ -73,10 +85,12 @@ export type MutationLoginArgs = {
 export type MutationCreateGymArgs = {
   gym_name: Scalars['String'];
   description: Scalars['String'];
+  type: GymTypes;
   membership_cost: Scalars['Float'];
   ownerId: Scalars['String'];
   location: Scalars['String'];
   coordinates: CoordinatesInput;
+  equipment: Array<Scalars['String']>;
 };
 
 export type Preferences = {
@@ -143,6 +157,8 @@ export type CreateGymMutationVariables = {
   ownerId: Scalars['String'];
   location: Scalars['String'];
   coordinates: CoordinatesInput;
+  type: GymTypes;
+  equipment: Array<Scalars['String']>;
 };
 
 
@@ -284,8 +300,8 @@ export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateGymDocument = gql`
-    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!) {
-  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates)
+    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!) {
+  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment)
 }
     `;
 export type CreateGymMutationFn = ApolloReactCommon.MutationFunction<CreateGymMutation, CreateGymMutationVariables>;
@@ -309,6 +325,8 @@ export type CreateGymMutationFn = ApolloReactCommon.MutationFunction<CreateGymMu
  *      ownerId: // value for 'ownerId'
  *      location: // value for 'location'
  *      coordinates: // value for 'coordinates'
+ *      type: // value for 'type'
+ *      equipment: // value for 'equipment'
  *   },
  * });
  */

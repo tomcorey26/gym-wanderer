@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Formik } from 'formik';
 import { FormContainer } from '../../components/FormComponents/FormContainer';
@@ -7,7 +7,7 @@ import { Page1 } from './Page1';
 import { Page2 } from './Page2';
 import { getAccessToken } from '../../accessToken';
 import { useRouter } from '../../hooks';
-import { useMyGymQuery } from '@gw/controllers';
+import { useMyGymQuery, useCreateGymMutation } from '@gw/controllers';
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
 const mock = {
@@ -22,13 +22,16 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
   const router = useRouter();
   const myGym = useMyGymQuery();
 
-  if (!getAccessToken()) {
-    router.history.push('/register');
-  }
+  useEffect(() => {
+    console.log(myGym.data);
+    if (!getAccessToken()) {
+      router.history.push('/register');
+    }
 
-  if (myGym.data) {
-    router.history.push('/');
-  }
+    if (myGym.data?.myGym) {
+      router.history.push('/');
+    }
+  }, [myGym.data, router.history]);
 
   return (
     <Formik
@@ -36,17 +39,24 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
         gym_name: '',
         description: '',
         membership_cost: '',
-        phone: '',
+        // phone: '',
+        location: '',
         equipment: [],
         type: '',
-        city: '',
-        state: '',
-        zip_code: '',
       }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => {
+        //Make sure to add in
+        //ownerId and coordinates
+        console.log(values);
+      }}
     >
       {({ values, isSubmitting, errors }) => (
-        <FormContainer title="Create Gym">
+        <FormContainer
+          title="Create Gym"
+          pageCount={pages.length}
+          pageNum={currentPage}
+          pageProgress
+        >
           {pages[currentPage]}
           <FormPageControl
             currentPage={currentPage}

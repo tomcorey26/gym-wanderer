@@ -5,6 +5,8 @@ mutation CreateGym(
   $ownerId: String!
   $location: String!
   $coordinates: CoordinatesInput!
+  $type: GymTypes!
+  $equipment: [String!]!
 ) {
   createGym(
     gym_name: $gym_name
@@ -13,5 +15,7 @@ mutation CreateGym(
     ownerId: $ownerId
     location: $location
     coordinates: $coordinates
+    type: $type
+    equipment: $equipment
   )
 }

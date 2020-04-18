@@ -16,6 +16,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var graphql_tag_1 = __importDefault(require("graphql-tag"));
 var ApolloReactHooks = __importStar(require("@apollo/react-hooks"));
+/** The types of gyms available on gym wanderer */
+var GymTypes;
+(function (GymTypes) {
+    GymTypes["Yoga"] = "yoga";
+    GymTypes["Crossfit"] = "crossfit";
+    GymTypes["Bodybuilding"] = "bodybuilding";
+    GymTypes["Parkour"] = "parkour";
+    GymTypes["General"] = "general";
+    GymTypes["Boxing"] = "boxing";
+})(GymTypes = exports.GymTypes || (exports.GymTypes = {}));
 exports.ByeDocument = graphql_tag_1.default(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    query Bye {\n  bye\n}\n    "], ["\n    query Bye {\n  bye\n}\n    "])));
 /**
  * __useByeQuery__
@@ -40,7 +50,7 @@ function useByeLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.ByeDocument, baseOptions);
 }
 exports.useByeLazyQuery = useByeLazyQuery;
-exports.CreateGymDocument = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates)\n}\n    "], ["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates)\n}\n    "])));
+exports.CreateGymDocument = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment)\n}\n    "], ["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment)\n}\n    "])));
 /**
  * __useCreateGymMutation__
  *
@@ -60,6 +70,8 @@ exports.CreateGymDocument = graphql_tag_1.default(templateObject_2 || (templateO
  *      ownerId: // value for 'ownerId'
  *      location: // value for 'location'
  *      coordinates: // value for 'coordinates'
+ *      type: // value for 'type'
+ *      equipment: // value for 'equipment'
  *   },
  * });
  */

@@ -26,13 +26,24 @@ export declare type Gyms = {
     membership_cost: Scalars['Int'];
     ownerId: Scalars['String'];
     location: Scalars['String'];
+    equipment: Array<Scalars['String']>;
     coordinates: Coordinates;
+    type: GymTypes;
     isOpen: Scalars['Boolean'];
     date_created: Scalars['String'];
     owners: Array<User>;
     members: Array<User>;
     reviews: Array<Reviews>;
 };
+/** The types of gyms available on gym wanderer */
+export declare enum GymTypes {
+    Yoga = "yoga",
+    Crossfit = "crossfit",
+    Bodybuilding = "bodybuilding",
+    Parkour = "parkour",
+    General = "general",
+    Boxing = "boxing"
+}
 export declare type LoginResponse = {
     __typename?: 'LoginResponse';
     user: User;
@@ -61,10 +72,12 @@ export declare type MutationLoginArgs = {
 export declare type MutationCreateGymArgs = {
     gym_name: Scalars['String'];
     description: Scalars['String'];
+    type: GymTypes;
     membership_cost: Scalars['Float'];
     ownerId: Scalars['String'];
     location: Scalars['String'];
     coordinates: CoordinatesInput;
+    equipment: Array<Scalars['String']>;
 };
 export declare type Preferences = {
     __typename?: 'Preferences';
@@ -121,6 +134,8 @@ export declare type CreateGymMutationVariables = {
     ownerId: Scalars['String'];
     location: Scalars['String'];
     coordinates: CoordinatesInput;
+    type: GymTypes;
+    equipment: Array<Scalars['String']>;
 };
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
@@ -244,6 +259,8 @@ export declare type CreateGymMutationFn = ApolloReactCommon.MutationFunction<Cre
  *      ownerId: // value for 'ownerId'
  *      location: // value for 'location'
  *      coordinates: // value for 'coordinates'
+ *      type: // value for 'type'
+ *      equipment: // value for 'equipment'
  *   },
  * });
  */

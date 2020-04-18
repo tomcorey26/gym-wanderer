@@ -266,7 +266,6 @@ export default function Navbar() {
                 <IconButton>CreateGym</IconButton>
               </Link>
             ) : null}
-            <IconButton>{body}</IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -275,7 +274,7 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {body} <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
