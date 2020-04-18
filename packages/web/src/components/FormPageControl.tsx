@@ -27,6 +27,7 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
     <>
       <div
         style={{
+          marginTop: 30,
           display: 'flex',
           justifyContent: positionCSS,
           width: '100%',
@@ -52,16 +53,22 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
           </Button>
         )}
       </div>
-      {showSubmit && (
-        <Button
-          disabled={isSubmitting || !isObjectEmpty(errors)}
-          type="submit"
-          variant="contained"
-          color="secondary"
-        >
-          Register
-        </Button>
-      )}
+      <div
+        style={{
+          marginTop: 30,
+        }}
+      >
+        {showSubmit && (
+          <Button
+            disabled={isSubmitting || !isObjectEmpty(errors)}
+            type="submit"
+            variant="contained"
+            color="secondary"
+          >
+            Register
+          </Button>
+        )}
+      </div>
     </>
   );
 };

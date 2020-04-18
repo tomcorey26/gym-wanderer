@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
-import { useGooglePlacesAutoComplete } from '../hooks';
+import { useGooglePlacesAutoComplete } from '../../hooks';
+import { AutoCompleteField } from './AutoCompleteField';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -16,23 +16,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //Uncomment line 59-63 to use the api
-export const GoogleMapsAutoComplete = () => {
-  // const isGoogleMapsApiLoaded = useGoogleMapsApi();
+export const FormikMapsAuto: React.FC = () => {
   const {
     options,
     handleAutoChange,
     handleChange,
-  } = useGooglePlacesAutoComplete();
+    locationString,
+  } = useGooglePlacesAutoComplete({ withFormik: true });
   const classes = useStyles();
 
   return (
     <Autocomplete
       id="google-map-demo"
       style={{
-        width: '80%',
+        width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: '1.5rem',
       }}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
@@ -46,12 +45,12 @@ export const GoogleMapsAutoComplete = () => {
       onChange={handleAutoChange}
       // disableOpenOnFocus
       renderInput={(params) => (
-        <TextField
+        <AutoCompleteField
+          placeholder="Location"
+          name="location"
           {...params}
-          label="Search for Gyms"
-          variant="outlined"
-          fullWidth
           onChange={handleChange}
+          autoVal={locationString}
         />
       )}
       renderOption={(option) => {
@@ -66,11 +65,7 @@ export const GoogleMapsAutoComplete = () => {
         );
 
         return (
-          <Grid
-            container
-            alignItems="center"
-            onSubmit={() => console.log('aye')}
-          >
+          <Grid container alignItems="center">
             <Grid item>
               <LocationOnIcon className={classes.icon} />
             </Grid>

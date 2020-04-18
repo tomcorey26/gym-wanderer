@@ -1,5 +1,7 @@
 import React from 'react';
 import { FormField } from '../../components/FormComponents/FormField';
+import { GoogleMapsAutoComplete } from '../../components/MapsAutoComplete';
+import { FormikMapsAuto } from '../../components/FormComponents/FormikMapsAuto';
 
 interface Page1Props {}
 
@@ -17,8 +19,8 @@ export const Page1: React.FC<Page1Props> = () => {
         step="any"
       />
       {/* <FormField placeholder="Phone #" name="phone" type="input" /> */}
-      <FormField placeholder="Password" name="password" type="password" />
-      <FormField placeholder="location Here" name="location" type="input" />
+      <FormikMapsAuto />
+      {/* <GoogleMapsAutoComplete inFormik /> */}
     </>
   );
 };
