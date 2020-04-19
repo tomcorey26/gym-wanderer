@@ -39,6 +39,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
         gym_name: '',
         description: '',
         membership_cost: '',
+        coordinates: {},
         // phone: '',
         location: '',
         equipment: [],

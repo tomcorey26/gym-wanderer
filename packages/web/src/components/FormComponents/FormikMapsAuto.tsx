@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
 import { useGooglePlacesAutoComplete } from '../../hooks';
 import { AutoCompleteField } from './AutoCompleteField';
+import { useField } from 'formik';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -17,12 +18,13 @@ const useStyles = makeStyles((theme) => ({
 
 //Uncomment line 59-63 to use the api
 export const FormikMapsAuto: React.FC = () => {
+  const [_, __, { setValue }] = useField({ name: 'coordinates' });
   const {
     options,
     handleAutoChange,
     handleChange,
     locationString,
-  } = useGooglePlacesAutoComplete({ withFormik: true });
+  } = useGooglePlacesAutoComplete({ withFormik: true, setCoords: setValue });
   const classes = useStyles();
 
   return (

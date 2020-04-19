@@ -1,18 +1,27 @@
 import React, { ChangeEvent } from 'react';
 import throttle from 'lodash/throttle';
-import { useRouter, useGoogleMapsApi } from '../hooks';
+import {
+  useRouter,
+  useGoogleMapsApi,
+  useFetchPlaceCoordinates,
+} from '../hooks';
 import { PlaceType } from '../types/Placetype';
 
 const autocompleteService = { current: null };
 
 interface Settings {
-  withFormik: boolean;
+  withFormik?: boolean;
+  setCoords?: (value: any) => void;
 }
 export const useGooglePlacesAutoComplete = (settings?: Settings) => {
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<PlaceType[]>([]);
+  const [selectedPlace, setSelectedPlace] = React.useState<PlaceType | null>(
+    null
+  );
   const [locationString, setLocationString] = React.useState<string>('');
   const isGoogleMapsApiLoaded = useGoogleMapsApi();
+  const coords = useFetchPlaceCoordinates(selectedPlace?.place_id);
   const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,14 +32,21 @@ export const useGooglePlacesAutoComplete = (settings?: Settings) => {
     event: ChangeEvent<{}>,
     value: PlaceType | null
   ) => {
-    if (settings?.withFormik && value) {
+    event.preventDefault();
+
+    if (value) {
+      setSelectedPlace(value);
       setLocationString(value?.description);
+    }
+    //With formik
+    if (settings?.withFormik) {
       return;
     }
-    event.preventDefault();
+    //without formik
     if (value && value.hasOwnProperty('place_id')) {
       router.history.push(`/search/?place_id=${value.place_id}`);
     } else {
+      // modal push here?
       console.log(value + 'is not a valid place');
     }
   };
@@ -71,6 +87,12 @@ export const useGooglePlacesAutoComplete = (settings?: Settings) => {
       active = false;
     };
   }, [inputValue, fetch]);
+
+  React.useEffect(() => {
+    if (settings?.withFormik && selectedPlace?.place_id && settings.setCoords) {
+      settings.setCoords(coords);
+    }
+  }, [selectedPlace?.place_id, coords]);
 
   return { options, handleAutoChange, handleChange, locationString };
 };
