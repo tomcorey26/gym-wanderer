@@ -2,6 +2,8 @@ x Create Nav bar
 x Create home page
 x Create user sign up form
 
+Make it so api keys are stored in jwt that the client side has to request
+
 Create a Gym(CORE USE WORK ON THIS FIRST)
 ************
 x User can create a Gym page

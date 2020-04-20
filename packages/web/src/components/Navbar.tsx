@@ -266,7 +266,7 @@ export default function Navbar() {
             </IconButton>
             {loggedInWithoutGym ? (
               <StyledLink to="/newgym">
-                <IconButton>CreateGym</IconButton>
+                <IconButton color="inherit">Create Gym</IconButton>
               </StyledLink>
             ) : null}
             {loggedInWithGym ? (

@@ -9,7 +9,6 @@ import {
 import GoogleMapReact from 'google-map-react';
 import MapPoint from '../components/MapPoint';
 import RadiusSelect from '../components/RadiusSelect';
-import { key } from '../key';
 import axios from 'axios';
 import SearchFilter from '../components/SearchFilter';
 import { SearchContext } from '../context/SearchState';
@@ -72,7 +71,7 @@ const Search: React.FC = () => {
           zoom={zoom}
           center={geo.position}
           // bootstrapURLKeys={{
-          //   key: key,
+          //   key: process.env.REACT_APP_GOOGLE_KEY,
           //   libraries: 'places',
           // }}
         >
