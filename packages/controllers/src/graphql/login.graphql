@@ -4,6 +4,22 @@ mutation Login($email: String!, $password: String!) {
     user {
       id
       email
+      first_name
+      last_name
+      username
+      birthday
+      preferences {
+        yoga
+        crossfit
+        bodybuilding
+        parkour
+        general
+        boxing
+      }
+      gym {
+        isOpen
+        gym_name
+      }
     }
   }
 }

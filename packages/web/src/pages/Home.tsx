@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import MapsAutoComplete from '../components/MapsAutoComplete';
+import { GoogleMapsAutoComplete } from '../components/MapsAutoComplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
@@ -48,7 +48,7 @@ const Home: React.FC<HomeProps> = () => {
           >
             Search for gyms to book your workouts
           </Typography>
-          <MapsAutoComplete />
+          <GoogleMapsAutoComplete />
         </Container>
       </Container>
     </>

@@ -261,7 +261,11 @@ export default function Navbar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton>{body}</IconButton>
+            {!loading && data && data.me && !data.me.gym ? (
+              <Link to="/newgym">
+                <IconButton>CreateGym</IconButton>
+              </Link>
+            ) : null}
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -270,7 +274,7 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {body} <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

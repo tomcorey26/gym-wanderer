@@ -32,6 +32,7 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
             if (!data) {
               return null;
             }
+
             store.writeQuery<MeQuery>({
               query: MeDocument,
               data: {

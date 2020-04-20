@@ -71,10 +71,10 @@ const Search: React.FC = () => {
         <GoogleMapReact
           zoom={zoom}
           center={geo.position}
-          bootstrapURLKeys={{
-            key: key,
-            libraries: 'places',
-          }}
+          // bootstrapURLKeys={{
+          //   key: key,
+          //   libraries: 'places',
+          // }}
         >
           {filteredGyms.map(({ location, cost, id }, i) => (
             <MapPoint

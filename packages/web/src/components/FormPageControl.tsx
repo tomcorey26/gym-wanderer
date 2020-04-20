@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { usePageControl } from '../hooks';
 import { Button } from '@material-ui/core';
 import { isObjectEmpty } from '../utils';
 
@@ -18,21 +17,26 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
   isSubmitting,
   setCurrentPage,
 }) => {
-  const { positionCSS, showNext, showPrevious, showSubmit } = usePageControl(
-    currentPage,
-    length
-  );
+  let positionCSS;
+  if (currentPage === 0) {
+    positionCSS = 'flex-end';
+  } else if (currentPage === length - 1) {
+    positionCSS = 'flex-start';
+  } else {
+    positionCSS = 'space-between';
+  }
 
   return (
     <>
       <div
         style={{
+          marginTop: 30,
           display: 'flex',
           justifyContent: positionCSS,
           width: '100%',
         }}
       >
-        {showPrevious && (
+        {currentPage !== 0 && (
           <Button
             variant="contained"
             color="primary"
@@ -42,7 +46,7 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
           </Button>
         )}
 
-        {showNext && (
+        {currentPage !== length - 1 && (
           <Button
             variant="contained"
             color="primary"
@@ -52,16 +56,22 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
           </Button>
         )}
       </div>
-      {showSubmit && (
-        <Button
-          disabled={isSubmitting || !isObjectEmpty(errors)}
-          type="submit"
-          variant="contained"
-          color="secondary"
-        >
-          Register
-        </Button>
-      )}
+      <div
+        style={{
+          marginTop: 30,
+        }}
+      >
+        {currentPage === length - 1 && (
+          <Button
+            disabled={isSubmitting || !isObjectEmpty(errors)}
+            type="submit"
+            variant="contained"
+            color="secondary"
+          >
+            Register
+          </Button>
+        )}
+      </div>
     </>
   );
 };

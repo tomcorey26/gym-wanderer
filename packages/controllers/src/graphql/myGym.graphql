@@ -1,0 +1,15 @@
+query MyGym {
+  myGym {
+    ownerId
+    gym_name
+    description
+    membership_cost
+    location
+    coordinates {
+      lat
+      lng
+    }
+    isOpen
+    date_created
+  }
+}
