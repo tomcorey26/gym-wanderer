@@ -20,7 +20,6 @@ export const Page1: React.FC<Page1Props> = () => {
       />
       {/* <FormField placeholder="Phone #" name="phone" type="input" /> */}
       <FormikMapsAuto />
-      {/* <GoogleMapsAutoComplete inFormik /> */}
     </>
   );
 };

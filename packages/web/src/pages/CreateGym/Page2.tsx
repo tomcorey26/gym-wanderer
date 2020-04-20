@@ -8,6 +8,9 @@ import {
   createStyles,
   FormLabel,
 } from '@material-ui/core';
+import { FieldArray, useFormikContext } from 'formik';
+import { CreateGymFormValues } from './CreateGym';
+import ChipInput from 'material-ui-chip-input';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +29,8 @@ interface Page2Props {}
 
 export const Page2: React.FC<Page2Props> = ({}) => {
   const classes = useStyles();
+  const { values } = useFormikContext<CreateGymFormValues>();
+
   return (
     <>
       <FormLabel component="legend">Choose Gym type</FormLabel>
@@ -71,7 +76,20 @@ export const Page2: React.FC<Page2Props> = ({}) => {
         </div>
       </FormControl>
       <div>
-        <h1>Equipment form here</h1>
+        <FieldArray
+          name="equipment"
+          render={(arrayHelpers) => (
+            <div>
+              <h2>Enter Gym Equipment</h2>
+              <ChipInput
+                variant="outlined"
+                value={values.equipment}
+                onAdd={(chip) => arrayHelpers.push(chip)}
+                onDelete={(_, index) => arrayHelpers.remove(index)}
+              />
+            </div>
+          )}
+        />
       </div>
     </>
   );

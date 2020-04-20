@@ -7,7 +7,13 @@ import { Page1 } from './Page1';
 import { Page2 } from './Page2';
 import { getAccessToken } from '../../accessToken';
 import { useRouter } from '../../hooks';
-import { useMyGymQuery, useCreateGymMutation } from '@gw/controllers';
+import {
+  useMyGymQuery,
+  useCreateGymMutation,
+  useMeQuery,
+  GymTypes,
+} from '@gw/controllers';
+import { Coords } from '../../types/Coords';
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
 const mock = {
@@ -16,39 +22,62 @@ const mock = {
 };
 
 const pages: JSX.Element[] = [<Page1 />, <Page2 />];
+export interface CreateGymFormValues {
+  gym_name: string;
+  description: string;
+  membership_cost: number;
+  coordinates: Coords;
+  // phone: '',
+  location: string;
+  equipment: string[];
+  type: string;
+}
 
 export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
+  const initialValues: CreateGymFormValues = {
+    gym_name: '',
+    description: '',
+    membership_cost: 0,
+    coordinates: {
+      lat: 0,
+      lng: 0,
+    },
+    // phone: '',
+    location: '',
+    equipment: [],
+    type: '',
+  };
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
-  const myGym = useMyGymQuery();
+  const { data, loading } = useMeQuery();
+  const [createGym] = useCreateGymMutation();
 
   useEffect(() => {
-    console.log(myGym.data);
     if (!getAccessToken()) {
       router.history.push('/register');
     }
 
-    if (myGym.data?.myGym) {
+    if (data?.me?.gym || (!data?.me && !loading)) {
       router.history.push('/');
     }
-  }, [myGym.data, router.history]);
-
+  }, [data, router.history, loading]);
   return (
     <Formik
-      initialValues={{
-        gym_name: '',
-        description: '',
-        membership_cost: '',
-        coordinates: {},
-        // phone: '',
-        location: '',
-        equipment: [],
-        type: '',
-      }}
-      onSubmit={(values) => {
-        //Make sure to add in
-        //ownerId and coordinates
-        console.log(values);
+      initialValues={initialValues}
+      onSubmit={async (values, { setSubmitting }) => {
+        setSubmitting(true);
+        let res = await createGym({
+          variables: {
+            ...values,
+            type:
+              GymTypes[
+                values.type.charAt(0).toUpperCase() + values.type.slice(1)
+              ],
+            ownerId: data!.me!.id,
+          },
+        });
+        console.log('response', res);
+        setSubmitting(false);
       }}
     >
       {({ values, isSubmitting, errors }) => (

@@ -13,6 +13,7 @@ import { isAuth } from '../isAuth';
 import { Gyms } from '../entity/Gym';
 import { Coordinates, GymTypes } from '../Types';
 import { MyContext } from '../MyContext';
+import { User } from '../entity/User';
 
 //type-graphql can ususally infer the type of paramaters except for some exceptions
 //like if the value might be null sometimes
@@ -55,17 +56,22 @@ export class GymResolver {
     @Args()
     GymArgs: CreateGymArgs
   ) {
-    const gymAlreadyMade = await Gyms.findOne({
+    const gym = await Gyms.findOne({
       where: { ownerId: payload!.userId },
     });
 
-    if (!!gymAlreadyMade) {
+    if (!!gym) {
       console.log('gym already made');
       return false;
     }
 
     try {
-      Gyms.insert(GymArgs);
+      const createdGym = await Gyms.create({ ...GymArgs });
+      await createdGym.save();
+      let result = await User.update(
+        { id: payload!.userId },
+        { gym: createdGym }
+      );
     } catch (err) {
       console.log(err);
       return false;

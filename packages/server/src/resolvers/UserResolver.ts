@@ -64,7 +64,7 @@ export class UserResolver {
 
   @Query(() => [User])
   users() {
-    return User.find();
+    return User.find({ relations: ['gym', 'preferences'] });
   }
 
   //either user or null
