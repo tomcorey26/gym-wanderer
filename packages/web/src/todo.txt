@@ -4,7 +4,8 @@ x Create user sign up form
 
 Create a Gym(CORE USE WORK ON THIS FIRST)
 ************
-User can create a Gym page
+x User can create a Gym page
+With pictures
 Users can find it by searching by name or location
 
 Reserve Times at gym (CORE USE WORK ON THIS FIRST)
@@ -15,6 +16,9 @@ User will also cet notification for reservation and email
 Both user and owner can see duration of member ships
 User can choose auto renewal? idk gotta be careful about credit card storage 
 
+notification
+************
+user will get notifications for events suchs as [signingup,registering,users joining their gym]
 Set up stripe
 *************
 

@@ -68,10 +68,7 @@ export class GymResolver {
     try {
       const createdGym = await Gyms.create({ ...GymArgs });
       await createdGym.save();
-      let result = await User.update(
-        { id: payload!.userId },
-        { gym: createdGym }
-      );
+      await User.update({ id: payload!.userId }, { gym: createdGym });
     } catch (err) {
       console.log(err);
       return false;

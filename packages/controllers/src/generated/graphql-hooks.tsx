@@ -194,7 +194,7 @@ export type LoginMutation = (
         & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
       ), gym: Maybe<(
         { __typename?: 'Gyms' }
-        & Pick<Gyms, 'isOpen' | 'gym_name'>
+        & Pick<Gyms, 'id' | 'gym_name'>
       )> }
     ) }
   ) }
@@ -221,7 +221,7 @@ export type MeQuery = (
       & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
     ), gym: Maybe<(
       { __typename?: 'Gyms' }
-      & Pick<Gyms, 'isOpen' | 'gym_name'>
+      & Pick<Gyms, 'id' | 'gym_name'>
     )> }
   )> }
 );
@@ -386,7 +386,7 @@ export const LoginDocument = gql`
         boxing
       }
       gym {
-        isOpen
+        id
         gym_name
       }
     }
@@ -466,7 +466,7 @@ export const MeDocument = gql`
       boxing
     }
     gym {
-      isOpen
+      id
       gym_name
     }
   }

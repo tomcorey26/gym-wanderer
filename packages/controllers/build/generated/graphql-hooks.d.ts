@@ -162,7 +162,7 @@ export declare type LoginMutation = ({
             } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
             gym: Maybe<({
                 __typename?: 'Gyms';
-            } & Pick<Gyms, 'isOpen' | 'gym_name'>)>;
+            } & Pick<Gyms, 'id' | 'gym_name'>)>;
         });
     });
 });
@@ -182,7 +182,7 @@ export declare type MeQuery = ({
         } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
         gym: Maybe<({
             __typename?: 'Gyms';
-        } & Pick<Gyms, 'isOpen' | 'gym_name'>)>;
+        } & Pick<Gyms, 'id' | 'gym_name'>)>;
     })>;
 });
 export declare type MyGymQueryVariables = {};

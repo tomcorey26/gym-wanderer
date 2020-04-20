@@ -15,7 +15,7 @@ query Me {
       boxing
     }
     gym {
-      isOpen
+      id
       gym_name
     }
   }

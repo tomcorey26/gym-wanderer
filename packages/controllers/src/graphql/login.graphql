@@ -17,7 +17,7 @@ mutation Login($email: String!, $password: String!) {
         boxing
       }
       gym {
-        isOpen
+        id
         gym_name
       }
     }
