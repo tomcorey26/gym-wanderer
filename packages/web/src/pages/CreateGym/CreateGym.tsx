@@ -5,13 +5,14 @@ import { FormContainer } from '../../components/FormComponents/FormContainer';
 import { FormPageControl } from '../../components/FormPageControl';
 import { Page1 } from './Page1';
 import { Page2 } from './Page2';
+import { Page3 } from './Page3';
 import { getAccessToken } from '../../accessToken';
 import { useRouter } from '../../hooks';
 import {
-  useMyGymQuery,
   useCreateGymMutation,
   useMeQuery,
   GymTypes,
+  MeDocument,
 } from '@gw/controllers';
 import { Coords } from '../../types/Coords';
 //we get route props because this component is passed
@@ -21,7 +22,7 @@ const mock = {
   password: 'Test123@',
 };
 
-const pages: JSX.Element[] = [<Page1 />, <Page2 />];
+const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 export interface CreateGymFormValues {
   gym_name: string;
   description: string;
@@ -30,6 +31,7 @@ export interface CreateGymFormValues {
   // phone: '',
   location: string;
   equipment: string[];
+  photo_urls: string[];
   type: string;
 }
 
@@ -45,6 +47,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
     // phone: '',
     location: '',
     equipment: [],
+    photo_urls: [],
     type: '',
   };
   const [currentPage, setCurrentPage] = useState(0);
@@ -75,6 +78,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
               ],
             ownerId: data!.me!.id,
           },
+          refetchQueries: [{ query: MeDocument }],
         });
         console.log('response', res);
         setSubmitting(false);

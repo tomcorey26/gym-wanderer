@@ -50,7 +50,7 @@ function useByeLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.ByeDocument, baseOptions);
 }
 exports.useByeLazyQuery = useByeLazyQuery;
-exports.CreateGymDocument = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment)\n}\n    "], ["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment)\n}\n    "])));
+exports.CreateGymDocument = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)\n}\n    "], ["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)\n}\n    "])));
 /**
  * __useCreateGymMutation__
  *
@@ -72,6 +72,7 @@ exports.CreateGymDocument = graphql_tag_1.default(templateObject_2 || (templateO
  *      coordinates: // value for 'coordinates'
  *      type: // value for 'type'
  *      equipment: // value for 'equipment'
+ *      photo_urls: // value for 'photo_urls'
  *   },
  * });
  */

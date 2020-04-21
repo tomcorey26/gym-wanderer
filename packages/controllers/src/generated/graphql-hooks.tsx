@@ -31,6 +31,7 @@ export type Gyms = {
   ownerId: Scalars['String'];
   location: Scalars['String'];
   equipment: Array<Scalars['String']>;
+  photo_urls: Array<Scalars['String']>;
   coordinates: Coordinates;
   type: GymTypes;
   isOpen: Scalars['Boolean'];
@@ -91,6 +92,7 @@ export type MutationCreateGymArgs = {
   location: Scalars['String'];
   coordinates: CoordinatesInput;
   equipment: Array<Scalars['String']>;
+  photo_urls: Array<Scalars['String']>;
 };
 
 export type Preferences = {
@@ -159,6 +161,7 @@ export type CreateGymMutationVariables = {
   coordinates: CoordinatesInput;
   type: GymTypes;
   equipment: Array<Scalars['String']>;
+  photo_urls: Array<Scalars['String']>;
 };
 
 
@@ -300,8 +303,8 @@ export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateGymDocument = gql`
-    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!) {
-  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment)
+    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {
+  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)
 }
     `;
 export type CreateGymMutationFn = ApolloReactCommon.MutationFunction<CreateGymMutation, CreateGymMutationVariables>;
@@ -327,6 +330,7 @@ export type CreateGymMutationFn = ApolloReactCommon.MutationFunction<CreateGymMu
  *      coordinates: // value for 'coordinates'
  *      type: // value for 'type'
  *      equipment: // value for 'equipment'
+ *      photo_urls: // value for 'photo_urls'
  *   },
  * });
  */

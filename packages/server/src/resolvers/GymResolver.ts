@@ -45,6 +45,9 @@ class CreateGymArgs {
 
   @Field(() => [String])
   equipment: string[];
+
+  @Field(() => [String])
+  photo_urls: string[];
 }
 
 @Resolver()

@@ -47,6 +47,10 @@ export class Gyms extends BaseEntity {
   @Column('simple-array')
   equipment: string[];
 
+  @Field(() => [String])
+  @Column('simple-array')
+  photo_urls: string[];
+
   @Field(() => Coordinates)
   @Column('json')
   coordinates: Coordinates;

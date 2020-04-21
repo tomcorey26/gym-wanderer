@@ -27,6 +27,7 @@ export declare type Gyms = {
     ownerId: Scalars['String'];
     location: Scalars['String'];
     equipment: Array<Scalars['String']>;
+    photo_urls: Array<Scalars['String']>;
     coordinates: Coordinates;
     type: GymTypes;
     isOpen: Scalars['Boolean'];
@@ -78,6 +79,7 @@ export declare type MutationCreateGymArgs = {
     location: Scalars['String'];
     coordinates: CoordinatesInput;
     equipment: Array<Scalars['String']>;
+    photo_urls: Array<Scalars['String']>;
 };
 export declare type Preferences = {
     __typename?: 'Preferences';
@@ -136,6 +138,7 @@ export declare type CreateGymMutationVariables = {
     coordinates: CoordinatesInput;
     type: GymTypes;
     equipment: Array<Scalars['String']>;
+    photo_urls: Array<Scalars['String']>;
 };
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
@@ -261,6 +264,7 @@ export declare type CreateGymMutationFn = ApolloReactCommon.MutationFunction<Cre
  *      coordinates: // value for 'coordinates'
  *      type: // value for 'type'
  *      equipment: // value for 'equipment'
+ *      photo_urls: // value for 'photo_urls'
  *   },
  * });
  */
