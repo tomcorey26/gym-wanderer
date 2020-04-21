@@ -26,7 +26,7 @@ const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 export interface CreateGymFormValues {
   gym_name: string;
   description: string;
-  membership_cost: number;
+  membership_cost: string;
   coordinates: Coords;
   // phone: '',
   location: string;
@@ -39,7 +39,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
   const initialValues: CreateGymFormValues = {
     gym_name: '',
     description: '',
-    membership_cost: 0,
+    membership_cost: '0',
     coordinates: {
       lat: 0,
       lng: 0,
@@ -72,6 +72,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
         let res = await createGym({
           variables: {
             ...values,
+            membership_cost: values.membership_cost.toString(),
             type:
               GymTypes[
                 values.type.charAt(0).toUpperCase() + values.type.slice(1)

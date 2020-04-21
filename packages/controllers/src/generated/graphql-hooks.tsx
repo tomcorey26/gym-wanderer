@@ -27,7 +27,7 @@ export type Gyms = {
   id: Scalars['String'];
   gym_name: Scalars['String'];
   description: Scalars['String'];
-  membership_cost: Scalars['Int'];
+  membership_cost: Scalars['String'];
   ownerId: Scalars['String'];
   location: Scalars['String'];
   equipment: Array<Scalars['String']>;
@@ -87,7 +87,7 @@ export type MutationCreateGymArgs = {
   gym_name: Scalars['String'];
   description: Scalars['String'];
   type: GymTypes;
-  membership_cost: Scalars['Float'];
+  membership_cost: Scalars['String'];
   ownerId: Scalars['String'];
   location: Scalars['String'];
   coordinates: CoordinatesInput;
@@ -121,7 +121,13 @@ export type Query = {
   users: Array<User>;
   me?: Maybe<User>;
   myGym?: Maybe<Gyms>;
+  gymDetails?: Maybe<User>;
   gyms: Array<Gyms>;
+};
+
+
+export type QueryGymDetailsArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 export type Reviews = {
@@ -155,7 +161,7 @@ export type ByeQuery = (
 export type CreateGymMutationVariables = {
   gym_name: Scalars['String'];
   description: Scalars['String'];
-  membership_cost: Scalars['Float'];
+  membership_cost: Scalars['String'];
   ownerId: Scalars['String'];
   location: Scalars['String'];
   coordinates: CoordinatesInput;
@@ -168,6 +174,27 @@ export type CreateGymMutationVariables = {
 export type CreateGymMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createGym'>
+);
+
+export type GymDetailsQueryVariables = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type GymDetailsQuery = (
+  { __typename?: 'Query' }
+  & { gymDetails: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'first_name' | 'last_name' | 'email'>
+    & { gym: Maybe<(
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'>
+      & { coordinates: (
+        { __typename?: 'Coordinates' }
+        & Pick<Coordinates, 'lat' | 'lng'>
+      ) }
+    )> }
+  )> }
 );
 
 export type HelloQueryVariables = {};
@@ -303,7 +330,7 @@ export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateGymDocument = gql`
-    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: Float!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {
+    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: String!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {
   createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)
 }
     `;
@@ -340,6 +367,54 @@ export function useCreateGymMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export const GymDetailsDocument = gql`
+    query gymDetails($id: String) {
+  gymDetails(id: $id) {
+    first_name
+    last_name
+    email
+    gym {
+      gym_name
+      description
+      membership_cost
+      location
+      equipment
+      photo_urls
+      coordinates {
+        lat
+        lng
+      }
+      type
+    }
+  }
+}
+    `;
+
+/**
+ * __useGymDetailsQuery__
+ *
+ * To run a query within a React component, call `useGymDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGymDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGymDetailsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGymDetailsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GymDetailsQuery, GymDetailsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GymDetailsQuery, GymDetailsQueryVariables>(GymDetailsDocument, baseOptions);
+      }
+export function useGymDetailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GymDetailsQuery, GymDetailsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GymDetailsQuery, GymDetailsQueryVariables>(GymDetailsDocument, baseOptions);
+        }
+export type GymDetailsQueryHookResult = ReturnType<typeof useGymDetailsQuery>;
+export type GymDetailsLazyQueryHookResult = ReturnType<typeof useGymDetailsLazyQuery>;
+export type GymDetailsQueryResult = ApolloReactCommon.QueryResult<GymDetailsQuery, GymDetailsQueryVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello

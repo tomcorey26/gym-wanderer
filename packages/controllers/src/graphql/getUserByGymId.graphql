@@ -1,0 +1,20 @@
+query gymDetails($id: String) {
+  gymDetails(id: $id) {
+    first_name
+    last_name
+    email
+    gym {
+      gym_name
+      description
+      membership_cost
+      location
+      equipment
+      photo_urls
+      coordinates {
+        lat
+        lng
+      }
+      type
+    }
+  }
+}

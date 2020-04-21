@@ -8,7 +8,7 @@ import {
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import { User } from './User';
 import { Reviews } from './Reviews';
 import { Coordinates, GymTypes } from '../Types';
@@ -31,9 +31,9 @@ export class Gyms extends BaseEntity {
   @Column('text')
   description: string;
 
-  @Field(() => Int)
+  @Field()
   @Column({ type: 'money' })
-  membership_cost: number;
+  membership_cost: string;
 
   @Field()
   @Column({ unique: true })

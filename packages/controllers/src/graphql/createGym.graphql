@@ -1,7 +1,7 @@
 mutation CreateGym(
   $gym_name: String!
   $description: String!
-  $membership_cost: Float!
+  $membership_cost: String!
   $ownerId: String!
   $location: String!
   $coordinates: CoordinatesInput!

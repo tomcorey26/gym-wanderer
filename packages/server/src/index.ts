@@ -23,7 +23,6 @@ import { GymResolver } from './resolvers/GymResolver';
   app.use(cookieParser());
   app.get('/', (_req, res) => res.send('yo'));
   app.post('/refresh_token', refreshToken);
-
   await createConnection();
 
   const apolloServer = new ApolloServer({

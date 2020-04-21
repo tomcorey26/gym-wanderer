@@ -1,21 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GymPicGallery from '../components/GymPicGallery';
 import GymReservationForm from '../components/GymReservationForm';
-import { photos } from '../assets/photos';
 import GymDescription from '../components/GymDescription';
+import { photos } from '../assets/photos';
+import { useParams } from 'react-router-dom';
+import { useGymDetailsQuery } from '@gw/controllers';
+import { CircularProgress, useMediaQuery } from '@material-ui/core';
 
 const GymDetail: React.FC = () => {
-  // const router = useRouter();
-  // const id = router.match.params.id;
+  const { id } = useParams();
+  const { data, loading } = useGymDetailsQuery({
+    variables: {
+      id: id,
+    },
+  });
+  const matches = useMediaQuery('(min-width:900px)');
 
-  // useEffect(() => {
-  //   let h1: any = document.getElementById("param");
-  //   h1.textContent = id;
-  // }, [id]);
+  if (loading)
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
+
+  if (!data?.gymDetails) {
+    return <h1>Gym does not exsist</h1>;
+  }
+
+  const photos = data.gymDetails.gym?.photo_urls.map((url) => {
+    return { src: url, width: 4, height: 2 };
+  });
 
   return (
     <div>
-      <GymPicGallery photos={photos} />
+      {matches && <GymPicGallery photos={photos} />}
       <div
         style={{
           width: '100%',
@@ -25,12 +43,26 @@ const GymDetail: React.FC = () => {
       >
         <div
           style={{
-            width: '60%',
+            width: '90%',
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'space-evenly',
           }}
         >
-          <GymDescription />
+          <GymDescription
+            owner={{
+              first_name: data.gymDetails.first_name,
+              last_name: data.gymDetails.last_name,
+              email: data.gymDetails.email,
+            }}
+            gym_name={data?.gymDetails?.gym?.gym_name}
+            description={data?.gymDetails?.gym?.description}
+            membership_cost={data?.gymDetails?.gym?.membership_cost}
+            location={data?.gymDetails?.gym?.location}
+            coordinates={data?.gymDetails?.gym?.coordinates}
+            type={data?.gymDetails?.gym?.type}
+            equipment={data.gymDetails.gym?.equipment}
+            loading={loading}
+          />
           <GymReservationForm />
         </div>
       </div>

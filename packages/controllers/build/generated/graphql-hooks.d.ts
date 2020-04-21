@@ -23,7 +23,7 @@ export declare type Gyms = {
     id: Scalars['String'];
     gym_name: Scalars['String'];
     description: Scalars['String'];
-    membership_cost: Scalars['Int'];
+    membership_cost: Scalars['String'];
     ownerId: Scalars['String'];
     location: Scalars['String'];
     equipment: Array<Scalars['String']>;
@@ -74,7 +74,7 @@ export declare type MutationCreateGymArgs = {
     gym_name: Scalars['String'];
     description: Scalars['String'];
     type: GymTypes;
-    membership_cost: Scalars['Float'];
+    membership_cost: Scalars['String'];
     ownerId: Scalars['String'];
     location: Scalars['String'];
     coordinates: CoordinatesInput;
@@ -105,7 +105,11 @@ export declare type Query = {
     users: Array<User>;
     me?: Maybe<User>;
     myGym?: Maybe<Gyms>;
+    gymDetails?: Maybe<User>;
     gyms: Array<Gyms>;
+};
+export declare type QueryGymDetailsArgs = {
+    id?: Maybe<Scalars['String']>;
 };
 export declare type Reviews = {
     __typename?: 'Reviews';
@@ -132,7 +136,7 @@ export declare type ByeQuery = ({
 export declare type CreateGymMutationVariables = {
     gym_name: Scalars['String'];
     description: Scalars['String'];
-    membership_cost: Scalars['Float'];
+    membership_cost: Scalars['String'];
     ownerId: Scalars['String'];
     location: Scalars['String'];
     coordinates: CoordinatesInput;
@@ -143,6 +147,24 @@ export declare type CreateGymMutationVariables = {
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'createGym'>);
+export declare type GymDetailsQueryVariables = {
+    id?: Maybe<Scalars['String']>;
+};
+export declare type GymDetailsQuery = ({
+    __typename?: 'Query';
+} & {
+    gymDetails: Maybe<({
+        __typename?: 'User';
+    } & Pick<User, 'first_name' | 'last_name' | 'email'> & {
+        gym: Maybe<({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
+            coordinates: ({
+                __typename?: 'Coordinates';
+            } & Pick<Coordinates, 'lat' | 'lng'>);
+        })>;
+    })>;
+});
 export declare type HelloQueryVariables = {};
 export declare type HelloQuery = ({
     __typename?: 'Query';
@@ -272,6 +294,28 @@ export declare function useCreateGymMutation(baseOptions?: ApolloReactHooks.Muta
 export declare type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export declare type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export declare type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export declare const GymDetailsDocument: import("graphql").DocumentNode;
+/**
+ * __useGymDetailsQuery__
+ *
+ * To run a query within a React component, call `useGymDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGymDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGymDetailsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export declare function useGymDetailsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GymDetailsQuery, GymDetailsQueryVariables>): ApolloReactCommon.QueryResult<GymDetailsQuery, GymDetailsQueryVariables>;
+export declare function useGymDetailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GymDetailsQuery, GymDetailsQueryVariables>): ApolloReactHooks.QueryTuple<GymDetailsQuery, GymDetailsQueryVariables>;
+export declare type GymDetailsQueryHookResult = ReturnType<typeof useGymDetailsQuery>;
+export declare type GymDetailsLazyQueryHookResult = ReturnType<typeof useGymDetailsLazyQuery>;
+export declare type GymDetailsQueryResult = ApolloReactCommon.QueryResult<GymDetailsQuery, GymDetailsQueryVariables>;
 export declare const HelloDocument: import("graphql").DocumentNode;
 /**
  * __useHelloQuery__
