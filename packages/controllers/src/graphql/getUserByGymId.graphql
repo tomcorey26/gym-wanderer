@@ -4,17 +4,7 @@ query gymDetails($id: String) {
     last_name
     email
     gym {
-      gym_name
-      description
-      membership_cost
-      location
-      equipment
-      photo_urls
-      coordinates {
-        lat
-        lng
-      }
-      type
+      ...gymInfo
     }
   }
 }

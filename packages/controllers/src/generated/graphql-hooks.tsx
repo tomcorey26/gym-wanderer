@@ -176,6 +176,20 @@ export type CreateGymMutation = (
   & Pick<Mutation, 'createGym'>
 );
 
+export type GymInfoFragment = (
+  { __typename?: 'Gyms' }
+  & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'>
+  & { coordinates: (
+    { __typename?: 'Coordinates' }
+    & Pick<Coordinates, 'lat' | 'lng'>
+  ) }
+);
+
+export type ProfileFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>
+);
+
 export type GymDetailsQueryVariables = {
   id?: Maybe<Scalars['String']>;
 };
@@ -188,11 +202,7 @@ export type GymDetailsQuery = (
     & Pick<User, 'first_name' | 'last_name' | 'email'>
     & { gym: Maybe<(
       { __typename?: 'Gyms' }
-      & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'>
-      & { coordinates: (
-        { __typename?: 'Coordinates' }
-        & Pick<Coordinates, 'lat' | 'lng'>
-      ) }
+      & GymInfoFragment
     )> }
   )> }
 );
@@ -245,7 +255,6 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>
     & { preferences: (
       { __typename?: 'Preferences' }
       & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
@@ -253,6 +262,7 @@ export type MeQuery = (
       { __typename?: 'Gyms' }
       & Pick<Gyms, 'id' | 'gym_name'>
     )> }
+    & ProfileFragment
   )> }
 );
 
@@ -263,11 +273,7 @@ export type MyGymQuery = (
   { __typename?: 'Query' }
   & { myGym: Maybe<(
     { __typename?: 'Gyms' }
-    & Pick<Gyms, 'ownerId' | 'gym_name' | 'description' | 'membership_cost' | 'location' | 'isOpen' | 'date_created'>
-    & { coordinates: (
-      { __typename?: 'Coordinates' }
-      & Pick<Coordinates, 'lat' | 'lng'>
-    ) }
+    & GymInfoFragment
   )> }
 );
 
@@ -294,11 +300,35 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'birthday' | 'first_name' | 'last_name'>
+    & ProfileFragment
   )> }
 );
 
-
+export const GymInfoFragmentDoc = gql`
+    fragment gymInfo on Gyms {
+  gym_name
+  description
+  membership_cost
+  location
+  equipment
+  photo_urls
+  coordinates {
+    lat
+    lng
+  }
+  type
+}
+    `;
+export const ProfileFragmentDoc = gql`
+    fragment profile on User {
+  id
+  email
+  first_name
+  last_name
+  username
+  birthday
+}
+    `;
 export const ByeDocument = gql`
     query Bye {
   bye
@@ -374,21 +404,11 @@ export const GymDetailsDocument = gql`
     last_name
     email
     gym {
-      gym_name
-      description
-      membership_cost
-      location
-      equipment
-      photo_urls
-      coordinates {
-        lat
-        lng
-      }
-      type
+      ...gymInfo
     }
   }
 }
-    `;
+    ${GymInfoFragmentDoc}`;
 
 /**
  * __useGymDetailsQuery__
@@ -530,12 +550,7 @@ export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<Logout
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    email
-    first_name
-    last_name
-    username
-    birthday
+    ...profile
     preferences {
       yoga
       crossfit
@@ -550,7 +565,7 @@ export const MeDocument = gql`
     }
   }
 }
-    `;
+    ${ProfileFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -579,20 +594,10 @@ export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariab
 export const MyGymDocument = gql`
     query MyGym {
   myGym {
-    ownerId
-    gym_name
-    description
-    membership_cost
-    location
-    coordinates {
-      lat
-      lng
-    }
-    isOpen
-    date_created
+    ...gymInfo
   }
 }
-    `;
+    ${GymInfoFragmentDoc}`;
 
 /**
  * __useMyGymQuery__
@@ -657,14 +662,10 @@ export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<Regi
 export const UsersDocument = gql`
     query Users {
   users {
-    id
-    email
-    birthday
-    first_name
-    last_name
+    ...profile
   }
 }
-    `;
+    ${ProfileFragmentDoc}`;
 
 /**
  * __useUsersQuery__

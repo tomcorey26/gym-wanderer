@@ -147,6 +147,16 @@ export declare type CreateGymMutationVariables = {
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'createGym'>);
+export declare type GymInfoFragment = ({
+    __typename?: 'Gyms';
+} & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
+    coordinates: ({
+        __typename?: 'Coordinates';
+    } & Pick<Coordinates, 'lat' | 'lng'>);
+});
+export declare type ProfileFragment = ({
+    __typename?: 'User';
+} & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>);
 export declare type GymDetailsQueryVariables = {
     id?: Maybe<Scalars['String']>;
 };
@@ -158,11 +168,7 @@ export declare type GymDetailsQuery = ({
     } & Pick<User, 'first_name' | 'last_name' | 'email'> & {
         gym: Maybe<({
             __typename?: 'Gyms';
-        } & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
-            coordinates: ({
-                __typename?: 'Coordinates';
-            } & Pick<Coordinates, 'lat' | 'lng'>);
-        })>;
+        } & GymInfoFragment)>;
     })>;
 });
 export declare type HelloQueryVariables = {};
@@ -201,14 +207,14 @@ export declare type MeQuery = ({
 } & {
     me: Maybe<({
         __typename?: 'User';
-    } & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'> & {
+    } & {
         preferences: ({
             __typename?: 'Preferences';
         } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
         gym: Maybe<({
             __typename?: 'Gyms';
         } & Pick<Gyms, 'id' | 'gym_name'>)>;
-    })>;
+    } & ProfileFragment)>;
 });
 export declare type MyGymQueryVariables = {};
 export declare type MyGymQuery = ({
@@ -216,11 +222,7 @@ export declare type MyGymQuery = ({
 } & {
     myGym: Maybe<({
         __typename?: 'Gyms';
-    } & Pick<Gyms, 'ownerId' | 'gym_name' | 'description' | 'membership_cost' | 'location' | 'isOpen' | 'date_created'> & {
-        coordinates: ({
-            __typename?: 'Coordinates';
-        } & Pick<Coordinates, 'lat' | 'lng'>);
-    })>;
+    } & GymInfoFragment)>;
 });
 export declare type RegisterMutationVariables = {
     last_name: Scalars['String'];
@@ -240,8 +242,10 @@ export declare type UsersQuery = ({
 } & {
     users: Array<({
         __typename?: 'User';
-    } & Pick<User, 'id' | 'email' | 'birthday' | 'first_name' | 'last_name'>)>;
+    } & ProfileFragment)>;
 });
+export declare const GymInfoFragmentDoc: import("graphql").DocumentNode;
+export declare const ProfileFragmentDoc: import("graphql").DocumentNode;
 export declare const ByeDocument: import("graphql").DocumentNode;
 /**
  * __useByeQuery__
