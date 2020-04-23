@@ -11,6 +11,8 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import { Preferences } from './Preferences';
 import { Gyms } from './Gym';
 import { Reviews } from './Reviews';
+import { Membership } from './Membership';
+import { Alert } from './Alert';
 
 //field is from type grapql so we can get graphql types
 //@ column is from typeorm, you put in postgres types
@@ -57,6 +59,15 @@ export class User extends BaseEntity {
   @JoinColumn()
   gym: Gyms;
 
+  @Field(() => [Reviews], { nullable: true })
   @OneToMany(() => Reviews, (review) => review.creator)
   reviews: Reviews[];
+
+  @Field(() => [Membership], { nullable: true })
+  @OneToMany(() => Membership, (membership) => membership.member)
+  memberships: Membership[];
+
+  @Field(() => [Alert], { nullable: true })
+  @OneToMany(() => Alert, (alert) => alert.user)
+  alerts: Alert[];
 }

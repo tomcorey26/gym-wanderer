@@ -1,0 +1,13 @@
+fragment gymInfo on Gyms {
+  gym_name
+  description
+  membership_cost
+  location
+  equipment
+  photo_urls
+  coordinates {
+    lat
+    lng
+  }
+  type
+}

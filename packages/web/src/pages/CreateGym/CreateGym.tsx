@@ -5,13 +5,14 @@ import { FormContainer } from '../../components/FormComponents/FormContainer';
 import { FormPageControl } from '../../components/FormPageControl';
 import { Page1 } from './Page1';
 import { Page2 } from './Page2';
+import { Page3 } from './Page3';
 import { getAccessToken } from '../../accessToken';
 import { useRouter } from '../../hooks';
 import {
-  useMyGymQuery,
   useCreateGymMutation,
   useMeQuery,
   GymTypes,
+  MeDocument,
 } from '@gw/controllers';
 import { Coords } from '../../types/Coords';
 //we get route props because this component is passed
@@ -21,15 +22,16 @@ const mock = {
   password: 'Test123@',
 };
 
-const pages: JSX.Element[] = [<Page1 />, <Page2 />];
+const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 export interface CreateGymFormValues {
   gym_name: string;
   description: string;
-  membership_cost: number;
+  membership_cost: string;
   coordinates: Coords;
   // phone: '',
   location: string;
   equipment: string[];
+  photo_urls: string[];
   type: string;
 }
 
@@ -37,7 +39,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
   const initialValues: CreateGymFormValues = {
     gym_name: '',
     description: '',
-    membership_cost: 0,
+    membership_cost: '0',
     coordinates: {
       lat: 0,
       lng: 0,
@@ -45,6 +47,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
     // phone: '',
     location: '',
     equipment: [],
+    photo_urls: [],
     type: '',
   };
   const [currentPage, setCurrentPage] = useState(0);
@@ -69,12 +72,14 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
         let res = await createGym({
           variables: {
             ...values,
+            membership_cost: values.membership_cost.toString(),
             type:
               GymTypes[
                 values.type.charAt(0).toUpperCase() + values.type.slice(1)
               ],
             ownerId: data!.me!.id,
           },
+          refetchQueries: [{ query: MeDocument }],
         });
         console.log('response', res);
         setSubmitting(false);

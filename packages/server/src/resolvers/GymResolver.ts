@@ -5,9 +5,9 @@ import {
   ArgsType,
   Field,
   Args,
-  Float,
   Query,
   Ctx,
+  Arg,
 } from 'type-graphql';
 import { isAuth } from '../isAuth';
 import { Gyms } from '../entity/Gym';
@@ -31,8 +31,8 @@ class CreateGymArgs {
   @Field(() => GymTypes) // it's very important
   type: GymTypes;
 
-  @Field(() => Float)
-  membership_cost: number;
+  @Field()
+  membership_cost: string;
 
   @Field()
   ownerId: string;
@@ -45,6 +45,9 @@ class CreateGymArgs {
 
   @Field(() => [String])
   equipment: string[];
+
+  @Field(() => [String])
+  photo_urls: string[];
 }
 
 @Resolver()
@@ -68,10 +71,7 @@ export class GymResolver {
     try {
       const createdGym = await Gyms.create({ ...GymArgs });
       await createdGym.save();
-      let result = await User.update(
-        { id: payload!.userId },
-        { gym: createdGym }
-      );
+      await User.update({ id: payload!.userId }, { gym: createdGym });
     } catch (err) {
       console.log(err);
       return false;
@@ -89,6 +89,18 @@ export class GymResolver {
       console.log(err);
       return null;
     }
+  }
+
+  @Query(() => User, { nullable: true })
+  async gymDetails(@Arg('id', { nullable: true }) id?: string) {
+    if (!id) return;
+
+    return await User.findOne({
+      where: {
+        gym: id,
+      },
+      relations: ['gym'],
+    });
   }
 
   @Query(() => [Gyms])

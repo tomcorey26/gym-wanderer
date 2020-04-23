@@ -19,6 +19,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import { purple } from '@material-ui/core/colors';
 import { NavLink, Link } from 'react-router-dom';
 import { useMeQuery, useLogoutMutation } from '@gw/controllers';
@@ -102,6 +103,10 @@ export default function Navbar() {
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
 
+  const IsLoggedIn = !loading && data && data.me;
+  const loggedInWithoutGym = IsLoggedIn && !data?.me?.gym;
+  const loggedInWithGym = IsLoggedIn && data?.me?.gym;
+
   let body: any = null;
   if (loading) {
     body = null;
@@ -148,13 +153,18 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <NavLink to="/" style={menuItemStyle}>
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      </NavLink>
-      <NavLink to="/" style={menuItemStyle}>
         <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
       </NavLink>
-      <NavLink to="/login" style={menuItemStyle}>
-        <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+      {!IsLoggedIn && [
+        <NavLink key={1} to="/login" style={menuItemStyle}>
+          <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+        </NavLink>,
+        <NavLink key={2} to="/register" style={menuItemStyle}>
+          <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+        </NavLink>,
+      ]}
+      <NavLink to="/bye" style={menuItemStyle}>
+        <MenuItem onClick={handleMenuClose}>bye</MenuItem>
       </NavLink>
       {!loading && data && data.me ? (
         <MenuItem
@@ -168,13 +178,6 @@ export default function Navbar() {
           Logout
         </MenuItem>
       ) : null}
-
-      <NavLink to="/register" style={menuItemStyle}>
-        <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-      </NavLink>
-      <NavLink to="/bye" style={menuItemStyle}>
-        <MenuItem onClick={handleMenuClose}>bye</MenuItem>
-      </NavLink>
     </Menu>
   );
 
@@ -261,10 +264,18 @@ export default function Navbar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            {!loading && data && data.me && !data.me.gym ? (
-              <Link to="/newgym">
-                <IconButton>CreateGym</IconButton>
-              </Link>
+            {loggedInWithoutGym ? (
+              <StyledLink to="/newgym">
+                <IconButton color="inherit">Create Gym</IconButton>
+              </StyledLink>
+            ) : null}
+            {loggedInWithGym ? (
+              <StyledLink to={`/gyms/${data?.me?.gym?.id}`}>
+                <IconButton color="inherit">
+                  <span style={{ marginRight: 3 }}>My Gym</span>
+                  <FitnessCenterIcon color="inherit" />
+                </IconButton>
+              </StyledLink>
             ) : null}
             <IconButton
               edge="end"
@@ -274,7 +285,7 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              {body} <AccountCircle />
+              <span style={{ marginRight: 3 }}>{body}</span> <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -295,3 +306,9 @@ export default function Navbar() {
     </div>
   );
 }
+
+const StyledLink: React.FC<any> = ({ children, to, ...props }) => (
+  <Link {...props} to={to} style={{ color: 'white', textDecoration: 'none' }}>
+    {children}
+  </Link>
+);

@@ -1,12 +1,13 @@
 mutation CreateGym(
   $gym_name: String!
   $description: String!
-  $membership_cost: Float!
+  $membership_cost: String!
   $ownerId: String!
   $location: String!
   $coordinates: CoordinatesInput!
   $type: GymTypes!
   $equipment: [String!]!
+  $photo_urls: [String!]!
 ) {
   createGym(
     gym_name: $gym_name
@@ -17,5 +18,6 @@ mutation CreateGym(
     coordinates: $coordinates
     type: $type
     equipment: $equipment
+    photo_urls: $photo_urls
   )
 }

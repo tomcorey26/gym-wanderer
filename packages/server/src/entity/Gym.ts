@@ -2,16 +2,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   BaseEntity,
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
-import { Field, Int, ObjectType } from 'type-graphql';
-import { User } from './User';
+import { Field, ObjectType } from 'type-graphql';
 import { Reviews } from './Reviews';
 import { Coordinates, GymTypes } from '../Types';
+import { Membership } from './Membership';
 
 //adding "baseEntitiy" allows us to use crud operations
 // for this table in the data base in our resolver
@@ -31,9 +29,9 @@ export class Gyms extends BaseEntity {
   @Column('text')
   description: string;
 
-  @Field(() => Int)
+  @Field()
   @Column({ type: 'money' })
-  membership_cost: number;
+  membership_cost: string;
 
   @Field()
   @Column({ unique: true })
@@ -46,6 +44,10 @@ export class Gyms extends BaseEntity {
   @Field(() => [String])
   @Column('simple-array')
   equipment: string[];
+
+  @Field(() => [String])
+  @Column('simple-array')
+  photo_urls: string[];
 
   @Field(() => Coordinates)
   @Column('json')
@@ -64,17 +66,11 @@ export class Gyms extends BaseEntity {
   @CreateDateColumn()
   date_created: string;
 
-  @Field(() => User)
-  @ManyToMany(() => User)
-  @JoinTable()
-  owners: User[];
-
-  @Field(() => User)
-  @ManyToMany(() => User)
-  @JoinTable()
-  members: User[];
-
-  @Field(() => Reviews)
+  @Field(() => [Reviews], { nullable: true })
   @OneToMany(() => Reviews, (review) => review.gym)
   reviews: Reviews[];
+
+  @Field(() => [Membership], { nullable: true })
+  @OneToMany(() => Membership, (membership) => membership.gym)
+  memberships: Membership[];
 }
