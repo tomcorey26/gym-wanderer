@@ -199,7 +199,8 @@ export type GymDetailsQuery = (
   { __typename?: 'Query' }
   & { gymDetails: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'first_name' | 'last_name' | 'email'>
+    & Pick<User, 'email'>
+    & { owner_first_name: User['first_name'], owner_last_name: User['last_name'] }
     & { gym: Maybe<(
       { __typename?: 'Gyms' }
       & GymInfoFragment
@@ -400,8 +401,8 @@ export type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<Cre
 export const GymDetailsDocument = gql`
     query gymDetails($id: String) {
   gymDetails(id: $id) {
-    first_name
-    last_name
+    owner_first_name: first_name
+    owner_last_name: last_name
     email
     gym {
       ...gymInfo

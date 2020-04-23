@@ -165,7 +165,10 @@ export declare type GymDetailsQuery = ({
 } & {
     gymDetails: Maybe<({
         __typename?: 'User';
-    } & Pick<User, 'first_name' | 'last_name' | 'email'> & {
+    } & Pick<User, 'email'> & {
+        owner_first_name: User['first_name'];
+        owner_last_name: User['last_name'];
+    } & {
         gym: Maybe<({
             __typename?: 'Gyms';
         } & GymInfoFragment)>;

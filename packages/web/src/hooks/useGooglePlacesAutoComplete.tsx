@@ -20,7 +20,7 @@ export const useGooglePlacesAutoComplete = (settings?: Settings) => {
     null
   );
   const [locationString, setLocationString] = React.useState<string>('');
-  // const isGoogleMapsApiLoaded = useGoogleMapsApi();
+  const isGoogleMapsApiLoaded = useGoogleMapsApi();
   const coords = useFetchPlaceCoordinates(selectedPlace?.place_id);
   const router = useRouter();
 

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import GymPicGallery from '../components/GymPicGallery';
 import GymReservationForm from '../components/GymReservationForm';
 import GymDescription from '../components/GymDescription';
-import { photos } from '../assets/photos';
 import { useParams } from 'react-router-dom';
 import { useGymDetailsQuery } from '@gw/controllers';
 import { CircularProgress, useMediaQuery } from '@material-ui/core';
@@ -14,7 +13,7 @@ const GymDetail: React.FC = () => {
       id: id,
     },
   });
-  const matches = useMediaQuery('(min-width:900px)');
+  const matches = useMediaQuery('(min-width:1000px)');
 
   if (loading)
     return (
@@ -50,8 +49,8 @@ const GymDetail: React.FC = () => {
         >
           <GymDescription
             owner={{
-              first_name: data.gymDetails.first_name,
-              last_name: data.gymDetails.last_name,
+              first_name: data.gymDetails.owner_first_name,
+              last_name: data.gymDetails.owner_last_name,
               email: data.gymDetails.email,
             }}
             gym_name={data?.gymDetails?.gym?.gym_name}
@@ -63,7 +62,9 @@ const GymDetail: React.FC = () => {
             equipment={data.gymDetails.gym?.equipment}
             loading={loading}
           />
-          <GymReservationForm />
+          <GymReservationForm
+            membership_cost={data?.gymDetails?.gym?.membership_cost}
+          />
         </div>
       </div>
     </div>

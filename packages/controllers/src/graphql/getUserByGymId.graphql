@@ -1,7 +1,7 @@
 query gymDetails($id: String) {
   gymDetails(id: $id) {
-    first_name
-    last_name
+    owner_first_name: first_name
+    owner_last_name: last_name
     email
     gym {
       ...gymInfo

@@ -82,7 +82,7 @@ function useCreateGymMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.CreateGymDocument, baseOptions);
 }
 exports.useCreateGymMutation = useCreateGymMutation;
-exports.GymDetailsDocument = graphql_tag_1.default(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    first_name\n    last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""], ["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    first_name\n    last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
+exports.GymDetailsDocument = graphql_tag_1.default(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    owner_first_name: first_name\n    owner_last_name: last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""], ["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    owner_first_name: first_name\n    owner_last_name: last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
 /**
  * __useGymDetailsQuery__
  *
