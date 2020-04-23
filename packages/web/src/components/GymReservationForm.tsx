@@ -102,7 +102,6 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           value={monthCount}
           onChange={(e) => setMonthCount(e.target.value)}
           InputProps={{ inputProps: { min: 1 } }}
-          defaultValue={1}
         />
         <Box className={classes.date}>
           <h1>Start date</h1>

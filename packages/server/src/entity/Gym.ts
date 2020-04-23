@@ -2,16 +2,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   BaseEntity,
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
 import { Field, ObjectType } from 'type-graphql';
-import { User } from './User';
 import { Reviews } from './Reviews';
 import { Coordinates, GymTypes } from '../Types';
+import { Membership } from './Membership';
 
 //adding "baseEntitiy" allows us to use crud operations
 // for this table in the data base in our resolver
@@ -68,17 +66,11 @@ export class Gyms extends BaseEntity {
   @CreateDateColumn()
   date_created: string;
 
-  @Field(() => User)
-  @ManyToMany(() => User)
-  @JoinTable()
-  owners: User[];
-
-  @Field(() => User)
-  @ManyToMany(() => User)
-  @JoinTable()
-  members: User[];
-
-  @Field(() => Reviews)
+  @Field(() => [Reviews], { nullable: true })
   @OneToMany(() => Reviews, (review) => review.gym)
   reviews: Reviews[];
+
+  @Field(() => [Membership], { nullable: true })
+  @OneToMany(() => Membership, (membership) => membership.gym)
+  memberships: Membership[];
 }

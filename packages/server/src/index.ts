@@ -4,12 +4,12 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { refreshToken } from './refreshToken';
 import { buildSchema } from 'type-graphql';
-import { UserResolver } from './resolvers/UserResolver';
 import { createConnection } from 'typeorm';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
+import { UserResolver } from './resolvers/UserResolver';
 import { GymResolver } from './resolvers/GymResolver';
+import { MembershipResolver } from './resolvers/MembershipResolver';
 
 //lambda function (it calls itself!)
 (async () => {
@@ -27,7 +27,7 @@ import { GymResolver } from './resolvers/GymResolver';
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, GymResolver],
+      resolvers: [UserResolver, GymResolver, MembershipResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),
