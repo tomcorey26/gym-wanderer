@@ -1,0 +1,3 @@
+mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {
+  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)
+}

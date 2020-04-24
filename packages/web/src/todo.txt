@@ -7,7 +7,7 @@ Make it so api keys are stored in jwt that the client side has to request
 Create a Gym(CORE USE WORK ON THIS FIRST)
 ************
 x User can create a Gym page
-With pictures
+x With pictures
 Users can find it by searching by name or location
 
 Reserve Times at gym (CORE USE WORK ON THIS FIRST)

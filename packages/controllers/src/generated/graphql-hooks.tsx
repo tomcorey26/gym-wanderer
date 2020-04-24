@@ -11,6 +11,14 @@ export type Scalars = {
   Float: number;
 };
 
+export type Alert = {
+   __typename?: 'Alert';
+  message: Scalars['String'];
+  link: Scalars['String'];
+  isActive: Scalars['Boolean'];
+  user: User;
+};
+
 export type Coordinates = {
    __typename?: 'Coordinates';
   lat: Scalars['Float'];
@@ -36,9 +44,8 @@ export type Gyms = {
   type: GymTypes;
   isOpen: Scalars['Boolean'];
   date_created: Scalars['String'];
-  owners: Array<User>;
-  members: Array<User>;
-  reviews: Array<Reviews>;
+  reviews?: Maybe<Array<Reviews>>;
+  memberships?: Maybe<Array<Membership>>;
 };
 
 /** The types of gyms available on gym wanderer */
@@ -57,12 +64,21 @@ export type LoginResponse = {
   accessToken: Scalars['String'];
 };
 
+export type Membership = {
+   __typename?: 'Membership';
+  isAutoRenewalActive: Scalars['Boolean'];
+  end_date: Scalars['Float'];
+  member: User;
+  gym: Gyms;
+};
+
 export type Mutation = {
    __typename?: 'Mutation';
   register: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   createGym: Scalars['Boolean'];
+  joinGym: Scalars['Boolean'];
 };
 
 
@@ -95,6 +111,13 @@ export type MutationCreateGymArgs = {
   photo_urls: Array<Scalars['String']>;
 };
 
+
+export type MutationJoinGymArgs = {
+  auto_renewal: Scalars['Boolean'];
+  end_date: Scalars['Float'];
+  gymId: Scalars['String'];
+};
+
 export type Preferences = {
    __typename?: 'Preferences';
   yoga: Scalars['Boolean'];
@@ -123,11 +146,18 @@ export type Query = {
   myGym?: Maybe<Gyms>;
   gymDetails?: Maybe<User>;
   gyms: Array<Gyms>;
+  myMemberships?: Maybe<Array<Membership>>;
+  gymMemberships?: Maybe<Array<Membership>>;
 };
 
 
 export type QueryGymDetailsArgs = {
   id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGymMembershipsArgs = {
+  gymId?: Maybe<Scalars['String']>;
 };
 
 export type Reviews = {
@@ -148,6 +178,9 @@ export type User = {
   birthday?: Maybe<Scalars['String']>;
   preferences: Preferences;
   gym?: Maybe<Gyms>;
+  reviews?: Maybe<Array<Reviews>>;
+  memberships?: Maybe<Array<Membership>>;
+  alerts?: Maybe<Array<Alert>>;
 };
 
 export type ByeQueryVariables = {};
@@ -214,6 +247,18 @@ export type HelloQueryVariables = {};
 export type HelloQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'hello'>
+);
+
+export type JoinGymMutationVariables = {
+  gymId: Scalars['String'];
+  auto_renewal: Scalars['Boolean'];
+  end_date: Scalars['Float'];
+};
+
+
+export type JoinGymMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinGym'>
 );
 
 export type LoginMutationVariables = {
@@ -466,6 +511,38 @@ export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
+export const JoinGymDocument = gql`
+    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {
+  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)
+}
+    `;
+export type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutation, JoinGymMutationVariables>;
+
+/**
+ * __useJoinGymMutation__
+ *
+ * To run a mutation, you first call `useJoinGymMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinGymMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinGymMutation, { data, loading, error }] = useJoinGymMutation({
+ *   variables: {
+ *      gymId: // value for 'gymId'
+ *      auto_renewal: // value for 'auto_renewal'
+ *      end_date: // value for 'end_date'
+ *   },
+ * });
+ */
+export function useJoinGymMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinGymMutation, JoinGymMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinGymMutation, JoinGymMutationVariables>(JoinGymDocument, baseOptions);
+      }
+export type JoinGymMutationHookResult = ReturnType<typeof useJoinGymMutation>;
+export type JoinGymMutationResult = ApolloReactCommon.MutationResult<JoinGymMutation>;
+export type JoinGymMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinGymMutation, JoinGymMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

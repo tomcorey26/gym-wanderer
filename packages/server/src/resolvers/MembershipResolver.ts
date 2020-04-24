@@ -8,9 +8,10 @@ import {
 } from 'type-graphql';
 import { isAuth } from '../isAuth';
 import { MyContext } from '../MyContext';
-import { Gyms } from '../entity/Gym';
-import { User } from '../entity/User';
 import { Membership } from '../entity/Membership';
+import { Gyms } from '../entity/Gym';
+import { Alert } from '../entity/Alert';
+import { User } from '../entity/User';
 
 @Resolver()
 export class MembershipResolver {
@@ -23,21 +24,27 @@ export class MembershipResolver {
     @Arg('auto_renewal') auto_renewal: boolean
   ) {
     try {
-      const userId = payload!.userId;
-
-      const gym = await Gyms.findOne({
-        where: { id: gymId },
-      });
-      const member = await User.findOne({
-        where: { id: userId },
-      });
-
-      //create membership
+      const memberId = payload!.userId;
       await Membership.create({
         end_date,
-        gym,
-        member,
+        memberId,
+        gymId,
         isAutoRenewalActive: auto_renewal,
+      }).save();
+
+      const joinedGym = await Gyms.findOne(gymId);
+
+      await Alert.create({
+        message: `Congrats! You have joined ${joinedGym?.gym_name}`,
+        userId: memberId,
+        link: `/mygyms`,
+      }).save();
+
+      const member = await User.findOne(memberId);
+      await Alert.create({
+        message: `Congrats! ${member?.first_name} ${member?.last_name} has joined your gym`,
+        userId: joinedGym?.ownerId,
+        link: `/gyms/${joinedGym?.id}/members`,
       }).save();
     } catch (err) {
       console.log(err);
@@ -48,27 +55,22 @@ export class MembershipResolver {
 
   @Query(() => [Membership], { nullable: true })
   @UseMiddleware(isAuth)
-  async userMemberships(@Ctx() { payload }: MyContext) {
-    let memberships = await Membership.find({
+  async myMemberships(@Ctx() { payload }: MyContext) {
+    const memberships = await Membership.find({
       where: { memberId: payload!.userId },
       relations: ['member', 'gym'],
     });
-    console.log(memberships);
 
     return memberships;
   }
 
-  // @Query(() => User, { nullable: true })
-  // async gymDetails(@Arg('id', { nullable: true }) id?: string) {
-  //   if (!id) return;
-
-  //   return await User.findOne({
-  //     where: {
-  //       gym: id,
-  //     },
-  //     relations: ['gym'],
-  //   });
-  // }
+  @Query(() => [Membership], { nullable: true })
+  async gymMemberships(@Arg('gymId', { nullable: true }) gymId: string) {
+    return await Membership.find({
+      where: { gymId },
+      relations: ['member', 'gym'],
+    });
+  }
 
   // @Query(() => [Gyms])
   // gyms() {

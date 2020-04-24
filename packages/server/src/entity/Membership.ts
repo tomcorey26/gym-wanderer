@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   BaseEntity,
+  PrimaryColumn,
 } from 'typeorm';
 import { User } from './User';
 import { Gyms } from './Gym';
@@ -23,10 +24,15 @@ export class Membership extends BaseEntity {
   @Column('int')
   end_date: number;
 
+  //these two fields must be unique
+  @PrimaryColumn()
+  memberId: string;
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.memberships)
   member: User;
 
+  @PrimaryColumn()
+  gymId: string;
   @Field(() => Gyms)
   @ManyToOne(() => Gyms, (gym) => gym.memberships)
   gym: Gyms;

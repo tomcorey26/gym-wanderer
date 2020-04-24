@@ -13,10 +13,13 @@ import {
   Divider,
   TextField,
   Button,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import moment from 'moment';
 // import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { useJoinGymMutation, MeDocument } from '@gw/controllers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,12 +55,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface GymReservationFormProps {
   membership_cost?: string;
+  gymId?: string;
 }
 
 const GymReservationForm: React.FC<GymReservationFormProps> = ({
   membership_cost,
+  gymId,
 }) => {
-  const [monthCount, setMonthCount] = useState<any>(1);
+  const [monthCount, setMonthCount] = useState<number>(1);
+  const [auto_renewal, setAutorenewal] = useState<any>(false);
+  const [joinGym] = useJoinGymMutation();
   // const [time, setTime] = useState<any>();j
   // const [focused, setFocused] = useState<any>(null);
 
@@ -70,6 +77,20 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
       {moment().add(monthsFromNow, 'months').year()}
     </span>
   );
+
+  const handleJoin = async () => {
+    if (!gymId) return;
+    if (monthCount >= 1) {
+      await joinGym({
+        variables: {
+          auto_renewal,
+          gymId,
+          end_date: moment().add(monthCount, 'months').seconds(),
+        },
+        refetchQueries: [{ query: MeDocument }],
+      });
+    }
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -100,7 +121,7 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           }}
           variant="outlined"
           value={monthCount}
-          onChange={(e) => setMonthCount(e.target.value)}
+          onChange={(e) => setMonthCount(Number(e.target.value))}
           InputProps={{ inputProps: { min: 1 } }}
         />
         <Box className={classes.date}>
@@ -118,10 +139,21 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
         </Box>
 
         <Box className={classes.inputLine}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={auto_renewal}
+                onChange={() => setAutorenewal((renew) => !renew)}
+                name="checkedA"
+              />
+            }
+            label="Auto Renewal"
+          />
           <Button
             className={classes.reserveButton}
             variant="contained"
             color="secondary"
+            onClick={handleJoin}
           >
             Join Gym
           </Button>

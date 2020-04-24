@@ -1,25 +1,34 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  BaseEntity,
+  PrimaryColumn,
+} from 'typeorm';
 import { User } from './User';
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
 @Entity()
-export class Alert {
+export class Alert extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
-  @Column('int')
+  @Column('text')
   message: string;
 
   @Field()
-  @Column('boolean')
+  @Column('text')
   link: string;
 
   @Field()
-  @Column('boolean')
+  @Column('boolean', { default: true })
   isActive: boolean;
 
+  @PrimaryColumn()
+  userId: string;
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.alerts)
   user: User;

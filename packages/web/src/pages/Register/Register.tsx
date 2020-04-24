@@ -16,12 +16,12 @@ import { FormPageControl } from '../../components/FormPageControl';
 // as a prop to the react-router-dom <Route/> component
 
 const mockUser = {
-  first_name: 'Danny',
+  first_name: 'member1',
   last_name: 'Devito',
   username: 'dvito',
   birthday: '1944-11-14',
   preferences: [],
-  email: 'devito@gmail.com',
+  email: 'member1@gmail.com',
   password: 'Test123@',
   confirmPassword: 'Test123@',
 };

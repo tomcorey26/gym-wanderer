@@ -63,6 +63,7 @@ const GymDetail: React.FC = () => {
             loading={loading}
           />
           <GymReservationForm
+            gymId={id}
             membership_cost={data?.gymDetails?.gym?.membership_cost}
           />
         </div>
