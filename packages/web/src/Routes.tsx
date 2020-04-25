@@ -7,7 +7,7 @@ import { CreateGym } from './pages/CreateGym/CreateGym';
 import { SearchProvider } from './context/SearchState';
 import { Register } from './pages/Register/Register';
 import { Login } from './pages/Login';
-import Navbar from './components/Navbar';
+import { Navbar } from './components/NavComponents/Navbar';
 import { CssBaseline } from '@material-ui/core';
 import { useUsersQuery } from '@gw/controllers';
 import { Bye } from './pages/Bye';
