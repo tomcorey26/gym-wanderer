@@ -1,4 +1,5 @@
 fragment gymInfo on Gyms {
+  id
   gym_name
   description
   membership_cost

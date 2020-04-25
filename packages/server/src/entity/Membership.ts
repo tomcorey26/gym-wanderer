@@ -13,8 +13,9 @@ import { Field, ObjectType } from 'type-graphql';
 @ObjectType()
 @Entity()
 export class Membership extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Field()
   @Column('boolean')

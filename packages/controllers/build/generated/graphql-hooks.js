@@ -27,9 +27,33 @@ var GymTypes;
     GymTypes["Boxing"] = "boxing";
 })(GymTypes = exports.GymTypes || (exports.GymTypes = {}));
 exports.AlertsFragmentDoc = graphql_tag_1.default(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    fragment alerts on User {\n  alerts {\n    message\n    isActive\n    link\n  }\n}\n    "], ["\n    fragment alerts on User {\n  alerts {\n    message\n    isActive\n    link\n  }\n}\n    "])));
-exports.GymInfoFragmentDoc = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    fragment gymInfo on Gyms {\n  gym_name\n  description\n  membership_cost\n  location\n  equipment\n  photo_urls\n  coordinates {\n    lat\n    lng\n  }\n  type\n}\n    "], ["\n    fragment gymInfo on Gyms {\n  gym_name\n  description\n  membership_cost\n  location\n  equipment\n  photo_urls\n  coordinates {\n    lat\n    lng\n  }\n  type\n}\n    "])));
+exports.GymInfoFragmentDoc = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    fragment gymInfo on Gyms {\n  id\n  gym_name\n  description\n  membership_cost\n  location\n  equipment\n  photo_urls\n  coordinates {\n    lat\n    lng\n  }\n  type\n}\n    "], ["\n    fragment gymInfo on Gyms {\n  id\n  gym_name\n  description\n  membership_cost\n  location\n  equipment\n  photo_urls\n  coordinates {\n    lat\n    lng\n  }\n  type\n}\n    "])));
 exports.ProfileFragmentDoc = graphql_tag_1.default(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    fragment profile on User {\n  id\n  email\n  first_name\n  last_name\n  username\n  birthday\n}\n    "], ["\n    fragment profile on User {\n  id\n  email\n  first_name\n  last_name\n  username\n  birthday\n}\n    "])));
-exports.ByeDocument = graphql_tag_1.default(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n    query Bye {\n  bye\n}\n    "], ["\n    query Bye {\n  bye\n}\n    "])));
+exports.UserMembershipsInfoDocument = graphql_tag_1.default(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n    query UserMembershipsInfo {\n  myMemberships {\n    memberId: id\n    myGymMemberships: gym {\n      id\n    }\n  }\n  myGym {\n    id\n  }\n}\n    "], ["\n    query UserMembershipsInfo {\n  myMemberships {\n    memberId: id\n    myGymMemberships: gym {\n      id\n    }\n  }\n  myGym {\n    id\n  }\n}\n    "])));
+/**
+ * __useUserMembershipsInfoQuery__
+ *
+ * To run a query within a React component, call `useUserMembershipsInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserMembershipsInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserMembershipsInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+function useUserMembershipsInfoQuery(baseOptions) {
+    return ApolloReactHooks.useQuery(exports.UserMembershipsInfoDocument, baseOptions);
+}
+exports.useUserMembershipsInfoQuery = useUserMembershipsInfoQuery;
+function useUserMembershipsInfoLazyQuery(baseOptions) {
+    return ApolloReactHooks.useLazyQuery(exports.UserMembershipsInfoDocument, baseOptions);
+}
+exports.useUserMembershipsInfoLazyQuery = useUserMembershipsInfoLazyQuery;
+exports.ByeDocument = graphql_tag_1.default(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    query Bye {\n  bye\n}\n    "], ["\n    query Bye {\n  bye\n}\n    "])));
 /**
  * __useByeQuery__
  *
@@ -53,7 +77,7 @@ function useByeLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.ByeDocument, baseOptions);
 }
 exports.useByeLazyQuery = useByeLazyQuery;
-exports.CreateGymDocument = graphql_tag_1.default(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: String!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)\n}\n    "], ["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: String!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)\n}\n    "])));
+exports.CreateGymDocument = graphql_tag_1.default(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: String!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)\n}\n    "], ["\n    mutation CreateGym($gym_name: String!, $description: String!, $membership_cost: String!, $ownerId: String!, $location: String!, $coordinates: CoordinatesInput!, $type: GymTypes!, $equipment: [String!]!, $photo_urls: [String!]!) {\n  createGym(gym_name: $gym_name, description: $description, membership_cost: $membership_cost, ownerId: $ownerId, location: $location, coordinates: $coordinates, type: $type, equipment: $equipment, photo_urls: $photo_urls)\n}\n    "])));
 /**
  * __useCreateGymMutation__
  *
@@ -83,7 +107,7 @@ function useCreateGymMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.CreateGymDocument, baseOptions);
 }
 exports.useCreateGymMutation = useCreateGymMutation;
-exports.GymDetailsDocument = graphql_tag_1.default(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    owner_first_name: first_name\n    owner_last_name: last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""], ["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    owner_first_name: first_name\n    owner_last_name: last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
+exports.GymDetailsDocument = graphql_tag_1.default(templateObject_7 || (templateObject_7 = __makeTemplateObject(["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    owner_first_name: first_name\n    owner_last_name: last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""], ["\n    query gymDetails($id: String) {\n  gymDetails(id: $id) {\n    owner_first_name: first_name\n    owner_last_name: last_name\n    email\n    gym {\n      ...gymInfo\n    }\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
 /**
  * __useGymDetailsQuery__
  *
@@ -108,7 +132,7 @@ function useGymDetailsLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.GymDetailsDocument, baseOptions);
 }
 exports.useGymDetailsLazyQuery = useGymDetailsLazyQuery;
-exports.HelloDocument = graphql_tag_1.default(templateObject_7 || (templateObject_7 = __makeTemplateObject(["\n    query Hello {\n  hello\n}\n    "], ["\n    query Hello {\n  hello\n}\n    "])));
+exports.HelloDocument = graphql_tag_1.default(templateObject_8 || (templateObject_8 = __makeTemplateObject(["\n    query Hello {\n  hello\n}\n    "], ["\n    query Hello {\n  hello\n}\n    "])));
 /**
  * __useHelloQuery__
  *
@@ -132,7 +156,7 @@ function useHelloLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.HelloDocument, baseOptions);
 }
 exports.useHelloLazyQuery = useHelloLazyQuery;
-exports.JoinGymDocument = graphql_tag_1.default(templateObject_8 || (templateObject_8 = __makeTemplateObject(["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)\n}\n    "], ["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)\n}\n    "])));
+exports.JoinGymDocument = graphql_tag_1.default(templateObject_9 || (templateObject_9 = __makeTemplateObject(["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)\n}\n    "], ["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)\n}\n    "])));
 /**
  * __useJoinGymMutation__
  *
@@ -156,7 +180,7 @@ function useJoinGymMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.JoinGymDocument, baseOptions);
 }
 exports.useJoinGymMutation = useJoinGymMutation;
-exports.LoginDocument = graphql_tag_1.default(templateObject_9 || (templateObject_9 = __makeTemplateObject(["\n    mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""], ["\n    mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""])), exports.ProfileFragmentDoc, exports.AlertsFragmentDoc);
+exports.LoginDocument = graphql_tag_1.default(templateObject_10 || (templateObject_10 = __makeTemplateObject(["\n    mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""], ["\n    mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""])), exports.ProfileFragmentDoc, exports.AlertsFragmentDoc);
 /**
  * __useLoginMutation__
  *
@@ -179,7 +203,7 @@ function useLoginMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.LoginDocument, baseOptions);
 }
 exports.useLoginMutation = useLoginMutation;
-exports.LogoutDocument = graphql_tag_1.default(templateObject_10 || (templateObject_10 = __makeTemplateObject(["\n    mutation Logout {\n  logout\n}\n    "], ["\n    mutation Logout {\n  logout\n}\n    "])));
+exports.LogoutDocument = graphql_tag_1.default(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    mutation Logout {\n  logout\n}\n    "], ["\n    mutation Logout {\n  logout\n}\n    "])));
 /**
  * __useLogoutMutation__
  *
@@ -200,7 +224,7 @@ function useLogoutMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.LogoutDocument, baseOptions);
 }
 exports.useLogoutMutation = useLogoutMutation;
-exports.MeDocument = graphql_tag_1.default(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    query Me {\n  me {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n    ...alerts\n  }\n}\n    ", "\n", ""], ["\n    query Me {\n  me {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n    ...alerts\n  }\n}\n    ", "\n", ""])), exports.ProfileFragmentDoc, exports.AlertsFragmentDoc);
+exports.MeDocument = graphql_tag_1.default(templateObject_12 || (templateObject_12 = __makeTemplateObject(["\n    query Me {\n  me {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n    ...alerts\n  }\n}\n    ", "\n", ""], ["\n    query Me {\n  me {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n    ...alerts\n  }\n}\n    ", "\n", ""])), exports.ProfileFragmentDoc, exports.AlertsFragmentDoc);
 /**
  * __useMeQuery__
  *
@@ -224,7 +248,7 @@ function useMeLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.MeDocument, baseOptions);
 }
 exports.useMeLazyQuery = useMeLazyQuery;
-exports.MyGymDocument = graphql_tag_1.default(templateObject_12 || (templateObject_12 = __makeTemplateObject(["\n    query MyGym {\n  myGym {\n    ...gymInfo\n  }\n}\n    ", ""], ["\n    query MyGym {\n  myGym {\n    ...gymInfo\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
+exports.MyGymDocument = graphql_tag_1.default(templateObject_13 || (templateObject_13 = __makeTemplateObject(["\n    query MyGym {\n  myGym {\n    ...gymInfo\n  }\n}\n    ", ""], ["\n    query MyGym {\n  myGym {\n    ...gymInfo\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
 /**
  * __useMyGymQuery__
  *
@@ -248,30 +272,6 @@ function useMyGymLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.MyGymDocument, baseOptions);
 }
 exports.useMyGymLazyQuery = useMyGymLazyQuery;
-exports.MyMembershipsDocument = graphql_tag_1.default(templateObject_13 || (templateObject_13 = __makeTemplateObject(["\n    query myMemberships {\n  gyms {\n    ...gymInfo\n  }\n}\n    ", ""], ["\n    query myMemberships {\n  gyms {\n    ...gymInfo\n  }\n}\n    ", ""])), exports.GymInfoFragmentDoc);
-/**
- * __useMyMembershipsQuery__
- *
- * To run a query within a React component, call `useMyMembershipsQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyMembershipsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyMembershipsQuery({
- *   variables: {
- *   },
- * });
- */
-function useMyMembershipsQuery(baseOptions) {
-    return ApolloReactHooks.useQuery(exports.MyMembershipsDocument, baseOptions);
-}
-exports.useMyMembershipsQuery = useMyMembershipsQuery;
-function useMyMembershipsLazyQuery(baseOptions) {
-    return ApolloReactHooks.useLazyQuery(exports.MyMembershipsDocument, baseOptions);
-}
-exports.useMyMembershipsLazyQuery = useMyMembershipsLazyQuery;
 exports.RegisterDocument = graphql_tag_1.default(templateObject_14 || (templateObject_14 = __makeTemplateObject(["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "], ["\n    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {\n  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)\n}\n    "])));
 /**
  * __useRegisterMutation__

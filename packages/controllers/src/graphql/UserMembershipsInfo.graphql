@@ -1,0 +1,11 @@
+query UserMembershipsInfo {
+  myMemberships {
+    memberId: id
+    myGymMemberships: gym {
+      id
+    }
+  }
+  myGym {
+    id
+  }
+}

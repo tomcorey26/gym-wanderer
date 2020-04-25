@@ -125,8 +125,8 @@ export const Navbar = () => {
       {data &&
         data.me &&
         data.me.alerts &&
-        data.me.alerts.map((alert) => (
-          <NavLink to={alert.link} style={menuItemStyle}>
+        data.me.alerts.map((alert, i) => (
+          <NavLink key={i} to={alert.link} style={menuItemStyle}>
             <MenuItem onClick={handleMenuClose}>{alert.message}</MenuItem>
           </NavLink>
         ))}

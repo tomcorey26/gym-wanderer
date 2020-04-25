@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -15,11 +15,18 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from '@material-ui/core';
 import moment from 'moment';
 // import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { useJoinGymMutation, MeDocument } from '@gw/controllers';
+import {
+  useJoinGymMutation,
+  MeDocument,
+  useUserMembershipsInfoQuery,
+  UserMembershipsInfoDocument,
+} from '@gw/controllers';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,9 +71,14 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
 }) => {
   const [monthCount, setMonthCount] = useState<number>(1);
   const [auto_renewal, setAutorenewal] = useState<any>(false);
+  const [newMemberText, setNewMemberText] = useState<string>('');
   const [joinGym] = useJoinGymMutation();
-  // const [time, setTime] = useState<any>();j
-  // const [focused, setFocused] = useState<any>(null);
+  const { data, loading, error } = useUserMembershipsInfoQuery();
+  const history = useHistory();
+
+  if (error) {
+    history.push('/');
+  }
 
   const classes = useStyles();
 
@@ -80,6 +92,7 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
 
   const handleJoin = async () => {
     if (!gymId) return;
+    setNewMemberText('Thank you For Joining!');
     if (monthCount >= 1) {
       await joinGym({
         variables: {
@@ -87,10 +100,61 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           gymId,
           end_date: moment().add(monthCount, 'months').seconds(),
         },
-        refetchQueries: [{ query: MeDocument }],
+        refetchQueries: [
+          { query: UserMembershipsInfoDocument },
+          { query: MeDocument },
+        ],
       });
     }
   };
+
+  useEffect(() => {
+    if (!newMemberText) return;
+    setTimeout(() => {
+      setNewMemberText('');
+    }, 2000);
+  }, [newMemberText]);
+
+  if (loading) {
+    return (
+      <Paper
+        className={classes.paper}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Paper>
+    );
+  }
+
+  let membership;
+  if (data && data.myMemberships) {
+    membership = data?.myMemberships.find(
+      (gym) => gym.myGymMemberships.id === gymId
+    );
+  }
+
+  if (data && data.myMemberships && membership) {
+    return (
+      <Paper
+        className={classes.paper}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          height: 400,
+        }}
+      >
+        <h2>{newMemberText}</h2>
+        <h1>Membership id :</h1>
+        <h2>{membership.memberId}</h2>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>

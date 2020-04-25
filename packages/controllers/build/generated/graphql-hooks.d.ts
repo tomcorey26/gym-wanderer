@@ -58,6 +58,7 @@ export declare type LoginResponse = {
 };
 export declare type Membership = {
     __typename?: 'Membership';
+    id: Scalars['Float'];
     isAutoRenewalActive: Scalars['Boolean'];
     end_date: Scalars['Float'];
     member: User;
@@ -156,6 +157,23 @@ export declare type User = {
     memberships?: Maybe<Array<Membership>>;
     alerts?: Maybe<Array<Alert>>;
 };
+export declare type UserMembershipsInfoQueryVariables = {};
+export declare type UserMembershipsInfoQuery = ({
+    __typename?: 'Query';
+} & {
+    myMemberships: Maybe<Array<({
+        __typename?: 'Membership';
+    } & {
+        memberId: Membership['id'];
+    } & {
+        myGymMemberships: ({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id'>);
+    })>>;
+    myGym: Maybe<({
+        __typename?: 'Gyms';
+    } & Pick<Gyms, 'id'>)>;
+});
 export declare type ByeQueryVariables = {};
 export declare type ByeQuery = ({
     __typename?: 'Query';
@@ -183,7 +201,7 @@ export declare type AlertsFragment = ({
 });
 export declare type GymInfoFragment = ({
     __typename?: 'Gyms';
-} & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
+} & Pick<Gyms, 'id' | 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
     coordinates: ({
         __typename?: 'Coordinates';
     } & Pick<Coordinates, 'lat' | 'lng'>);
@@ -269,14 +287,6 @@ export declare type MyGymQuery = ({
         __typename?: 'Gyms';
     } & GymInfoFragment)>;
 });
-export declare type MyMembershipsQueryVariables = {};
-export declare type MyMembershipsQuery = ({
-    __typename?: 'Query';
-} & {
-    gyms: Array<({
-        __typename?: 'Gyms';
-    } & GymInfoFragment)>;
-});
 export declare type RegisterMutationVariables = {
     last_name: Scalars['String'];
     first_name: Scalars['String'];
@@ -300,6 +310,27 @@ export declare type UsersQuery = ({
 export declare const AlertsFragmentDoc: import("graphql").DocumentNode;
 export declare const GymInfoFragmentDoc: import("graphql").DocumentNode;
 export declare const ProfileFragmentDoc: import("graphql").DocumentNode;
+export declare const UserMembershipsInfoDocument: import("graphql").DocumentNode;
+/**
+ * __useUserMembershipsInfoQuery__
+ *
+ * To run a query within a React component, call `useUserMembershipsInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserMembershipsInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserMembershipsInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export declare function useUserMembershipsInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>): ApolloReactCommon.QueryResult<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
+export declare function useUserMembershipsInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>): ApolloReactHooks.QueryTuple<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
+export declare type UserMembershipsInfoQueryHookResult = ReturnType<typeof useUserMembershipsInfoQuery>;
+export declare type UserMembershipsInfoLazyQueryHookResult = ReturnType<typeof useUserMembershipsInfoLazyQuery>;
+export declare type UserMembershipsInfoQueryResult = ApolloReactCommon.QueryResult<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
 export declare const ByeDocument: import("graphql").DocumentNode;
 /**
  * __useByeQuery__
@@ -508,27 +539,6 @@ export declare function useMyGymLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export declare type MyGymQueryHookResult = ReturnType<typeof useMyGymQuery>;
 export declare type MyGymLazyQueryHookResult = ReturnType<typeof useMyGymLazyQuery>;
 export declare type MyGymQueryResult = ApolloReactCommon.QueryResult<MyGymQuery, MyGymQueryVariables>;
-export declare const MyMembershipsDocument: import("graphql").DocumentNode;
-/**
- * __useMyMembershipsQuery__
- *
- * To run a query within a React component, call `useMyMembershipsQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyMembershipsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyMembershipsQuery({
- *   variables: {
- *   },
- * });
- */
-export declare function useMyMembershipsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyMembershipsQuery, MyMembershipsQueryVariables>): ApolloReactCommon.QueryResult<MyMembershipsQuery, MyMembershipsQueryVariables>;
-export declare function useMyMembershipsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyMembershipsQuery, MyMembershipsQueryVariables>): ApolloReactHooks.QueryTuple<MyMembershipsQuery, MyMembershipsQueryVariables>;
-export declare type MyMembershipsQueryHookResult = ReturnType<typeof useMyMembershipsQuery>;
-export declare type MyMembershipsLazyQueryHookResult = ReturnType<typeof useMyMembershipsLazyQuery>;
-export declare type MyMembershipsQueryResult = ApolloReactCommon.QueryResult<MyMembershipsQuery, MyMembershipsQueryVariables>;
 export declare const RegisterDocument: import("graphql").DocumentNode;
 export declare type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 /**
