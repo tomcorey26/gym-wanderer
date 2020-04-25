@@ -209,6 +209,14 @@ export type CreateGymMutation = (
   & Pick<Mutation, 'createGym'>
 );
 
+export type AlertsFragment = (
+  { __typename?: 'User' }
+  & { alerts: Maybe<Array<(
+    { __typename?: 'Alert' }
+    & Pick<Alert, 'message' | 'isActive' | 'link'>
+  )>> }
+);
+
 export type GymInfoFragment = (
   { __typename?: 'Gyms' }
   & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'>
@@ -274,7 +282,6 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>
       & { preferences: (
         { __typename?: 'Preferences' }
         & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
@@ -282,6 +289,8 @@ export type LoginMutation = (
         { __typename?: 'Gyms' }
         & Pick<Gyms, 'id' | 'gym_name'>
       )> }
+      & ProfileFragment
+      & AlertsFragment
     ) }
   ) }
 );
@@ -309,6 +318,7 @@ export type MeQuery = (
       & Pick<Gyms, 'id' | 'gym_name'>
     )> }
     & ProfileFragment
+    & AlertsFragment
   )> }
 );
 
@@ -318,6 +328,17 @@ export type MyGymQueryVariables = {};
 export type MyGymQuery = (
   { __typename?: 'Query' }
   & { myGym: Maybe<(
+    { __typename?: 'Gyms' }
+    & GymInfoFragment
+  )> }
+);
+
+export type MyMembershipsQueryVariables = {};
+
+
+export type MyMembershipsQuery = (
+  { __typename?: 'Query' }
+  & { gyms: Array<(
     { __typename?: 'Gyms' }
     & GymInfoFragment
   )> }
@@ -350,6 +371,15 @@ export type UsersQuery = (
   )> }
 );
 
+export const AlertsFragmentDoc = gql`
+    fragment alerts on User {
+  alerts {
+    message
+    isActive
+    link
+  }
+}
+    `;
 export const GymInfoFragmentDoc = gql`
     fragment gymInfo on Gyms {
   gym_name
@@ -548,12 +578,7 @@ export const LoginDocument = gql`
   login(email: $email, password: $password) {
     accessToken
     user {
-      id
-      email
-      first_name
-      last_name
-      username
-      birthday
+      ...profile
       preferences {
         yoga
         crossfit
@@ -566,10 +591,12 @@ export const LoginDocument = gql`
         id
         gym_name
       }
+      ...alerts
     }
   }
 }
-    `;
+    ${ProfileFragmentDoc}
+${AlertsFragmentDoc}`;
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -641,9 +668,11 @@ export const MeDocument = gql`
       id
       gym_name
     }
+    ...alerts
   }
 }
-    ${ProfileFragmentDoc}`;
+    ${ProfileFragmentDoc}
+${AlertsFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -701,6 +730,38 @@ export function useMyGymLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type MyGymQueryHookResult = ReturnType<typeof useMyGymQuery>;
 export type MyGymLazyQueryHookResult = ReturnType<typeof useMyGymLazyQuery>;
 export type MyGymQueryResult = ApolloReactCommon.QueryResult<MyGymQuery, MyGymQueryVariables>;
+export const MyMembershipsDocument = gql`
+    query myMemberships {
+  gyms {
+    ...gymInfo
+  }
+}
+    ${GymInfoFragmentDoc}`;
+
+/**
+ * __useMyMembershipsQuery__
+ *
+ * To run a query within a React component, call `useMyMembershipsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyMembershipsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyMembershipsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyMembershipsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyMembershipsQuery, MyMembershipsQueryVariables>) {
+        return ApolloReactHooks.useQuery<MyMembershipsQuery, MyMembershipsQueryVariables>(MyMembershipsDocument, baseOptions);
+      }
+export function useMyMembershipsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyMembershipsQuery, MyMembershipsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MyMembershipsQuery, MyMembershipsQueryVariables>(MyMembershipsDocument, baseOptions);
+        }
+export type MyMembershipsQueryHookResult = ReturnType<typeof useMyMembershipsQuery>;
+export type MyMembershipsLazyQueryHookResult = ReturnType<typeof useMyMembershipsLazyQuery>;
+export type MyMembershipsQueryResult = ApolloReactCommon.QueryResult<MyMembershipsQuery, MyMembershipsQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {
   register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)

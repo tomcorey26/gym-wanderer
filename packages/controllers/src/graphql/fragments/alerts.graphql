@@ -1,0 +1,7 @@
+fragment alerts on User {
+  alerts {
+    message
+    isActive
+    link
+  }
+}
