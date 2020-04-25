@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -13,10 +13,20 @@ import {
   Divider,
   TextField,
   Button,
+  FormControlLabel,
+  Checkbox,
+  CircularProgress,
 } from '@material-ui/core';
 import moment from 'moment';
 // import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import {
+  useJoinGymMutation,
+  MeDocument,
+  useUserMembershipsInfoQuery,
+  UserMembershipsInfoDocument,
+} from '@gw/controllers';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,14 +62,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface GymReservationFormProps {
   membership_cost?: string;
+  gymId?: string;
 }
 
 const GymReservationForm: React.FC<GymReservationFormProps> = ({
   membership_cost,
+  gymId,
 }) => {
-  const [monthCount, setMonthCount] = useState<any>(1);
-  // const [time, setTime] = useState<any>();j
-  // const [focused, setFocused] = useState<any>(null);
+  const [monthCount, setMonthCount] = useState<number>(1);
+  const [auto_renewal, setAutorenewal] = useState<any>(false);
+  const [newMemberText, setNewMemberText] = useState<string>('');
+  const [joinGym] = useJoinGymMutation();
+  const { data, loading, error } = useUserMembershipsInfoQuery();
+  const history = useHistory();
+
+  if (error) {
+    history.push('/');
+  }
 
   const classes = useStyles();
 
@@ -70,6 +89,72 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
       {moment().add(monthsFromNow, 'months').year()}
     </span>
   );
+
+  const handleJoin = async () => {
+    if (!gymId) return;
+    setNewMemberText('Thank you For Joining!');
+    if (monthCount >= 1) {
+      await joinGym({
+        variables: {
+          auto_renewal,
+          gymId,
+          end_date: moment().add(monthCount, 'months').seconds(),
+        },
+        refetchQueries: [
+          { query: UserMembershipsInfoDocument },
+          { query: MeDocument },
+        ],
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!newMemberText) return;
+    setTimeout(() => {
+      setNewMemberText('');
+    }, 2000);
+  }, [newMemberText]);
+
+  if (loading) {
+    return (
+      <Paper
+        className={classes.paper}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Paper>
+    );
+  }
+
+  let membership;
+  if (data && data.myMemberships) {
+    membership = data?.myMemberships.find(
+      (gym) => gym.myGymMemberships.id === gymId
+    );
+  }
+
+  if (data && data.myMemberships && membership) {
+    return (
+      <Paper
+        className={classes.paper}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          height: 400,
+        }}
+      >
+        <h2>{newMemberText}</h2>
+        <h1>Membership id :</h1>
+        <h2>{membership.memberId}</h2>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -100,7 +185,7 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           }}
           variant="outlined"
           value={monthCount}
-          onChange={(e) => setMonthCount(e.target.value)}
+          onChange={(e) => setMonthCount(Number(e.target.value))}
           InputProps={{ inputProps: { min: 1 } }}
         />
         <Box className={classes.date}>
@@ -118,10 +203,21 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
         </Box>
 
         <Box className={classes.inputLine}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={auto_renewal}
+                onChange={() => setAutorenewal((renew) => !renew)}
+                name="checkedA"
+              />
+            }
+            label="Auto Renewal"
+          />
           <Button
             className={classes.reserveButton}
             variant="contained"
             color="secondary"
+            onClick={handleJoin}
           >
             Join Gym
           </Button>

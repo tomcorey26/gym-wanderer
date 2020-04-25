@@ -48,6 +48,7 @@ class PreferencesInput {
   boxing: boolean;
 }
 
+const userRelations = ['gym', 'preferences', 'memberships', 'alerts'];
 @Resolver()
 export class UserResolver {
   @Query(() => String)
@@ -64,7 +65,7 @@ export class UserResolver {
 
   @Query(() => [User])
   users() {
-    return User.find({ relations: ['gym', 'preferences'] });
+    return User.find({ relations: userRelations });
   }
 
   //either user or null
@@ -80,7 +81,7 @@ export class UserResolver {
       const token = authorization.split(' ')[1];
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
       return User.findOne(payload.userId, {
-        relations: ['gym', 'preferences'],
+        relations: userRelations,
       });
     } catch (err) {
       console.log(err);
@@ -128,7 +129,7 @@ export class UserResolver {
   ): Promise<LoginResponse> {
     const user = await User.findOne({
       where: { email },
-      relations: ['gym', 'preferences'],
+      relations: userRelations,
     });
 
     if (!user) {

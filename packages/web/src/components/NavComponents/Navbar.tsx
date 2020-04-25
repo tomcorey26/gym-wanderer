@@ -20,88 +20,36 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { purple } from '@material-ui/core/colors';
 import { NavLink, Link } from 'react-router-dom';
 import { useMeQuery, useLogoutMutation } from '@gw/controllers';
-import { setAccessToken } from '../accessToken';
+import { setAccessToken } from '../../accessToken';
+import { useNavStyles } from './NavStyles';
+import { useDropdownMenu } from '../../hooks';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    appBar: {
-      color: theme.palette.getContrastText(purple[500]),
-      backgroundColor: purple[500],
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    },
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      width: theme.spacing(7),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 7),
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: 200,
-      },
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
-  })
-);
+export const Navbar = () => {
+  const classes = useNavStyles();
 
-export default function Navbar() {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [
-    mobileMoreAnchorEl,
-    setMobileMoreAnchorEl,
-  ] = React.useState<null | HTMLElement>(null);
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
+  const [
+    anchorEl,
+    handleProfileMenuOpen,
+    handleMenuClose,
+    isMenuOpen,
+  ] = useDropdownMenu();
+  const [
+    alertAnchorEl,
+    handleAlertMenuOpen,
+    handleAlertMenuClose,
+    isAlertMenuOpen,
+  ] = useDropdownMenu();
+
+  const [
+    mobileMoreAnchorEl,
+    handleMobileMenuOpen,
+    handleMobileMenuClose,
+    isMobileMenuOpen,
+  ] = useDropdownMenu();
 
   const IsLoggedIn = !loading && data && data.me;
   const loggedInWithoutGym = IsLoggedIn && !data?.me?.gym;
@@ -116,32 +64,12 @@ export default function Navbar() {
     body = <span>not logged in</span>;
   }
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
   const menuItemStyle = {
     color: 'inherit',
     textDecoration: 'none',
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = 'account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -181,7 +109,31 @@ export default function Navbar() {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  // NOTIFCATIONS MENU
+  const alertId = 'alert-menu';
+  const renderAlerts = (
+    <Menu
+      anchorEl={alertAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={alertId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isAlertMenuOpen}
+      onClose={handleAlertMenuClose}
+      style={{ maxHeight: 600 }}
+    >
+      {data &&
+        data.me &&
+        data.me.alerts &&
+        data.me.alerts.map((alert, i) => (
+          <NavLink key={i} to={alert.link} style={menuItemStyle}>
+            <MenuItem onClick={handleMenuClose}>{alert.message}</MenuItem>
+          </NavLink>
+        ))}
+    </Menu>
+  );
+
+  const mobileMenuId = 'account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -200,7 +152,7 @@ export default function Navbar() {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleAlertMenuOpen}>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
@@ -254,16 +206,31 @@ export default function Navbar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {IsLoggedIn && (
+              <>
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                  onClick={handleAlertMenuOpen}
+                >
+                  <Badge
+                    badgeContent={
+                      data && data.me && data.me.alerts
+                        ? data.me.alerts.length
+                        : null
+                    }
+                    color="secondary"
+                  >
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </>
+            )}
             {loggedInWithoutGym ? (
               <StyledLink to="/newgym">
                 <IconButton color="inherit">Create Gym</IconButton>
@@ -303,9 +270,10 @@ export default function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderAlerts}
     </div>
   );
-}
+};
 
 const StyledLink: React.FC<any> = ({ children, to, ...props }) => (
   <Link {...props} to={to} style={{ color: 'white', textDecoration: 'none' }}>

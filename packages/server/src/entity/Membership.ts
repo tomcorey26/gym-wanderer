@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   BaseEntity,
+  PrimaryColumn,
 } from 'typeorm';
 import { User } from './User';
 import { Gyms } from './Gym';
@@ -12,8 +13,9 @@ import { Field, ObjectType } from 'type-graphql';
 @ObjectType()
 @Entity()
 export class Membership extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Field()
   @Column('boolean')
@@ -23,10 +25,15 @@ export class Membership extends BaseEntity {
   @Column('int')
   end_date: number;
 
+  //these two fields must be unique
+  @PrimaryColumn()
+  memberId: string;
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.memberships)
   member: User;
 
+  @PrimaryColumn()
+  gymId: string;
   @Field(() => Gyms)
   @ManyToOne(() => Gyms, (gym) => gym.memberships)
   gym: Gyms;

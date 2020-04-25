@@ -9,6 +9,13 @@ export declare type Scalars = {
     Int: number;
     Float: number;
 };
+export declare type Alert = {
+    __typename?: 'Alert';
+    message: Scalars['String'];
+    link: Scalars['String'];
+    isActive: Scalars['Boolean'];
+    user: User;
+};
 export declare type Coordinates = {
     __typename?: 'Coordinates';
     lat: Scalars['Float'];
@@ -32,9 +39,8 @@ export declare type Gyms = {
     type: GymTypes;
     isOpen: Scalars['Boolean'];
     date_created: Scalars['String'];
-    owners: Array<User>;
-    members: Array<User>;
-    reviews: Array<Reviews>;
+    reviews?: Maybe<Array<Reviews>>;
+    memberships?: Maybe<Array<Membership>>;
 };
 /** The types of gyms available on gym wanderer */
 export declare enum GymTypes {
@@ -50,12 +56,21 @@ export declare type LoginResponse = {
     user: User;
     accessToken: Scalars['String'];
 };
+export declare type Membership = {
+    __typename?: 'Membership';
+    id: Scalars['Float'];
+    isAutoRenewalActive: Scalars['Boolean'];
+    end_date: Scalars['Float'];
+    member: User;
+    gym: Gyms;
+};
 export declare type Mutation = {
     __typename?: 'Mutation';
     register: Scalars['Boolean'];
     login: LoginResponse;
     logout: Scalars['Boolean'];
     createGym: Scalars['Boolean'];
+    joinGym: Scalars['Boolean'];
 };
 export declare type MutationRegisterArgs = {
     birthday?: Maybe<Scalars['String']>;
@@ -80,6 +95,11 @@ export declare type MutationCreateGymArgs = {
     coordinates: CoordinatesInput;
     equipment: Array<Scalars['String']>;
     photo_urls: Array<Scalars['String']>;
+};
+export declare type MutationJoinGymArgs = {
+    auto_renewal: Scalars['Boolean'];
+    end_date: Scalars['Float'];
+    gymId: Scalars['String'];
 };
 export declare type Preferences = {
     __typename?: 'Preferences';
@@ -107,9 +127,14 @@ export declare type Query = {
     myGym?: Maybe<Gyms>;
     gymDetails?: Maybe<User>;
     gyms: Array<Gyms>;
+    myMemberships?: Maybe<Array<Membership>>;
+    gymMemberships?: Maybe<Array<Membership>>;
 };
 export declare type QueryGymDetailsArgs = {
     id?: Maybe<Scalars['String']>;
+};
+export declare type QueryGymMembershipsArgs = {
+    gymId?: Maybe<Scalars['String']>;
 };
 export declare type Reviews = {
     __typename?: 'Reviews';
@@ -128,7 +153,27 @@ export declare type User = {
     birthday?: Maybe<Scalars['String']>;
     preferences: Preferences;
     gym?: Maybe<Gyms>;
+    reviews?: Maybe<Array<Reviews>>;
+    memberships?: Maybe<Array<Membership>>;
+    alerts?: Maybe<Array<Alert>>;
 };
+export declare type UserMembershipsInfoQueryVariables = {};
+export declare type UserMembershipsInfoQuery = ({
+    __typename?: 'Query';
+} & {
+    myMemberships: Maybe<Array<({
+        __typename?: 'Membership';
+    } & {
+        memberId: Membership['id'];
+    } & {
+        myGymMemberships: ({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id'>);
+    })>>;
+    myGym: Maybe<({
+        __typename?: 'Gyms';
+    } & Pick<Gyms, 'id'>)>;
+});
 export declare type ByeQueryVariables = {};
 export declare type ByeQuery = ({
     __typename?: 'Query';
@@ -147,9 +192,16 @@ export declare type CreateGymMutationVariables = {
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'createGym'>);
+export declare type AlertsFragment = ({
+    __typename?: 'User';
+} & {
+    alerts: Maybe<Array<({
+        __typename?: 'Alert';
+    } & Pick<Alert, 'message' | 'isActive' | 'link'>)>>;
+});
 export declare type GymInfoFragment = ({
     __typename?: 'Gyms';
-} & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
+} & Pick<Gyms, 'id' | 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'> & {
     coordinates: ({
         __typename?: 'Coordinates';
     } & Pick<Coordinates, 'lat' | 'lng'>);
@@ -178,6 +230,14 @@ export declare type HelloQueryVariables = {};
 export declare type HelloQuery = ({
     __typename?: 'Query';
 } & Pick<Query, 'hello'>);
+export declare type JoinGymMutationVariables = {
+    gymId: Scalars['String'];
+    auto_renewal: Scalars['Boolean'];
+    end_date: Scalars['Float'];
+};
+export declare type JoinGymMutation = ({
+    __typename?: 'Mutation';
+} & Pick<Mutation, 'joinGym'>);
 export declare type LoginMutationVariables = {
     email: Scalars['String'];
     password: Scalars['String'];
@@ -190,14 +250,14 @@ export declare type LoginMutation = ({
     } & Pick<LoginResponse, 'accessToken'> & {
         user: ({
             __typename?: 'User';
-        } & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'> & {
+        } & {
             preferences: ({
                 __typename?: 'Preferences';
             } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
             gym: Maybe<({
                 __typename?: 'Gyms';
             } & Pick<Gyms, 'id' | 'gym_name'>)>;
-        });
+        } & ProfileFragment & AlertsFragment);
     });
 });
 export declare type LogoutMutationVariables = {};
@@ -217,7 +277,7 @@ export declare type MeQuery = ({
         gym: Maybe<({
             __typename?: 'Gyms';
         } & Pick<Gyms, 'id' | 'gym_name'>)>;
-    } & ProfileFragment)>;
+    } & ProfileFragment & AlertsFragment)>;
 });
 export declare type MyGymQueryVariables = {};
 export declare type MyGymQuery = ({
@@ -247,8 +307,30 @@ export declare type UsersQuery = ({
         __typename?: 'User';
     } & ProfileFragment)>;
 });
+export declare const AlertsFragmentDoc: import("graphql").DocumentNode;
 export declare const GymInfoFragmentDoc: import("graphql").DocumentNode;
 export declare const ProfileFragmentDoc: import("graphql").DocumentNode;
+export declare const UserMembershipsInfoDocument: import("graphql").DocumentNode;
+/**
+ * __useUserMembershipsInfoQuery__
+ *
+ * To run a query within a React component, call `useUserMembershipsInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserMembershipsInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserMembershipsInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export declare function useUserMembershipsInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>): ApolloReactCommon.QueryResult<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
+export declare function useUserMembershipsInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>): ApolloReactHooks.QueryTuple<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
+export declare type UserMembershipsInfoQueryHookResult = ReturnType<typeof useUserMembershipsInfoQuery>;
+export declare type UserMembershipsInfoLazyQueryHookResult = ReturnType<typeof useUserMembershipsInfoLazyQuery>;
+export declare type UserMembershipsInfoQueryResult = ApolloReactCommon.QueryResult<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
 export declare const ByeDocument: import("graphql").DocumentNode;
 /**
  * __useByeQuery__
@@ -344,6 +426,31 @@ export declare function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export declare type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export declare type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export declare type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
+export declare const JoinGymDocument: import("graphql").DocumentNode;
+export declare type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutation, JoinGymMutationVariables>;
+/**
+ * __useJoinGymMutation__
+ *
+ * To run a mutation, you first call `useJoinGymMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinGymMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinGymMutation, { data, loading, error }] = useJoinGymMutation({
+ *   variables: {
+ *      gymId: // value for 'gymId'
+ *      auto_renewal: // value for 'auto_renewal'
+ *      end_date: // value for 'end_date'
+ *   },
+ * });
+ */
+export declare function useJoinGymMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinGymMutation, JoinGymMutationVariables>): ApolloReactHooks.MutationTuple<JoinGymMutation, JoinGymMutationVariables>;
+export declare type JoinGymMutationHookResult = ReturnType<typeof useJoinGymMutation>;
+export declare type JoinGymMutationResult = ApolloReactCommon.MutationResult<JoinGymMutation>;
+export declare type JoinGymMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinGymMutation, JoinGymMutationVariables>;
 export declare const LoginDocument: import("graphql").DocumentNode;
 export declare type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 /**

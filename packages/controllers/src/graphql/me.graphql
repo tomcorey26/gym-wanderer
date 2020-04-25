@@ -13,5 +13,6 @@ query Me {
       id
       gym_name
     }
+    ...alerts
   }
 }

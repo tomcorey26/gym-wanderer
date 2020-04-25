@@ -11,6 +11,14 @@ export type Scalars = {
   Float: number;
 };
 
+export type Alert = {
+   __typename?: 'Alert';
+  message: Scalars['String'];
+  link: Scalars['String'];
+  isActive: Scalars['Boolean'];
+  user: User;
+};
+
 export type Coordinates = {
    __typename?: 'Coordinates';
   lat: Scalars['Float'];
@@ -36,9 +44,8 @@ export type Gyms = {
   type: GymTypes;
   isOpen: Scalars['Boolean'];
   date_created: Scalars['String'];
-  owners: Array<User>;
-  members: Array<User>;
-  reviews: Array<Reviews>;
+  reviews?: Maybe<Array<Reviews>>;
+  memberships?: Maybe<Array<Membership>>;
 };
 
 /** The types of gyms available on gym wanderer */
@@ -57,12 +64,22 @@ export type LoginResponse = {
   accessToken: Scalars['String'];
 };
 
+export type Membership = {
+   __typename?: 'Membership';
+  id: Scalars['Float'];
+  isAutoRenewalActive: Scalars['Boolean'];
+  end_date: Scalars['Float'];
+  member: User;
+  gym: Gyms;
+};
+
 export type Mutation = {
    __typename?: 'Mutation';
   register: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   createGym: Scalars['Boolean'];
+  joinGym: Scalars['Boolean'];
 };
 
 
@@ -95,6 +112,13 @@ export type MutationCreateGymArgs = {
   photo_urls: Array<Scalars['String']>;
 };
 
+
+export type MutationJoinGymArgs = {
+  auto_renewal: Scalars['Boolean'];
+  end_date: Scalars['Float'];
+  gymId: Scalars['String'];
+};
+
 export type Preferences = {
    __typename?: 'Preferences';
   yoga: Scalars['Boolean'];
@@ -123,11 +147,18 @@ export type Query = {
   myGym?: Maybe<Gyms>;
   gymDetails?: Maybe<User>;
   gyms: Array<Gyms>;
+  myMemberships?: Maybe<Array<Membership>>;
+  gymMemberships?: Maybe<Array<Membership>>;
 };
 
 
 export type QueryGymDetailsArgs = {
   id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGymMembershipsArgs = {
+  gymId?: Maybe<Scalars['String']>;
 };
 
 export type Reviews = {
@@ -148,7 +179,28 @@ export type User = {
   birthday?: Maybe<Scalars['String']>;
   preferences: Preferences;
   gym?: Maybe<Gyms>;
+  reviews?: Maybe<Array<Reviews>>;
+  memberships?: Maybe<Array<Membership>>;
+  alerts?: Maybe<Array<Alert>>;
 };
+
+export type UserMembershipsInfoQueryVariables = {};
+
+
+export type UserMembershipsInfoQuery = (
+  { __typename?: 'Query' }
+  & { myMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & { memberId: Membership['id'] }
+    & { myGymMemberships: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id'>
+    ) }
+  )>>, myGym: Maybe<(
+    { __typename?: 'Gyms' }
+    & Pick<Gyms, 'id'>
+  )> }
+);
 
 export type ByeQueryVariables = {};
 
@@ -176,9 +228,17 @@ export type CreateGymMutation = (
   & Pick<Mutation, 'createGym'>
 );
 
+export type AlertsFragment = (
+  { __typename?: 'User' }
+  & { alerts: Maybe<Array<(
+    { __typename?: 'Alert' }
+    & Pick<Alert, 'message' | 'isActive' | 'link'>
+  )>> }
+);
+
 export type GymInfoFragment = (
   { __typename?: 'Gyms' }
-  & Pick<Gyms, 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'>
+  & Pick<Gyms, 'id' | 'gym_name' | 'description' | 'membership_cost' | 'location' | 'equipment' | 'photo_urls' | 'type'>
   & { coordinates: (
     { __typename?: 'Coordinates' }
     & Pick<Coordinates, 'lat' | 'lng'>
@@ -216,6 +276,18 @@ export type HelloQuery = (
   & Pick<Query, 'hello'>
 );
 
+export type JoinGymMutationVariables = {
+  gymId: Scalars['String'];
+  auto_renewal: Scalars['Boolean'];
+  end_date: Scalars['Float'];
+};
+
+
+export type JoinGymMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinGym'>
+);
+
 export type LoginMutationVariables = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -229,7 +301,6 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>
       & { preferences: (
         { __typename?: 'Preferences' }
         & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
@@ -237,6 +308,8 @@ export type LoginMutation = (
         { __typename?: 'Gyms' }
         & Pick<Gyms, 'id' | 'gym_name'>
       )> }
+      & ProfileFragment
+      & AlertsFragment
     ) }
   ) }
 );
@@ -264,6 +337,7 @@ export type MeQuery = (
       & Pick<Gyms, 'id' | 'gym_name'>
     )> }
     & ProfileFragment
+    & AlertsFragment
   )> }
 );
 
@@ -305,8 +379,18 @@ export type UsersQuery = (
   )> }
 );
 
+export const AlertsFragmentDoc = gql`
+    fragment alerts on User {
+  alerts {
+    message
+    isActive
+    link
+  }
+}
+    `;
 export const GymInfoFragmentDoc = gql`
     fragment gymInfo on Gyms {
+  id
   gym_name
   description
   membership_cost
@@ -330,6 +414,44 @@ export const ProfileFragmentDoc = gql`
   birthday
 }
     `;
+export const UserMembershipsInfoDocument = gql`
+    query UserMembershipsInfo {
+  myMemberships {
+    memberId: id
+    myGymMemberships: gym {
+      id
+    }
+  }
+  myGym {
+    id
+  }
+}
+    `;
+
+/**
+ * __useUserMembershipsInfoQuery__
+ *
+ * To run a query within a React component, call `useUserMembershipsInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserMembershipsInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserMembershipsInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserMembershipsInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>(UserMembershipsInfoDocument, baseOptions);
+      }
+export function useUserMembershipsInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>(UserMembershipsInfoDocument, baseOptions);
+        }
+export type UserMembershipsInfoQueryHookResult = ReturnType<typeof useUserMembershipsInfoQuery>;
+export type UserMembershipsInfoLazyQueryHookResult = ReturnType<typeof useUserMembershipsInfoLazyQuery>;
+export type UserMembershipsInfoQueryResult = ApolloReactCommon.QueryResult<UserMembershipsInfoQuery, UserMembershipsInfoQueryVariables>;
 export const ByeDocument = gql`
     query Bye {
   bye
@@ -466,17 +588,44 @@ export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
+export const JoinGymDocument = gql`
+    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {
+  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)
+}
+    `;
+export type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutation, JoinGymMutationVariables>;
+
+/**
+ * __useJoinGymMutation__
+ *
+ * To run a mutation, you first call `useJoinGymMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinGymMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinGymMutation, { data, loading, error }] = useJoinGymMutation({
+ *   variables: {
+ *      gymId: // value for 'gymId'
+ *      auto_renewal: // value for 'auto_renewal'
+ *      end_date: // value for 'end_date'
+ *   },
+ * });
+ */
+export function useJoinGymMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinGymMutation, JoinGymMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinGymMutation, JoinGymMutationVariables>(JoinGymDocument, baseOptions);
+      }
+export type JoinGymMutationHookResult = ReturnType<typeof useJoinGymMutation>;
+export type JoinGymMutationResult = ApolloReactCommon.MutationResult<JoinGymMutation>;
+export type JoinGymMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinGymMutation, JoinGymMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     accessToken
     user {
-      id
-      email
-      first_name
-      last_name
-      username
-      birthday
+      ...profile
       preferences {
         yoga
         crossfit
@@ -489,10 +638,12 @@ export const LoginDocument = gql`
         id
         gym_name
       }
+      ...alerts
     }
   }
 }
-    `;
+    ${ProfileFragmentDoc}
+${AlertsFragmentDoc}`;
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -564,9 +715,11 @@ export const MeDocument = gql`
       id
       gym_name
     }
+    ...alerts
   }
 }
-    ${ProfileFragmentDoc}`;
+    ${ProfileFragmentDoc}
+${AlertsFragmentDoc}`;
 
 /**
  * __useMeQuery__
