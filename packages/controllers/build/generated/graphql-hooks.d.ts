@@ -58,7 +58,7 @@ export declare type LoginResponse = {
 };
 export declare type Membership = {
     __typename?: 'Membership';
-    id: Scalars['Float'];
+    id: Scalars['String'];
     isAutoRenewalActive: Scalars['Boolean'];
     end_date: Scalars['Float'];
     member: User;
@@ -192,6 +192,14 @@ export declare type CreateGymMutationVariables = {
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'createGym'>);
+export declare type FetchGymsQueryVariables = {};
+export declare type FetchGymsQuery = ({
+    __typename?: 'Query';
+} & {
+    gyms: Array<({
+        __typename?: 'Gyms';
+    } & GymInfoFragment)>;
+});
 export declare type AlertsFragment = ({
     __typename?: 'User';
 } & {
@@ -383,6 +391,27 @@ export declare function useCreateGymMutation(baseOptions?: ApolloReactHooks.Muta
 export declare type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export declare type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export declare type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export declare const FetchGymsDocument: import("graphql").DocumentNode;
+/**
+ * __useFetchGymsQuery__
+ *
+ * To run a query within a React component, call `useFetchGymsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchGymsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchGymsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export declare function useFetchGymsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FetchGymsQuery, FetchGymsQueryVariables>): ApolloReactCommon.QueryResult<FetchGymsQuery, FetchGymsQueryVariables>;
+export declare function useFetchGymsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FetchGymsQuery, FetchGymsQueryVariables>): ApolloReactHooks.QueryTuple<FetchGymsQuery, FetchGymsQueryVariables>;
+export declare type FetchGymsQueryHookResult = ReturnType<typeof useFetchGymsQuery>;
+export declare type FetchGymsLazyQueryHookResult = ReturnType<typeof useFetchGymsLazyQuery>;
+export declare type FetchGymsQueryResult = ApolloReactCommon.QueryResult<FetchGymsQuery, FetchGymsQueryVariables>;
 export declare const GymDetailsDocument: import("graphql").DocumentNode;
 /**
  * __useGymDetailsQuery__

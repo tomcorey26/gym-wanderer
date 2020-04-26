@@ -1,12 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import MapsSideScroller from '../components/MapsSideScroller';
 import { Coords } from '../types/Coords';
-import {
-  useCurrentGeolocation,
-  useInputValue,
-  useGoogleMapsApi,
-  useFetchPlaceCoordinates,
-} from '../hooks';
+import { useCurrentGeolocation, useInputValue } from '../hooks';
 import GoogleMapReact from 'google-map-react';
 import MapPoint from '../components/MapPoint';
 import RadiusSelect from '../components/RadiusSelect';
@@ -15,6 +10,8 @@ import SearchFilter from '../components/SearchFilter';
 import { SearchContext } from '../context/SearchState';
 import { useLocation } from 'react-router-dom';
 import { isWithinDistance } from '../utils';
+import { useFetchGymsQuery, Gyms } from '@gw/controllers';
+import { CircularProgress } from '@material-ui/core';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -26,9 +23,14 @@ const Search: React.FC = () => {
   const { value, onChange } = useInputValue('');
   const [{ lat, lng }, setCoords] = useState<Coords>({ lat: 0, lng: 0 });
   const [error, setError] = useState<string>('');
+  const { data, loading } = useFetchGymsQuery();
   let query = useQuery();
 
-  console.log('lat,lng', lat, lng);
+  useEffect(() => {
+    if (data && data.gyms) {
+      dispatch({ type: 'UPDATE_GYM_RESULTS', gyms: data.gyms });
+    }
+  }, [data, dispatch]);
 
   const handleMapApiLoaded = (map, maps) => {
     const geoService = new maps.Geocoder();
@@ -46,24 +48,40 @@ const Search: React.FC = () => {
     });
   };
 
-  let filteredGyms = gyms;
+  if (loading) {
+    return (
+      <div
+        style={{
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
   //filter by gyms inside radius
-  filteredGyms = filteredGyms.filter(({ location }) =>
-    isWithinDistance(location.coordinates, { lat, lng }, radiusDist)
+  let filteredGyms: Gyms[] = gyms.filter(({ coordinates }) =>
+    isWithinDistance(coordinates, { lat, lng }, radiusDist)
   );
   //Filter gym results based off query
   if (value) {
     filteredGyms = filteredGyms.filter((gym) =>
-      gym.gymName.toLowerCase().includes(value.toLowerCase())
+      gym.gym_name.toLowerCase().includes(value.toLowerCase())
     );
   }
+  filteredGyms = gyms;
 
   return (
     <div
       className="search-gym-page"
       style={{
         width: '100vw',
-        height: '100vh',
+        height: 'calc(100% - 276px)',
         display: 'flex',
         overflow: 'auto',
       }}
@@ -80,25 +98,28 @@ const Search: React.FC = () => {
         <GoogleMapReact
           zoom={zoom}
           center={!lat && !lng ? geo.position : { lat, lng }}
-          bootstrapURLKeys={{
-            key: process.env.REACT_APP_GOOGLE_KEY as string,
-            libraries: 'places',
-          }}
+          // bootstrapURLKeys={{
+          //   key: process.env.REACT_APP_GOOGLE_KEY as string,
+          //   libraries: 'places',
+          // }}
           yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => handleMapApiLoaded(map, maps)}
+          // onGoogleApiLoaded={({ map, maps }) => handleMapApiLoaded(map, maps)}
         >
-          {filteredGyms.map(({ location, cost, id }, i) => (
+          {filteredGyms.map(({ id, membership_cost, coordinates }, i) => (
             <MapPoint
               key={i}
               id={id}
-              lat={location.coordinates.lat + 0.001}
-              lng={location.coordinates.lng + 0.001}
-              text={`${cost}/hr`}
+              lat={coordinates.lat}
+              lng={coordinates.lng}
+              text={`${membership_cost}/month`}
             />
           ))}
         </GoogleMapReact>
       </div>
-      <div style={{ width: '65%' }} className="scroller-box">
+      <div
+        style={{ width: '65%', height: 'calc(100vh-64px)' }}
+        className="scroller-box"
+      >
         <div style={{ display: 'flex' }} className="top-bar">
           <SearchFilter value={value} onChange={onChange} />
           <RadiusSelect />

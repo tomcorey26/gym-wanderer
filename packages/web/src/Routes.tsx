@@ -22,7 +22,7 @@ const Routes: React.FC = () => {
   return (
     <Router>
       <Navbar />
-      <div>
+      {/* <div>
         <span>users</span>
         {data.users.map((x) => {
           return (
@@ -31,7 +31,7 @@ const Routes: React.FC = () => {
             </li>
           );
         })}
-      </div>
+      </div> */}
       <CssBaseline />
       <Switch>
         <Route exact path="/" component={Home} />

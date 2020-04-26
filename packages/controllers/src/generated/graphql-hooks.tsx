@@ -66,7 +66,7 @@ export type LoginResponse = {
 
 export type Membership = {
    __typename?: 'Membership';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   isAutoRenewalActive: Scalars['Boolean'];
   end_date: Scalars['Float'];
   member: User;
@@ -226,6 +226,17 @@ export type CreateGymMutationVariables = {
 export type CreateGymMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createGym'>
+);
+
+export type FetchGymsQueryVariables = {};
+
+
+export type FetchGymsQuery = (
+  { __typename?: 'Query' }
+  & { gyms: Array<(
+    { __typename?: 'Gyms' }
+    & GymInfoFragment
+  )> }
 );
 
 export type AlertsFragment = (
@@ -520,6 +531,38 @@ export function useCreateGymMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export const FetchGymsDocument = gql`
+    query FetchGyms {
+  gyms {
+    ...gymInfo
+  }
+}
+    ${GymInfoFragmentDoc}`;
+
+/**
+ * __useFetchGymsQuery__
+ *
+ * To run a query within a React component, call `useFetchGymsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchGymsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchGymsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchGymsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FetchGymsQuery, FetchGymsQueryVariables>) {
+        return ApolloReactHooks.useQuery<FetchGymsQuery, FetchGymsQueryVariables>(FetchGymsDocument, baseOptions);
+      }
+export function useFetchGymsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FetchGymsQuery, FetchGymsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<FetchGymsQuery, FetchGymsQueryVariables>(FetchGymsDocument, baseOptions);
+        }
+export type FetchGymsQueryHookResult = ReturnType<typeof useFetchGymsQuery>;
+export type FetchGymsLazyQueryHookResult = ReturnType<typeof useFetchGymsLazyQuery>;
+export type FetchGymsQueryResult = ApolloReactCommon.QueryResult<FetchGymsQuery, FetchGymsQueryVariables>;
 export const GymDetailsDocument = gql`
     query gymDetails($id: String) {
   gymDetails(id: $id) {
