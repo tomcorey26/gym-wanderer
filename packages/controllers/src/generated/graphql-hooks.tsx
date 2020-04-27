@@ -66,7 +66,7 @@ export type LoginResponse = {
 
 export type Membership = {
    __typename?: 'Membership';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   isAutoRenewalActive: Scalars['Boolean'];
   end_date: Scalars['Float'];
   member: User;
@@ -84,6 +84,7 @@ export type Mutation = {
 
 
 export type MutationRegisterArgs = {
+  photo_url?: Maybe<Scalars['String']>;
   birthday?: Maybe<Scalars['String']>;
   preferences: PreferencesInput;
   last_name: Scalars['String'];
@@ -177,6 +178,7 @@ export type User = {
   email: Scalars['String'];
   username: Scalars['String'];
   birthday?: Maybe<Scalars['String']>;
+  photo_url?: Maybe<Scalars['String']>;
   preferences: Preferences;
   gym?: Maybe<Gyms>;
   reviews?: Maybe<Array<Reviews>>;
@@ -226,6 +228,17 @@ export type CreateGymMutationVariables = {
 export type CreateGymMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createGym'>
+);
+
+export type FetchGymsQueryVariables = {};
+
+
+export type FetchGymsQuery = (
+  { __typename?: 'Query' }
+  & { gyms: Array<(
+    { __typename?: 'Gyms' }
+    & GymInfoFragment
+  )> }
 );
 
 export type AlertsFragment = (
@@ -360,6 +373,7 @@ export type RegisterMutationVariables = {
   password: Scalars['String'];
   email: Scalars['String'];
   preferences: PreferencesInput;
+  photo_url?: Maybe<Scalars['String']>;
 };
 
 
@@ -520,6 +534,38 @@ export function useCreateGymMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export const FetchGymsDocument = gql`
+    query FetchGyms {
+  gyms {
+    ...gymInfo
+  }
+}
+    ${GymInfoFragmentDoc}`;
+
+/**
+ * __useFetchGymsQuery__
+ *
+ * To run a query within a React component, call `useFetchGymsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchGymsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchGymsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchGymsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FetchGymsQuery, FetchGymsQueryVariables>) {
+        return ApolloReactHooks.useQuery<FetchGymsQuery, FetchGymsQueryVariables>(FetchGymsDocument, baseOptions);
+      }
+export function useFetchGymsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FetchGymsQuery, FetchGymsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<FetchGymsQuery, FetchGymsQueryVariables>(FetchGymsDocument, baseOptions);
+        }
+export type FetchGymsQueryHookResult = ReturnType<typeof useFetchGymsQuery>;
+export type FetchGymsLazyQueryHookResult = ReturnType<typeof useFetchGymsLazyQuery>;
+export type FetchGymsQueryResult = ApolloReactCommon.QueryResult<FetchGymsQuery, FetchGymsQueryVariables>;
 export const GymDetailsDocument = gql`
     query gymDetails($id: String) {
   gymDetails(id: $id) {
@@ -778,8 +824,8 @@ export type MyGymQueryHookResult = ReturnType<typeof useMyGymQuery>;
 export type MyGymLazyQueryHookResult = ReturnType<typeof useMyGymLazyQuery>;
 export type MyGymQueryResult = ApolloReactCommon.QueryResult<MyGymQuery, MyGymQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {
-  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)
+    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!, $photo_url: String) {
+  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday, photo_url: $photo_url)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
@@ -804,6 +850,7 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
  *      password: // value for 'password'
  *      email: // value for 'email'
  *      preferences: // value for 'preferences'
+ *      photo_url: // value for 'photo_url'
  *   },
  * });
  */

@@ -44,7 +44,7 @@ export const useGooglePlacesAutoComplete = (settings?: Settings) => {
     }
     //without formik
     if (value && value.hasOwnProperty('place_id')) {
-      router.history.push(`/search/?place_id=${value.place_id}`);
+      router.history.push(`/search?place_id=${value.place_id}`);
     } else {
       // modal push here?
       console.log(value + 'is not a valid place');

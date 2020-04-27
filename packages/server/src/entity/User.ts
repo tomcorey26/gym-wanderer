@@ -46,6 +46,10 @@ export class User extends BaseEntity {
   @Column('date', { nullable: true })
   birthday?: string;
 
+  @Field({ nullable: true })
+  @Column('text', { nullable: true })
+  photo_url?: string;
+
   @Column('int', { default: 0 })
   tokenVersion: number;
 

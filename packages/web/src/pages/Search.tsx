@@ -1,50 +1,81 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import MapsSideScroller from '../components/MapsSideScroller';
 import { Coords } from '../types/Coords';
-import {
-  useCurrentGeolocation,
-  useInputValue,
-  useGoogleMapsApi,
-} from '../hooks';
+import { useCurrentGeolocation, useInputValue } from '../hooks';
 import GoogleMapReact from 'google-map-react';
 import MapPoint from '../components/MapPoint';
 import RadiusSelect from '../components/RadiusSelect';
 import axios from 'axios';
 import SearchFilter from '../components/SearchFilter';
 import { SearchContext } from '../context/SearchState';
+import { useLocation } from 'react-router-dom';
+import { isWithinDistance } from '../utils';
+import { useFetchGymsQuery, Gyms } from '@gw/controllers';
+import { CircularProgress } from '@material-ui/core';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const Search: React.FC = () => {
   const geo = useCurrentGeolocation();
   const { gyms, radiusDist, zoom, dispatch } = useContext(SearchContext);
   const { value, onChange } = useInputValue('');
+  const [{ lat, lng }, setCoords] = useState<Coords>({ lat: 0, lng: 0 });
+  const [error, setError] = useState<string>('');
+  const { data, loading } = useFetchGymsQuery();
+  let query = useQuery();
 
   useEffect(() => {
-    axios.get('/api/gyms').then((res: any) => {
-      dispatch({ type: 'UPDATE_GYM_RESULTS', gyms: res.data.gyms });
+    if (data && data.gyms) {
+      dispatch({ type: 'UPDATE_GYM_RESULTS', gyms: data.gyms });
+    }
+  }, [data, dispatch]);
+
+  const handleMapApiLoaded = (map, maps) => {
+    const geoService = new maps.Geocoder();
+
+    geoService.geocode({ placeId: query.get('place_id') }, (response) => {
+      if (!response[0]) {
+        console.error("Can't find the address");
+        setError("Can't find the address");
+        // if empty, set to original location
+        setCoords({ lat, lng });
+        return;
+      }
+      const { location } = response[0].geometry;
+      setCoords({ lat: location.lat(), lng: location.lng() });
     });
-  }, []);
-
-  const isWithinDistance = (point: Coords) => {
-    const center = geo.position;
-    const distance = radiusDist;
-
-    let withinLong =
-      point.lng > center.lng - distance && point.lng < center.lng + distance;
-    let withinLat =
-      point.lat > center.lat - distance && point.lat < center.lat + distance;
-
-    return withinLong && withinLat;
   };
 
-  let filteredGyms = gyms;
+  if (loading) {
+    return (
+      <div
+        style={{
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
   //filter by gyms inside radius
-  filteredGyms = filteredGyms.filter(({ location }) =>
-    isWithinDistance(location.coordinates)
-  );
+  let filteredGyms: Gyms[] = gyms;
+  if (radiusDist) {
+    filteredGyms = gyms.filter(({ coordinates }) =>
+      isWithinDistance(coordinates, { lat, lng }, radiusDist)
+    );
+  }
+
   //Filter gym results based off query
   if (value) {
     filteredGyms = filteredGyms.filter((gym) =>
-      gym.gymName.toLowerCase().includes(value.toLowerCase())
+      gym.gym_name.toLowerCase().includes(value.toLowerCase())
     );
   }
 
@@ -53,7 +84,6 @@ const Search: React.FC = () => {
       className="search-gym-page"
       style={{
         width: '100vw',
-        height: '100vh',
         display: 'flex',
         overflow: 'auto',
       }}
@@ -61,7 +91,7 @@ const Search: React.FC = () => {
       <div
         className="gym-map"
         style={{
-          height: '100%',
+          height: '93.5vh',
           width: '35%',
           position: 'sticky',
           top: 0,
@@ -69,24 +99,26 @@ const Search: React.FC = () => {
       >
         <GoogleMapReact
           zoom={zoom}
-          center={geo.position}
+          center={!lat && !lng ? geo.position : { lat, lng }}
           // bootstrapURLKeys={{
-          //   key: process.env.REACT_APP_GOOGLE_KEY,
+          //   key: process.env.REACT_APP_GOOGLE_KEY as string,
           //   libraries: 'places',
           // }}
+          yesIWantToUseGoogleMapApiInternals
+          // onGoogleApiLoaded={({ map, maps }) => handleMapApiLoaded(map, maps)}
         >
-          {filteredGyms.map(({ location, cost, id }, i) => (
+          {filteredGyms.map(({ id, membership_cost, coordinates }, i) => (
             <MapPoint
               key={i}
               id={id}
-              lat={location.coordinates.lat + 0.001}
-              lng={location.coordinates.lng + 0.001}
-              text={`${cost}/hr`}
+              lat={coordinates.lat}
+              lng={coordinates.lng}
+              text={`${membership_cost}/month`}
             />
           ))}
         </GoogleMapReact>
       </div>
-      <div style={{ width: '65%' }} className="scroller-box">
+      <div style={{ width: '65%', height: '93.5vh' }} className="scroller-box">
         <div style={{ display: 'flex' }} className="top-bar">
           <SearchFilter value={value} onChange={onChange} />
           <RadiusSelect />

@@ -6,6 +6,7 @@ mutation Register(
   $password: String!
   $email: String!
   $preferences: PreferencesInput!
+  $photo_url: String
 ) {
   register(
     username: $username
@@ -15,5 +16,6 @@ mutation Register(
     last_name: $last_name
     preferences: $preferences
     birthday: $birthday
+    photo_url: $photo_url
   )
 }

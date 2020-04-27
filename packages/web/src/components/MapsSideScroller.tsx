@@ -1,18 +1,19 @@
-import React from "react";
-import SideScrollerBox from "./SideScrollerBox";
-import List from "@material-ui/core/List";
-import { makeStyles } from "@material-ui/core/styles";
-import { useRouter } from "../hooks";
+import React from 'react';
+import SideScrollerBox from './SideScrollerBox';
+import List from '@material-ui/core/List';
+import { makeStyles } from '@material-ui/core/styles';
+import { useRouter } from '../hooks';
+import { Gyms } from '@gw/controllers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
 }));
 
 interface Props {
-  gyms: any;
+  gyms: Gyms[];
 }
 
 const MapsSideScroller: React.FC<Props> = ({ gyms }) => {

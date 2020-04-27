@@ -66,11 +66,7 @@ export const GoogleMapsAutoComplete = () => {
         );
 
         return (
-          <Grid
-            container
-            alignItems="center"
-            onSubmit={() => console.log('aye')}
-          >
+          <Grid container alignItems="center">
             <Grid item>
               <LocationOnIcon className={classes.icon} />
             </Grid>

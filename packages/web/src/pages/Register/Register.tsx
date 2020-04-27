@@ -24,6 +24,7 @@ const mockUser = {
   email: 'member1@gmail.com',
   password: 'Test123@',
   confirmPassword: 'Test123@',
+  photo_url: '',
 };
 
 interface Preferences {
@@ -34,7 +35,7 @@ interface Preferences {
   general: boolean;
   boxing: boolean;
 }
-interface RegisterInput {
+export interface RegisterInput {
   first_name: string;
   last_name: string;
   username: string;
@@ -43,6 +44,7 @@ interface RegisterInput {
   email: string;
   password: string;
   confirmPassword: string;
+  photo_url: string;
 }
 const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 
