@@ -65,23 +65,25 @@ const Search: React.FC = () => {
   }
 
   //filter by gyms inside radius
-  let filteredGyms: Gyms[] = gyms.filter(({ coordinates }) =>
-    isWithinDistance(coordinates, { lat, lng }, radiusDist)
-  );
+  let filteredGyms: Gyms[] = gyms;
+  if (radiusDist) {
+    filteredGyms = gyms.filter(({ coordinates }) =>
+      isWithinDistance(coordinates, { lat, lng }, radiusDist)
+    );
+  }
+
   //Filter gym results based off query
   if (value) {
     filteredGyms = filteredGyms.filter((gym) =>
       gym.gym_name.toLowerCase().includes(value.toLowerCase())
     );
   }
-  filteredGyms = gyms;
 
   return (
     <div
       className="search-gym-page"
       style={{
         width: '100vw',
-        height: 'calc(100% - 276px)',
         display: 'flex',
         overflow: 'auto',
       }}
@@ -89,7 +91,7 @@ const Search: React.FC = () => {
       <div
         className="gym-map"
         style={{
-          height: '100%',
+          height: '93.5vh',
           width: '35%',
           position: 'sticky',
           top: 0,
@@ -116,10 +118,7 @@ const Search: React.FC = () => {
           ))}
         </GoogleMapReact>
       </div>
-      <div
-        style={{ width: '65%', height: 'calc(100vh-64px)' }}
-        className="scroller-box"
-      >
+      <div style={{ width: '65%', height: '93.5vh' }} className="scroller-box">
         <div style={{ display: 'flex' }} className="top-bar">
           <SearchFilter value={value} onChange={onChange} />
           <RadiusSelect />

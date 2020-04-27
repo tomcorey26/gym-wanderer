@@ -10,29 +10,28 @@ interface Props {
 
 const MapPoint: React.FC<Props> = ({ text, id }) => {
   const { dispatch, hoveredGymId } = useContext(SearchContext);
-
-  let noHover = {
+  let shared = {
     cursor: 'pointer',
-    width: '60px',
+    fontSize: 9,
+    width: '100px',
     height: '20px',
     padding: '5px',
-    background: 'red',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '25px',
   };
+  let noHover = {
+    ...shared,
+    background: 'red',
+  };
 
   let yesHover = {
-    cursor: 'pointer',
-    width: '60px',
-    height: '20px',
-    padding: '5px',
+    ...shared,
+    transition: '200ms',
+    height: '40px',
     background: 'blue',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '25px',
+    color: 'white',
   };
 
   return (
