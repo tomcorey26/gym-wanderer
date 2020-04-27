@@ -73,6 +73,7 @@ export declare type Mutation = {
     joinGym: Scalars['Boolean'];
 };
 export declare type MutationRegisterArgs = {
+    photo_url?: Maybe<Scalars['String']>;
     birthday?: Maybe<Scalars['String']>;
     preferences: PreferencesInput;
     last_name: Scalars['String'];
@@ -151,6 +152,7 @@ export declare type User = {
     email: Scalars['String'];
     username: Scalars['String'];
     birthday?: Maybe<Scalars['String']>;
+    photo_url?: Maybe<Scalars['String']>;
     preferences: Preferences;
     gym?: Maybe<Gyms>;
     reviews?: Maybe<Array<Reviews>>;
@@ -303,6 +305,7 @@ export declare type RegisterMutationVariables = {
     password: Scalars['String'];
     email: Scalars['String'];
     preferences: PreferencesInput;
+    photo_url?: Maybe<Scalars['String']>;
 };
 export declare type RegisterMutation = ({
     __typename?: 'Mutation';
@@ -590,6 +593,7 @@ export declare type RegisterMutationFn = ApolloReactCommon.MutationFunction<Regi
  *      password: // value for 'password'
  *      email: // value for 'email'
  *      preferences: // value for 'preferences'
+ *      photo_url: // value for 'photo_url'
  *   },
  * });
  */

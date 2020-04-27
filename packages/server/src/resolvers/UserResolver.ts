@@ -97,7 +97,8 @@ export class UserResolver {
     @Arg('first_name') first_name: string,
     @Arg('last_name') last_name: string,
     @Arg('preferences') preferences: PreferencesInput,
-    @Arg('birthday', () => String, { nullable: true }) birthday?: string
+    @Arg('birthday', () => String, { nullable: true }) birthday?: string,
+    @Arg('photo_url', () => String, { nullable: true }) photo_url?: string
   ) {
     const hashedPassword = await hash(password, 12);
     console.log(username);
@@ -111,6 +112,7 @@ export class UserResolver {
         birthday,
         first_name,
         last_name,
+        photo_url,
         preferences: prefs,
       });
       await user.save();

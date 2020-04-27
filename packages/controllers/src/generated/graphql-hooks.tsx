@@ -84,6 +84,7 @@ export type Mutation = {
 
 
 export type MutationRegisterArgs = {
+  photo_url?: Maybe<Scalars['String']>;
   birthday?: Maybe<Scalars['String']>;
   preferences: PreferencesInput;
   last_name: Scalars['String'];
@@ -177,6 +178,7 @@ export type User = {
   email: Scalars['String'];
   username: Scalars['String'];
   birthday?: Maybe<Scalars['String']>;
+  photo_url?: Maybe<Scalars['String']>;
   preferences: Preferences;
   gym?: Maybe<Gyms>;
   reviews?: Maybe<Array<Reviews>>;
@@ -371,6 +373,7 @@ export type RegisterMutationVariables = {
   password: Scalars['String'];
   email: Scalars['String'];
   preferences: PreferencesInput;
+  photo_url?: Maybe<Scalars['String']>;
 };
 
 
@@ -821,8 +824,8 @@ export type MyGymQueryHookResult = ReturnType<typeof useMyGymQuery>;
 export type MyGymLazyQueryHookResult = ReturnType<typeof useMyGymLazyQuery>;
 export type MyGymQueryResult = ApolloReactCommon.QueryResult<MyGymQuery, MyGymQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!) {
-  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday)
+    mutation Register($last_name: String!, $first_name: String!, $birthday: String, $username: String!, $password: String!, $email: String!, $preferences: PreferencesInput!, $photo_url: String) {
+  register(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday, photo_url: $photo_url)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
@@ -847,6 +850,7 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
  *      password: // value for 'password'
  *      email: // value for 'email'
  *      preferences: // value for 'preferences'
+ *      photo_url: // value for 'photo_url'
  *   },
  * });
  */
