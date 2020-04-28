@@ -76,10 +76,6 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
   const { data, loading, error } = useUserMembershipsInfoQuery();
   const history = useHistory();
 
-  if (error) {
-    history.push('/');
-  }
-
   const classes = useStyles();
 
   const getDate = (monthsFromNow = 0) => (
@@ -92,6 +88,11 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
 
   const handleJoin = async () => {
     if (!gymId) return;
+    // if error that menas user is not auth
+    if (error) {
+      history.push('/register');
+      return;
+    }
     setNewMemberText('Thank you For Joining!');
     if (monthCount >= 1) {
       await joinGym({
