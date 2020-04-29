@@ -124,15 +124,24 @@ export declare type Query = {
     hello: Scalars['String'];
     bye: Scalars['String'];
     users: Array<User>;
+    getUser?: Maybe<User>;
+    deleteUser: Scalars['Boolean'];
     me?: Maybe<User>;
     myGym?: Maybe<Gyms>;
     gymDetails?: Maybe<User>;
     gyms: Array<Gyms>;
     myMemberships?: Maybe<Array<Membership>>;
+    userMemberships?: Maybe<Array<Membership>>;
     gymMemberships?: Maybe<Array<Membership>>;
+};
+export declare type QueryGetUserArgs = {
+    id: Scalars['String'];
 };
 export declare type QueryGymDetailsArgs = {
     id?: Maybe<Scalars['String']>;
+};
+export declare type QueryUserMembershipsArgs = {
+    userId: Scalars['String'];
 };
 export declare type QueryGymMembershipsArgs = {
     gymId?: Maybe<Scalars['String']>;
@@ -218,7 +227,7 @@ export declare type GymInfoFragment = ({
 });
 export declare type ProfileFragment = ({
     __typename?: 'User';
-} & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>);
+} & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday' | 'photo_url'>);
 export declare type GymDetailsQueryVariables = {
     id?: Maybe<Scalars['String']>;
 };
@@ -310,6 +319,30 @@ export declare type RegisterMutationVariables = {
 export declare type RegisterMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'register'>);
+export declare type UserProfileQueryVariables = {
+    userId: Scalars['String'];
+};
+export declare type UserProfileQuery = ({
+    __typename?: 'Query';
+} & {
+    getUser: Maybe<({
+        __typename?: 'User';
+    } & {
+        preferences: ({
+            __typename?: 'Preferences';
+        } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
+        gym: Maybe<({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id' | 'gym_name'>)>;
+    } & ProfileFragment)>;
+    userMemberships: Maybe<Array<({
+        __typename?: 'Membership';
+    } & {
+        gym: ({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type'>);
+    })>>;
+});
 export declare type UsersQueryVariables = {};
 export declare type UsersQuery = ({
     __typename?: 'Query';
@@ -601,6 +634,28 @@ export declare function useRegisterMutation(baseOptions?: ApolloReactHooks.Mutat
 export declare type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export declare type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export declare type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export declare const UserProfileDocument: import("graphql").DocumentNode;
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a React component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserProfileQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export declare function useUserProfileQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserProfileQuery, UserProfileQueryVariables>): ApolloReactCommon.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
+export declare function useUserProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserProfileQuery, UserProfileQueryVariables>): ApolloReactHooks.QueryTuple<UserProfileQuery, UserProfileQueryVariables>;
+export declare type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
+export declare type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
+export declare type UserProfileQueryResult = ApolloReactCommon.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export declare const UsersDocument: import("graphql").DocumentNode;
 /**
  * __useUsersQuery__

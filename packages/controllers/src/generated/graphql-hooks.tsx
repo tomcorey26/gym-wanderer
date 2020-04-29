@@ -144,17 +144,30 @@ export type Query = {
   hello: Scalars['String'];
   bye: Scalars['String'];
   users: Array<User>;
+  getUser?: Maybe<User>;
+  deleteUser: Scalars['Boolean'];
   me?: Maybe<User>;
   myGym?: Maybe<Gyms>;
   gymDetails?: Maybe<User>;
   gyms: Array<Gyms>;
   myMemberships?: Maybe<Array<Membership>>;
+  userMemberships?: Maybe<Array<Membership>>;
   gymMemberships?: Maybe<Array<Membership>>;
+};
+
+
+export type QueryGetUserArgs = {
+  id: Scalars['String'];
 };
 
 
 export type QueryGymDetailsArgs = {
   id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryUserMembershipsArgs = {
+  userId: Scalars['String'];
 };
 
 
@@ -260,7 +273,7 @@ export type GymInfoFragment = (
 
 export type ProfileFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>
+  & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday' | 'photo_url'>
 );
 
 export type GymDetailsQueryVariables = {
@@ -382,6 +395,32 @@ export type RegisterMutation = (
   & Pick<Mutation, 'register'>
 );
 
+export type UserProfileQueryVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type UserProfileQuery = (
+  { __typename?: 'Query' }
+  & { getUser: Maybe<(
+    { __typename?: 'User' }
+    & { preferences: (
+      { __typename?: 'Preferences' }
+      & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
+    ), gym: Maybe<(
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name'>
+    )> }
+    & ProfileFragment
+  )>, userMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & { gym: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type'>
+    ) }
+  )>> }
+);
+
 export type UsersQueryVariables = {};
 
 
@@ -426,6 +465,7 @@ export const ProfileFragmentDoc = gql`
   last_name
   username
   birthday
+  photo_url
 }
     `;
 export const UserMembershipsInfoDocument = gql`
@@ -860,6 +900,59 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UserProfileDocument = gql`
+    query userProfile($userId: String!) {
+  getUser(id: $userId) {
+    ...profile
+    preferences {
+      yoga
+      crossfit
+      bodybuilding
+      parkour
+      general
+      boxing
+    }
+    gym {
+      id
+      gym_name
+    }
+  }
+  userMemberships(userId: $userId) {
+    gym {
+      id
+      gym_name
+      location
+      type
+    }
+  }
+}
+    ${ProfileFragmentDoc}`;
+
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a React component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserProfileQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserProfileQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserProfileQuery, UserProfileQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserProfileQuery, UserProfileQueryVariables>(UserProfileDocument, baseOptions);
+      }
+export function useUserProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserProfileQuery, UserProfileQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserProfileQuery, UserProfileQueryVariables>(UserProfileDocument, baseOptions);
+        }
+export type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
+export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
+export type UserProfileQueryResult = ApolloReactCommon.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

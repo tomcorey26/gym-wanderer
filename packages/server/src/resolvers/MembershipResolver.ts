@@ -37,7 +37,7 @@ export class MembershipResolver {
       await Alert.create({
         message: `Congrats! You have joined ${joinedGym?.gym_name}`,
         userId: memberId,
-        link: `/mygyms`,
+        link: `/gyms/${joinedGym?.id}`,
       }).save();
 
       const member = await User.findOne(memberId);
@@ -58,6 +58,16 @@ export class MembershipResolver {
   async myMemberships(@Ctx() { payload }: MyContext) {
     const memberships = await Membership.find({
       where: { memberId: payload!.userId },
+      relations: ['member', 'gym'],
+    });
+
+    return memberships;
+  }
+
+  @Query(() => [Membership], { nullable: true })
+  async userMemberships(@Arg('userId') userId: string) {
+    const memberships = await Membership.find({
+      where: { memberId: userId },
       relations: ['member', 'gym'],
     });
 

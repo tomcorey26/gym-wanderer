@@ -68,6 +68,43 @@ export class UserResolver {
     return User.find({ relations: userRelations });
   }
 
+  @Query(() => User, { nullable: true })
+  async getUser(@Arg('id') id: string) {
+    let user = await User.findOne({
+      where: {
+        id,
+      },
+      relations: ['gym', 'preferences'],
+    });
+    return user;
+  }
+
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteUser(@Ctx() { payload }: MyContext) {
+    let user = await User.findOne({
+      where: {
+        id: payload!.userId,
+      },
+      relations: ['gym'],
+    });
+    return user;
+  }
+
+  // @Query(() => Boolean)
+  // @UseMiddleware(isAuth)
+  // async updateUser(@Ctx() { payload }: MyContext) {
+  //   let user = await User.update({
+  //     {
+  //       id: payload!.userId,
+  //     },
+  //     {
+  //       //stuff to update
+  //     }
+  //   });
+  //   return user;
+  // }
+
   //either user or null
   @Query(() => User, { nullable: true })
   me(@Ctx() context: MyContext) {

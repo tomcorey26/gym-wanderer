@@ -80,7 +80,7 @@ export const Navbar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <NavLink to="/" style={menuItemStyle}>
+      <NavLink to={`/user/${data?.me?.id}`} style={menuItemStyle}>
         <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
       </NavLink>
       {!IsLoggedIn && [

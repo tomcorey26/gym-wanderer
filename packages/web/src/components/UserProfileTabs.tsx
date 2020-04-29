@@ -73,6 +73,7 @@ export const UserProfileTabs = () => {
         >
           <Tab label="About" {...a11yProps(0)} />
           <Tab label="Reviews" {...a11yProps(1)} />
+          <Tab label="Memberships" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -85,6 +86,9 @@ export const UserProfileTabs = () => {
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           Reviews
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
+          Memberships
         </TabPanel>
       </SwipeableViews>
     </div>

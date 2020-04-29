@@ -28,7 +28,7 @@ var GymTypes;
 })(GymTypes = exports.GymTypes || (exports.GymTypes = {}));
 exports.AlertsFragmentDoc = graphql_tag_1.default(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    fragment alerts on User {\n  alerts {\n    message\n    isActive\n    link\n  }\n}\n    "], ["\n    fragment alerts on User {\n  alerts {\n    message\n    isActive\n    link\n  }\n}\n    "])));
 exports.GymInfoFragmentDoc = graphql_tag_1.default(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    fragment gymInfo on Gyms {\n  id\n  gym_name\n  description\n  membership_cost\n  location\n  equipment\n  photo_urls\n  coordinates {\n    lat\n    lng\n  }\n  type\n}\n    "], ["\n    fragment gymInfo on Gyms {\n  id\n  gym_name\n  description\n  membership_cost\n  location\n  equipment\n  photo_urls\n  coordinates {\n    lat\n    lng\n  }\n  type\n}\n    "])));
-exports.ProfileFragmentDoc = graphql_tag_1.default(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    fragment profile on User {\n  id\n  email\n  first_name\n  last_name\n  username\n  birthday\n}\n    "], ["\n    fragment profile on User {\n  id\n  email\n  first_name\n  last_name\n  username\n  birthday\n}\n    "])));
+exports.ProfileFragmentDoc = graphql_tag_1.default(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    fragment profile on User {\n  id\n  email\n  first_name\n  last_name\n  username\n  birthday\n  photo_url\n}\n    "], ["\n    fragment profile on User {\n  id\n  email\n  first_name\n  last_name\n  username\n  birthday\n  photo_url\n}\n    "])));
 exports.UserMembershipsInfoDocument = graphql_tag_1.default(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n    query UserMembershipsInfo {\n  myMemberships {\n    memberId: id\n    myGymMemberships: gym {\n      id\n    }\n  }\n  myGym {\n    id\n  }\n}\n    "], ["\n    query UserMembershipsInfo {\n  myMemberships {\n    memberId: id\n    myGymMemberships: gym {\n      id\n    }\n  }\n  myGym {\n    id\n  }\n}\n    "])));
 /**
  * __useUserMembershipsInfoQuery__
@@ -325,7 +325,32 @@ function useRegisterMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.RegisterDocument, baseOptions);
 }
 exports.useRegisterMutation = useRegisterMutation;
-exports.UsersDocument = graphql_tag_1.default(templateObject_16 || (templateObject_16 = __makeTemplateObject(["\n    query Users {\n  users {\n    ...profile\n  }\n}\n    ", ""], ["\n    query Users {\n  users {\n    ...profile\n  }\n}\n    ", ""])), exports.ProfileFragmentDoc);
+exports.UserProfileDocument = graphql_tag_1.default(templateObject_16 || (templateObject_16 = __makeTemplateObject(["\n    query userProfile($userId: String!) {\n  getUser(id: $userId) {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n  }\n  userMemberships(userId: $userId) {\n    gym {\n      id\n      gym_name\n      location\n      type\n    }\n  }\n}\n    ", ""], ["\n    query userProfile($userId: String!) {\n  getUser(id: $userId) {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n  }\n  userMemberships(userId: $userId) {\n    gym {\n      id\n      gym_name\n      location\n      type\n    }\n  }\n}\n    ", ""])), exports.ProfileFragmentDoc);
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a React component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserProfileQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+function useUserProfileQuery(baseOptions) {
+    return ApolloReactHooks.useQuery(exports.UserProfileDocument, baseOptions);
+}
+exports.useUserProfileQuery = useUserProfileQuery;
+function useUserProfileLazyQuery(baseOptions) {
+    return ApolloReactHooks.useLazyQuery(exports.UserProfileDocument, baseOptions);
+}
+exports.useUserProfileLazyQuery = useUserProfileLazyQuery;
+exports.UsersDocument = graphql_tag_1.default(templateObject_17 || (templateObject_17 = __makeTemplateObject(["\n    query Users {\n  users {\n    ...profile\n  }\n}\n    ", ""], ["\n    query Users {\n  users {\n    ...profile\n  }\n}\n    ", ""])), exports.ProfileFragmentDoc);
 /**
  * __useUsersQuery__
  *
@@ -349,4 +374,4 @@ function useUsersLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.UsersDocument, baseOptions);
 }
 exports.useUsersLazyQuery = useUsersLazyQuery;
-var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5, templateObject_6, templateObject_7, templateObject_8, templateObject_9, templateObject_10, templateObject_11, templateObject_12, templateObject_13, templateObject_14, templateObject_15, templateObject_16;
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5, templateObject_6, templateObject_7, templateObject_8, templateObject_9, templateObject_10, templateObject_11, templateObject_12, templateObject_13, templateObject_14, templateObject_15, templateObject_16, templateObject_17;

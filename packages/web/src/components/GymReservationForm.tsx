@@ -25,6 +25,7 @@ import {
   MeDocument,
   useUserMembershipsInfoQuery,
   UserMembershipsInfoDocument,
+  useMeQuery,
 } from '@gw/controllers';
 import { useHistory } from 'react-router-dom';
 
@@ -90,6 +91,7 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
     if (!gymId) return;
     // if error that menas user is not auth
     if (error) {
+      console.log('error', error);
       history.push('/register');
       return;
     }

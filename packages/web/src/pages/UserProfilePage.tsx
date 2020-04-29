@@ -7,9 +7,12 @@ import {
   Paper,
   Typography,
   Divider,
+  CircularProgress,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import { UserProfileTabs } from '../components/UserProfileTabs';
+import { useParams } from 'react-router-dom';
+import { useUserProfileQuery } from '@gw/controllers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,8 +48,32 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface UserProfilePageProps {}
 
-export const UserProfilePage: React.FC<UserProfilePageProps> = ({}) => {
+export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
   const classes = useStyles();
+  const { id } = useParams();
+  const { data, loading } = useUserProfileQuery({
+    variables: {
+      userId: id ? id : '',
+    },
+  });
+
+  console.log('data', data);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
     <div className={classes.root}>
       <Grid className={classes.userGrid} container spacing={6}>
@@ -70,19 +97,33 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({}) => {
             <Divider color="primary" className={classes.divider} />
           </Grid>
           <Grid item>
-            <Typography
-              variant="h6"
-              className={classes.smallTitle}
-              gutterBottom
-            >
-              Gym Name
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Location
-            </Typography>
+            {data && data.getUser && data.getUser.gym ? (
+              <>
+                <Typography
+                  variant="h6"
+                  className={classes.smallTitle}
+                  gutterBottom
+                >
+                  Gym Name
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  Location
+                </Typography>
+              </>
+            ) : (
+              <>
+                <Typography
+                  variant="h6"
+                  className={classes.smallTitle}
+                  gutterBottom
+                >
+                  {data?.getUser?.first_name} Does not own a Gym
+                </Typography>
+              </>
+            )}
           </Grid>
           <Grid item>
-            <Typography variant="overline">Preferences</Typography>
+            <Typography variant="overline">Gym Preferences</Typography>
             <Divider color="primary" className={classes.divider} />
           </Grid>
           <Grid item>
@@ -91,8 +132,13 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({}) => {
               className={classes.smallTitle}
               gutterBottom
             >
-              <div>Preference 1</div>
-              <div>Preference 2 </div>
+              {Object.keys(data?.getUser?.preferences as object).map((p, i) => {
+                if (data?.getUser?.preferences[p] === true) {
+                  return (
+                    <div key={i}>{p.charAt(0).toUpperCase() + p.slice(1)}</div>
+                  );
+                }
+              })}
             </Typography>
           </Grid>
         </Grid>
@@ -106,7 +152,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({}) => {
         >
           <Grid item md={6}>
             <Typography variant="h4" color="textPrimary">
-              Drew Peacock
+              {data?.getUser?.first_name} {data?.getUser?.last_name}
             </Typography>
             <Typography
               variant="h6"
