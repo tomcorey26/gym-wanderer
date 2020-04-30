@@ -122,14 +122,15 @@ export const Navbar = () => {
       onClose={handleAlertMenuClose}
       style={{ maxHeight: 600 }}
     >
-      {data &&
-        data.me &&
-        data.me.alerts &&
+      {data && data.me && data.me.alerts && data.me.alerts.length > 0 ? (
         data.me.alerts.map((alert, i) => (
           <NavLink key={i} to={alert.link} style={menuItemStyle}>
             <MenuItem onClick={handleMenuClose}>{alert.message}</MenuItem>
           </NavLink>
-        ))}
+        ))
+      ) : (
+        <MenuItem>No new alerts</MenuItem>
+      )}
     </Menu>
   );
 
