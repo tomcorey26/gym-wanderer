@@ -275,8 +275,13 @@ export const Navbar = () => {
   );
 };
 
-const StyledLink: React.FC<any> = ({ children, to, ...props }) => (
-  <Link {...props} to={to} style={{ color: 'white', textDecoration: 'none' }}>
+export const StyledLink: React.FC<any> = ({
+  children,
+  to,
+  color = 'white',
+  ...props
+}) => (
+  <Link {...props} to={to} style={{ color: color, textDecoration: 'none' }}>
     {children}
   </Link>
 );

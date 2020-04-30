@@ -22,4 +22,12 @@ query userProfile($userId: String!) {
       type
     }
   }
+  userReviews(userId: $userId) {
+    rating
+    text
+    gym {
+      id
+      gym_name
+    }
+  }
 }

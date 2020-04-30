@@ -74,6 +74,14 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
       </div>
     );
   }
+
+  if (!data) {
+    return (
+      <div>
+        <h1>User not found</h1>
+      </div>
+    );
+  }
   return (
     <div className={classes.root}>
       <Grid className={classes.userGrid} container spacing={6}>
@@ -132,13 +140,19 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
               className={classes.smallTitle}
               gutterBottom
             >
-              {Object.keys(data?.getUser?.preferences as object).map((p, i) => {
-                if (data?.getUser?.preferences[p] === true) {
-                  return (
-                    <div key={i}>{p.charAt(0).toUpperCase() + p.slice(1)}</div>
-                  );
-                }
-              })}
+              {data &&
+                Object.keys(data?.getUser?.preferences as object).map(
+                  (p, i) => {
+                    if (data?.getUser?.preferences[p] === true) {
+                      return (
+                        <div key={i}>
+                          {p.charAt(0).toUpperCase() + p.slice(1)}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }
+                )}
             </Typography>
           </Grid>
         </Grid>
@@ -168,7 +182,14 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
           </Grid>
 
           <Grid item>
-            <UserProfileTabs />
+            <UserProfileTabs
+              memberships={data.userMemberships}
+              reviews={data.userReviews}
+              about={{
+                email: data.getUser?.email,
+                birthday: data.getUser?.birthday,
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>

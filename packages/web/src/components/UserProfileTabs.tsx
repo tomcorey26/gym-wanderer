@@ -6,6 +6,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { Gyms, Maybe, Reviews } from '@gw/controllers';
+import { List } from '@material-ui/core';
+import { ReviewItem } from './ReviewItem';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -25,11 +28,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -45,9 +44,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
   },
+  reviewList: {
+    width: '100%',
+    height: 180,
+    overflow: 'auto',
+  },
 }));
 
-export const UserProfileTabs = () => {
+interface UserProfileTabsProps {
+  memberships: Maybe<
+    ({ __typename?: 'Membership' | undefined } & {
+      gym: { __typename?: 'Gyms' | undefined } & Pick<
+        Gyms,
+        'id' | 'location' | 'type' | 'gym_name'
+      >;
+    })[]
+  >;
+  reviews: Maybe<
+    ({
+      __typename?: 'Reviews' | undefined;
+    } & Pick<Reviews, 'text' | 'rating'> & {
+        gym: {
+          __typename?: 'Gyms' | undefined;
+        } & Pick<Gyms, 'id' | 'gym_name'>;
+      })[]
+  >;
+  about: any;
+}
+export const UserProfileTabs: React.FC<UserProfileTabsProps> = ({
+  reviews,
+  about,
+  memberships,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -82,13 +110,41 @@ export const UserProfileTabs = () => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          About
+          <Typography component="div" variant="h5">
+            Email: {about.email}
+          </Typography>
+          <Typography component="div" variant="h5">
+            Birthday: {about.birthday}
+          </Typography>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Reviews
+          {!reviews ? (
+            <div>
+              <h1>No Reviews Created by this user</h1>
+            </div>
+          ) : (
+            <List className={classes.reviewList}>
+              {reviews.map(({ gym, rating, text }, i) => (
+                <ReviewItem gym={gym} rating={rating} text={text} key={i} />
+              ))}
+            </List>
+          )}
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Memberships
+          {!memberships ? (
+            <div>
+              <h1>No memberships Found</h1>
+            </div>
+          ) : (
+            memberships.map(({ gym: { gym_name, id, location, type } }, i) => (
+              <div key={i}>
+                {id}
+                {gym_name}
+                {location}
+                {type}
+              </div>
+            ))
+          )}
         </TabPanel>
       </SwipeableViews>
     </div>

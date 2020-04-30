@@ -80,6 +80,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   createGym: Scalars['Boolean'];
   joinGym: Scalars['Boolean'];
+  createReview: Scalars['Boolean'];
 };
 
 
@@ -120,6 +121,13 @@ export type MutationJoinGymArgs = {
   gymId: Scalars['String'];
 };
 
+
+export type MutationCreateReviewArgs = {
+  text: Scalars['String'];
+  rating: Scalars['Float'];
+  gymId: Scalars['String'];
+};
+
 export type Preferences = {
    __typename?: 'Preferences';
   yoga: Scalars['Boolean'];
@@ -153,6 +161,8 @@ export type Query = {
   myMemberships?: Maybe<Array<Membership>>;
   userMemberships?: Maybe<Array<Membership>>;
   gymMemberships?: Maybe<Array<Membership>>;
+  gymReviews?: Maybe<Array<Reviews>>;
+  userReviews?: Maybe<Array<Reviews>>;
 };
 
 
@@ -173,6 +183,16 @@ export type QueryUserMembershipsArgs = {
 
 export type QueryGymMembershipsArgs = {
   gymId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGymReviewsArgs = {
+  gymId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryUserReviewsArgs = {
+  userId: Scalars['String'];
 };
 
 export type Reviews = {
@@ -417,6 +437,13 @@ export type UserProfileQuery = (
     & { gym: (
       { __typename?: 'Gyms' }
       & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type'>
+    ) }
+  )>>, userReviews: Maybe<Array<(
+    { __typename?: 'Reviews' }
+    & Pick<Reviews, 'rating' | 'text'>
+    & { gym: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name'>
     ) }
   )>> }
 );
@@ -923,6 +950,14 @@ export const UserProfileDocument = gql`
       gym_name
       location
       type
+    }
+  }
+  userReviews(userId: $userId) {
+    rating
+    text
+    gym {
+      id
+      gym_name
     }
   }
 }

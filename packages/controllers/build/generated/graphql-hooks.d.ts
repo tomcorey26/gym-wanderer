@@ -71,6 +71,7 @@ export declare type Mutation = {
     logout: Scalars['Boolean'];
     createGym: Scalars['Boolean'];
     joinGym: Scalars['Boolean'];
+    createReview: Scalars['Boolean'];
 };
 export declare type MutationRegisterArgs = {
     photo_url?: Maybe<Scalars['String']>;
@@ -100,6 +101,11 @@ export declare type MutationCreateGymArgs = {
 export declare type MutationJoinGymArgs = {
     auto_renewal: Scalars['Boolean'];
     end_date: Scalars['Float'];
+    gymId: Scalars['String'];
+};
+export declare type MutationCreateReviewArgs = {
+    text: Scalars['String'];
+    rating: Scalars['Float'];
     gymId: Scalars['String'];
 };
 export declare type Preferences = {
@@ -133,6 +139,8 @@ export declare type Query = {
     myMemberships?: Maybe<Array<Membership>>;
     userMemberships?: Maybe<Array<Membership>>;
     gymMemberships?: Maybe<Array<Membership>>;
+    gymReviews?: Maybe<Array<Reviews>>;
+    userReviews?: Maybe<Array<Reviews>>;
 };
 export declare type QueryGetUserArgs = {
     id: Scalars['String'];
@@ -145,6 +153,12 @@ export declare type QueryUserMembershipsArgs = {
 };
 export declare type QueryGymMembershipsArgs = {
     gymId?: Maybe<Scalars['String']>;
+};
+export declare type QueryGymReviewsArgs = {
+    gymId?: Maybe<Scalars['String']>;
+};
+export declare type QueryUserReviewsArgs = {
+    userId: Scalars['String'];
 };
 export declare type Reviews = {
     __typename?: 'Reviews';
@@ -341,6 +355,13 @@ export declare type UserProfileQuery = ({
         gym: ({
             __typename?: 'Gyms';
         } & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type'>);
+    })>>;
+    userReviews: Maybe<Array<({
+        __typename?: 'Reviews';
+    } & Pick<Reviews, 'rating' | 'text'> & {
+        gym: ({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id' | 'gym_name'>);
     })>>;
 });
 export declare type UsersQueryVariables = {};
