@@ -320,7 +320,7 @@ export type GymDetailsQuery = (
   & { gymDetails: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'email'>
-    & { owner_first_name: User['first_name'], owner_last_name: User['last_name'] }
+    & { owner_id: User['id'], owner_first_name: User['first_name'], owner_last_name: User['last_name'], owner_photo_url: User['photo_url'] }
     & { gym: Maybe<(
       { __typename?: 'Gyms' }
       & GymInfoFragment
@@ -332,7 +332,10 @@ export type GymDetailsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
     ) }
-  )>> }
+  )>>, me: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+  )> }
 );
 
 export type HelloQueryVariables = {};
@@ -657,9 +660,11 @@ export type FetchGymsQueryResult = ApolloReactCommon.QueryResult<FetchGymsQuery,
 export const GymDetailsDocument = gql`
     query gymDetails($id: String) {
   gymDetails(id: $id) {
+    owner_id: id
     owner_first_name: first_name
     owner_last_name: last_name
     email
+    owner_photo_url: photo_url
     gym {
       ...gymInfo
     }
@@ -674,6 +679,9 @@ export const GymDetailsDocument = gql`
       last_name
       photo_url
     }
+  }
+  me {
+    id
   }
 }
     ${GymInfoFragmentDoc}`;

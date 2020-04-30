@@ -58,7 +58,7 @@ export class ReviewResolver {
   @Query(() => [Reviews], { nullable: true })
   async userReviews(@Arg('userId') userId: string) {
     const reviews = await Reviews.find({
-      where: { memberId: userId },
+      where: { creatorId: userId },
       relations: ['creator', 'gym'],
     });
     return reviews;

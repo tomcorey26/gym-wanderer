@@ -99,6 +99,7 @@ export class UserResolver {
 
   @Query(() => User, { nullable: true })
   async getUser(@Arg('id') id: string) {
+    if (!id) return null;
     let user = await User.findOne({
       where: {
         id,

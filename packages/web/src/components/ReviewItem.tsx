@@ -36,6 +36,7 @@ interface ReviewItemProps {
   } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>;
   rating: number;
   text: string;
+  createdByMe: boolean;
 }
 
 export const ReviewItem: React.FC<ReviewItemProps> = ({
@@ -43,6 +44,7 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
   rating,
   text,
   user,
+  createdByMe,
 }) => {
   const classes = useStyles();
 
@@ -60,7 +62,11 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
         to={gym ? `/gyms/${entity.id}` : `/user/${entity.id}`}
         color="black"
       >
-        <ListItem className={classes.item} alignItems="flex-start">
+        <ListItem
+          className={classes.item}
+          alignItems="flex-start"
+          style={createdByMe ? { border: '1px solid #9c27b0' } : {}}
+        >
           {!gym && (
             <ListItemAvatar>
               <Avatar alt="Remy Sharp" src={entity.photo_url} />

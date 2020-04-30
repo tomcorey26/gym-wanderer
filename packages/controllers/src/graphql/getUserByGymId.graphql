@@ -1,8 +1,10 @@
 query gymDetails($id: String) {
   gymDetails(id: $id) {
+    owner_id: id
     owner_first_name: first_name
     owner_last_name: last_name
     email
+    owner_photo_url: photo_url
     gym {
       ...gymInfo
     }
@@ -17,5 +19,8 @@ query gymDetails($id: String) {
       last_name
       photo_url
     }
+  }
+  me {
+    id
   }
 }

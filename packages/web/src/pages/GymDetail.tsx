@@ -57,8 +57,10 @@ const GymDetail: React.FC = () => {
         >
           <GymDescription
             owner={{
+              owner_id: data.gymDetails.owner_id,
               first_name: data.gymDetails.owner_first_name,
               last_name: data.gymDetails.owner_last_name,
+              owner_photo_url: data.gymDetails.owner_photo_url,
               email: data.gymDetails.email,
             }}
             gym_name={data?.gymDetails?.gym?.gym_name}
@@ -70,6 +72,7 @@ const GymDetail: React.FC = () => {
             equipment={data.gymDetails.gym?.equipment}
             reviews={data.gymReviews || []}
             loading={loading}
+            currentUserId={data.me?.id || ''}
           />
           <GymReservationForm
             gymId={id}

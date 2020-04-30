@@ -263,8 +263,10 @@ export declare type GymDetailsQuery = ({
     gymDetails: Maybe<({
         __typename?: 'User';
     } & Pick<User, 'email'> & {
+        owner_id: User['id'];
         owner_first_name: User['first_name'];
         owner_last_name: User['last_name'];
+        owner_photo_url: User['photo_url'];
     } & {
         gym: Maybe<({
             __typename?: 'Gyms';
@@ -277,6 +279,9 @@ export declare type GymDetailsQuery = ({
             __typename?: 'User';
         } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>);
     })>>;
+    me: Maybe<({
+        __typename?: 'User';
+    } & Pick<User, 'id'>)>;
 });
 export declare type HelloQueryVariables = {};
 export declare type HelloQuery = ({

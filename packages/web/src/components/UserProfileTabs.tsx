@@ -127,7 +127,13 @@ export const UserProfileTabs: React.FC<UserProfileTabsProps> = ({
           ) : (
             <List className={classes.reviewList}>
               {reviews.map(({ gym, rating, text }, i) => (
-                <ReviewItem gym={gym} rating={rating} text={text} key={i} />
+                <ReviewItem
+                  gym={gym}
+                  rating={rating}
+                  text={text}
+                  key={i}
+                  createdByMe={false}
+                />
               ))}
             </List>
           )}

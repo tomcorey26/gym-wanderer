@@ -9,6 +9,7 @@ import { Coords } from '../types/Coords';
 import Maybe from 'graphql/tsutils/Maybe';
 import { Reviews, User } from '@gw/controllers';
 import { ReviewItem } from './ReviewItem';
+import { StyledLink } from './NavComponents/Navbar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,6 +60,8 @@ interface GymDescriptionProps {
     first_name: string;
     last_name: string;
     email: string;
+    owner_photo_url: string;
+    owner_id: string;
   };
   equipment?: string[];
   reviews: Maybe<
@@ -72,6 +75,7 @@ interface GymDescriptionProps {
         }
     >
   >;
+  currentUserId: string;
 }
 
 const GymDescription: React.FC<GymDescriptionProps> = ({
@@ -84,6 +88,7 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
   type,
   equipment,
   reviews,
+  currentUserId,
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState<number | null>(2);
@@ -102,10 +107,15 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
                     </Box>
                   </Typography>
                   <Typography gutterBottom variant="h5">
-                    <Box fontWeight={400}>
-                      {owner?.first_name} [Profile pic here]
-                      <Box fontWeight={200}>{owner?.email}</Box>
-                    </Box>
+                    <StyledLink to={`/user/${owner?.owner_id}`} color="black">
+                      <Box fontWeight={400}>
+                        <Avatar alt="Remy Sharp" src={owner?.owner_photo_url} />
+                        {owner?.first_name}{' '}
+                        <Box fontWeight={200} fontSize={16}>
+                          {owner?.email}
+                        </Box>
+                      </Box>
+                    </StyledLink>
                   </Typography>
                 </Box>
                 <Typography gutterBottom variant="h5">
@@ -160,6 +170,7 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
                     <List className={classes.reviewList}>
                       {reviews.map(({ creator, rating, text }, i) => (
                         <ReviewItem
+                          createdByMe={creator.id === currentUserId}
                           user={creator}
                           rating={rating}
                           text={text}
