@@ -204,7 +204,7 @@ function useJoinGymMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.JoinGymDocument, baseOptions);
 }
 exports.useJoinGymMutation = useJoinGymMutation;
-exports.LoginDocument = graphql_tag_1.default(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""], ["\n    mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""])), exports.ProfileFragmentDoc, exports.AlertsFragmentDoc);
+exports.LoginDocument = graphql_tag_1.default(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""], ["\n    mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    accessToken\n    user {\n      ...profile\n      preferences {\n        yoga\n        crossfit\n        bodybuilding\n        parkour\n        general\n        boxing\n      }\n      gym {\n        id\n        gym_name\n      }\n      ...alerts\n    }\n  }\n}\n    ", "\n", ""])), exports.ProfileFragmentDoc, exports.AlertsFragmentDoc);
 /**
  * __useLoginMutation__
  *
@@ -218,7 +218,7 @@ exports.LoginDocument = graphql_tag_1.default(templateObject_11 || (templateObje
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *   },
  * });
@@ -325,7 +325,7 @@ function useRegisterMutation(baseOptions) {
     return ApolloReactHooks.useMutation(exports.RegisterDocument, baseOptions);
 }
 exports.useRegisterMutation = useRegisterMutation;
-exports.UserProfileDocument = graphql_tag_1.default(templateObject_16 || (templateObject_16 = __makeTemplateObject(["\n    query userProfile($userId: String!) {\n  getUser(id: $userId) {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n  }\n  userMemberships(userId: $userId) {\n    gym {\n      id\n      gym_name\n      location\n      type\n    }\n  }\n  userReviews(userId: $userId) {\n    rating\n    text\n    gym {\n      id\n      gym_name\n    }\n  }\n}\n    ", ""], ["\n    query userProfile($userId: String!) {\n  getUser(id: $userId) {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n  }\n  userMemberships(userId: $userId) {\n    gym {\n      id\n      gym_name\n      location\n      type\n    }\n  }\n  userReviews(userId: $userId) {\n    rating\n    text\n    gym {\n      id\n      gym_name\n    }\n  }\n}\n    ", ""])), exports.ProfileFragmentDoc);
+exports.UserProfileDocument = graphql_tag_1.default(templateObject_16 || (templateObject_16 = __makeTemplateObject(["\n    query userProfile($userId: String!) {\n  getUser(id: $userId) {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n  }\n  userMemberships(userId: $userId) {\n    gym {\n      id\n      gym_name\n      location\n      type\n      photo_urls\n    }\n  }\n  userReviews(userId: $userId) {\n    rating\n    text\n    gym {\n      id\n      gym_name\n    }\n  }\n}\n    ", ""], ["\n    query userProfile($userId: String!) {\n  getUser(id: $userId) {\n    ...profile\n    preferences {\n      yoga\n      crossfit\n      bodybuilding\n      parkour\n      general\n      boxing\n    }\n    gym {\n      id\n      gym_name\n    }\n  }\n  userMemberships(userId: $userId) {\n    gym {\n      id\n      gym_name\n      location\n      type\n      photo_urls\n    }\n  }\n  userReviews(userId: $userId) {\n    rating\n    text\n    gym {\n      id\n      gym_name\n    }\n  }\n}\n    ", ""])), exports.ProfileFragmentDoc);
 /**
  * __useUserProfileQuery__
  *

@@ -69,18 +69,31 @@ export type Membership = {
   id: Scalars['String'];
   isAutoRenewalActive: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  begin_date: Scalars['String'];
   member: User;
   gym: Gyms;
 };
 
 export type Mutation = {
    __typename?: 'Mutation';
+  updateUser: Scalars['Boolean'];
   register: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   createGym: Scalars['Boolean'];
   joinGym: Scalars['Boolean'];
   createReview: Scalars['Boolean'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  email?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  birthday?: Maybe<Scalars['String']>;
+  photo_url?: Maybe<Scalars['String']>;
+  preferences?: Maybe<PreferencesInput>;
 };
 
 
@@ -98,7 +111,7 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   password: Scalars['String'];
-  email: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
@@ -199,6 +212,7 @@ export type Reviews = {
    __typename?: 'Reviews';
   rating: Scalars['Int'];
   text: Scalars['String'];
+  date_created: Scalars['String'];
   creator: User;
   gym: Gyms;
 };
@@ -211,7 +225,7 @@ export type User = {
   email: Scalars['String'];
   username: Scalars['String'];
   birthday?: Maybe<Scalars['String']>;
-  photo_url?: Maybe<Scalars['String']>;
+  photo_url: Scalars['String'];
   preferences: Preferences;
   gym?: Maybe<Gyms>;
   reviews?: Maybe<Array<Reviews>>;
@@ -335,7 +349,7 @@ export type JoinGymMutation = (
 );
 
 export type LoginMutationVariables = {
-  email: Scalars['String'];
+  username: Scalars['String'];
   password: Scalars['String'];
 };
 
@@ -436,7 +450,7 @@ export type UserProfileQuery = (
     { __typename?: 'Membership' }
     & { gym: (
       { __typename?: 'Gyms' }
-      & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type'>
+      & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type' | 'photo_urls'>
     ) }
   )>>, userReviews: Maybe<Array<(
     { __typename?: 'Reviews' }
@@ -734,8 +748,8 @@ export type JoinGymMutationHookResult = ReturnType<typeof useJoinGymMutation>;
 export type JoinGymMutationResult = ApolloReactCommon.MutationResult<JoinGymMutation>;
 export type JoinGymMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinGymMutation, JoinGymMutationVariables>;
 export const LoginDocument = gql`
-    mutation Login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
+    mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
     accessToken
     user {
       ...profile
@@ -772,7 +786,7 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, 
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *   },
  * });
@@ -950,6 +964,7 @@ export const UserProfileDocument = gql`
       gym_name
       location
       type
+      photo_urls
     }
   }
   userReviews(userId: $userId) {

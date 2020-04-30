@@ -61,17 +61,28 @@ export declare type Membership = {
     id: Scalars['String'];
     isAutoRenewalActive: Scalars['Boolean'];
     end_date: Scalars['Float'];
+    begin_date: Scalars['String'];
     member: User;
     gym: Gyms;
 };
 export declare type Mutation = {
     __typename?: 'Mutation';
+    updateUser: Scalars['Boolean'];
     register: Scalars['Boolean'];
     login: LoginResponse;
     logout: Scalars['Boolean'];
     createGym: Scalars['Boolean'];
     joinGym: Scalars['Boolean'];
     createReview: Scalars['Boolean'];
+};
+export declare type MutationUpdateUserArgs = {
+    email?: Maybe<Scalars['String']>;
+    first_name?: Maybe<Scalars['String']>;
+    last_name?: Maybe<Scalars['String']>;
+    username?: Maybe<Scalars['String']>;
+    birthday?: Maybe<Scalars['String']>;
+    photo_url?: Maybe<Scalars['String']>;
+    preferences?: Maybe<PreferencesInput>;
 };
 export declare type MutationRegisterArgs = {
     photo_url?: Maybe<Scalars['String']>;
@@ -85,7 +96,7 @@ export declare type MutationRegisterArgs = {
 };
 export declare type MutationLoginArgs = {
     password: Scalars['String'];
-    email: Scalars['String'];
+    username: Scalars['String'];
 };
 export declare type MutationCreateGymArgs = {
     gym_name: Scalars['String'];
@@ -164,6 +175,7 @@ export declare type Reviews = {
     __typename?: 'Reviews';
     rating: Scalars['Int'];
     text: Scalars['String'];
+    date_created: Scalars['String'];
     creator: User;
     gym: Gyms;
 };
@@ -175,7 +187,7 @@ export declare type User = {
     email: Scalars['String'];
     username: Scalars['String'];
     birthday?: Maybe<Scalars['String']>;
-    photo_url?: Maybe<Scalars['String']>;
+    photo_url: Scalars['String'];
     preferences: Preferences;
     gym?: Maybe<Gyms>;
     reviews?: Maybe<Array<Reviews>>;
@@ -272,7 +284,7 @@ export declare type JoinGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'joinGym'>);
 export declare type LoginMutationVariables = {
-    email: Scalars['String'];
+    username: Scalars['String'];
     password: Scalars['String'];
 };
 export declare type LoginMutation = ({
@@ -354,7 +366,7 @@ export declare type UserProfileQuery = ({
     } & {
         gym: ({
             __typename?: 'Gyms';
-        } & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type'>);
+        } & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type' | 'photo_urls'>);
     })>>;
     userReviews: Maybe<Array<({
         __typename?: 'Reviews';
@@ -552,7 +564,7 @@ export declare type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMu
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *   },
  * });
