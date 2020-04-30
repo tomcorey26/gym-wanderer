@@ -95,7 +95,11 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
         >
           <Grid item>
             <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
+              src={
+                data.getUser && data.getUser.photo_url
+                  ? data.getUser.photo_url
+                  : 'https://robohash.org/423'
+              }
               alt="user"
               className={classes.userProfileImg}
             />
@@ -125,7 +129,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
                   className={classes.smallTitle}
                   gutterBottom
                 >
-                  {data?.getUser?.first_name} Does not own a Gym
+                  {data?.getUser?.first_name} does not own a Gym
                 </Typography>
               </>
             )}
@@ -173,12 +177,29 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
               className={classes.smallTitle}
               style={{ marginBottom: 32 }}
             >
-              Gym Owner
+              {data?.getUser?.gym && 'Gym Owner'}
+              {data?.getUser?.gym && data.userMemberships?.length !== 0 && '/'}
+              {data.userMemberships?.length !== 0 && 'Member'}
+              {!data?.getUser?.gym && !data.userMemberships?.length && 'User'}
             </Typography>
-            <Typography variant="subtitle2">
+            {/* <Typography variant="subtitle2" gutterBottom>
               <div>Gym Rating</div>
               <Rating value={3} readOnly />
+            </Typography> */}
+            <Typography variant="subtitle2">
+              <div>Average review rating</div>
             </Typography>
+            {data.userReviews && data.userReviews.length ? (
+              <Rating
+                value={
+                  data.userReviews?.reduce((a: number, b) => a + b.rating, 0) /
+                  data.userReviews?.length
+                }
+                readOnly
+              />
+            ) : (
+              <Typography variant="subtitle1">User has no reviews</Typography>
+            )}
           </Grid>
 
           <Grid item>

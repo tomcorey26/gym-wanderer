@@ -5,6 +5,7 @@ import {
   ManyToOne,
   BaseEntity,
   PrimaryColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { User } from './User';
 import { Gyms } from './Gym';
@@ -26,6 +27,10 @@ export class Reviews extends BaseEntity {
   @Field()
   @Column({ length: '500' })
   text: string;
+
+  @Field()
+  @CreateDateColumn()
+  date_created: string;
 
   @PrimaryColumn()
   creatorId: string;

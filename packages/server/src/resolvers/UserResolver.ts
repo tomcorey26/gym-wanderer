@@ -8,6 +8,8 @@ import {
   Ctx,
   UseMiddleware,
   InputType,
+  Args,
+  ArgsType,
 } from 'type-graphql';
 import { User } from '../entity/User';
 import { hash, compare } from 'bcryptjs';
@@ -17,6 +19,9 @@ import { isAuth } from '../isAuth';
 import { sendRefreshToken } from '../sendRefreshToken';
 import { verify } from 'jsonwebtoken';
 import { Preferences } from '../entity/Preferences';
+import { Membership } from '../entity/Membership';
+import { Alert } from '../entity/Alert';
+import { Gyms } from '../entity/Gym';
 
 @ObjectType()
 class LoginResponse {
@@ -46,6 +51,30 @@ class PreferencesInput {
 
   @Field()
   boxing: boolean;
+}
+
+@ArgsType()
+class UserUpdateInput {
+  @Field({ nullable: true })
+  email?: string;
+
+  @Field({ nullable: true })
+  first_name?: string;
+
+  @Field({ nullable: true })
+  last_name?: string;
+
+  @Field({ nullable: true })
+  username?: string;
+
+  @Field({ nullable: true })
+  birthday?: string;
+
+  @Field({ nullable: true })
+  photo_url?: string;
+
+  @Field(() => PreferencesInput, { nullable: true })
+  preferences?: PreferencesInput;
 }
 
 const userRelations = ['gym', 'preferences', 'memberships', 'alerts'];
@@ -82,28 +111,43 @@ export class UserResolver {
   @Query(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteUser(@Ctx() { payload }: MyContext) {
-    let user = await User.findOne({
-      where: {
-        id: payload!.userId,
-      },
-      relations: ['gym'],
+    await User.delete({
+      id: payload!.userId,
     });
-    return user;
+    await Membership.delete({
+      memberId: payload!.userId,
+    });
+    await Alert.delete({
+      userId: payload!.userId,
+    });
+    await Gyms.delete({
+      ownerId: payload!.userId,
+    });
+    return true;
   }
 
-  // @Query(() => Boolean)
-  // @UseMiddleware(isAuth)
-  // async updateUser(@Ctx() { payload }: MyContext) {
-  //   let user = await User.update({
-  //     {
-  //       id: payload!.userId,
-  //     },
-  //     {
-  //       //stuff to update
-  //     }
-  //   });
-  //   return user;
-  // }
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async updateUser(
+    @Ctx() { payload }: MyContext,
+    @Args()
+    userArgs: UserUpdateInput
+  ) {
+    try {
+      await User.update(
+        {
+          id: payload!.userId,
+        },
+        {
+          ...userArgs,
+        }
+      );
+    } catch (err) {
+      console.log('err', err);
+      return false;
+    }
+    return true;
+  }
 
   //either user or null
   @Query(() => User, { nullable: true })
@@ -138,7 +182,6 @@ export class UserResolver {
     @Arg('photo_url', () => String, { nullable: true }) photo_url?: string
   ) {
     const hashedPassword = await hash(password, 12);
-    console.log(username);
     try {
       const prefs = Preferences.create({ ...preferences });
       await prefs.save();
@@ -149,7 +192,12 @@ export class UserResolver {
         birthday,
         first_name,
         last_name,
-        photo_url,
+        photo_url: photo_url
+          ? photo_url
+          : `https://robohash.org/${
+              Math.random().toString(36).substring(2, 15) +
+              Math.random().toString(36).substring(2, 15)
+            }?set=set2`,
         preferences: prefs,
       });
       await user.save();
@@ -162,12 +210,12 @@ export class UserResolver {
 
   @Mutation(() => LoginResponse)
   async login(
-    @Arg('email') email: string,
+    @Arg('username') username: string,
     @Arg('password') password: string,
     @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
     const user = await User.findOne({
-      where: { email },
+      where: { username },
       relations: userRelations,
     });
 

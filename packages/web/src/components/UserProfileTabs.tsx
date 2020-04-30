@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import { Gyms, Maybe, Reviews } from '@gw/controllers';
 import { List } from '@material-ui/core';
 import { ReviewItem } from './ReviewItem';
+import { MembershipItem } from './MembershipItem';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -53,11 +54,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface UserProfileTabsProps {
   memberships: Maybe<
-    ({ __typename?: 'Membership' | undefined } & {
-      gym: { __typename?: 'Gyms' | undefined } & Pick<
-        Gyms,
-        'id' | 'location' | 'type' | 'gym_name'
-      >;
+    ({
+      __typename?: 'Membership' | undefined;
+    } & {
+      gym: {
+        __typename?: 'Gyms' | undefined;
+      } & Pick<Gyms, 'id' | 'location' | 'type' | 'gym_name' | 'photo_urls'>;
     })[]
   >;
   reviews: Maybe<
@@ -118,7 +120,7 @@ export const UserProfileTabs: React.FC<UserProfileTabsProps> = ({
           </Typography>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {!reviews ? (
+          {!reviews || reviews.length === 0 ? (
             <div>
               <h1>No Reviews Created by this user</h1>
             </div>
@@ -131,19 +133,16 @@ export const UserProfileTabs: React.FC<UserProfileTabsProps> = ({
           )}
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          {!memberships ? (
+          {!memberships || memberships.length === 0 ? (
             <div>
               <h1>No memberships Found</h1>
             </div>
           ) : (
-            memberships.map(({ gym: { gym_name, id, location, type } }, i) => (
-              <div key={i}>
-                {id}
-                {gym_name}
-                {location}
-                {type}
-              </div>
-            ))
+            <List className={classes.reviewList}>
+              {memberships.map(({ gym }, i) => (
+                <MembershipItem key={i} {...gym} />
+              ))}
+            </List>
           )}
         </TabPanel>
       </SwipeableViews>
