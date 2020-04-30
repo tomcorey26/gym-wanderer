@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import { UserResolver } from './resolvers/UserResolver';
 import { GymResolver } from './resolvers/GymResolver';
 import { MembershipResolver } from './resolvers/MembershipResolver';
+import { ReviewResolver } from './resolvers/ReviewResolver';
 
 //lambda function (it calls itself!)
 (async () => {
@@ -27,7 +28,12 @@ import { MembershipResolver } from './resolvers/MembershipResolver';
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, GymResolver, MembershipResolver],
+      resolvers: [
+        UserResolver,
+        GymResolver,
+        MembershipResolver,
+        ReviewResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),
