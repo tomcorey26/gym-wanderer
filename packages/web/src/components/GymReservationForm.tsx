@@ -76,7 +76,6 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
   const [joinGym] = useJoinGymMutation();
   const { data, loading, error } = useUserMembershipsInfoQuery();
   const history = useHistory();
-
   const classes = useStyles();
 
   const getDate = (monthsFromNow = 0) => (

@@ -17,7 +17,15 @@ const GymDetail: React.FC = () => {
 
   if (loading)
     return (
-      <div>
+      <div
+        style={{
+          width: '90vw',
+          height: '90vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <CircularProgress />
       </div>
     );
@@ -60,6 +68,7 @@ const GymDetail: React.FC = () => {
             coordinates={data?.gymDetails?.gym?.coordinates}
             type={data?.gymDetails?.gym?.type}
             equipment={data.gymDetails.gym?.equipment}
+            reviews={data.gymReviews || []}
             loading={loading}
           />
           <GymReservationForm

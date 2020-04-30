@@ -325,7 +325,14 @@ export type GymDetailsQuery = (
       { __typename?: 'Gyms' }
       & GymInfoFragment
     )> }
-  )> }
+  )>, gymReviews: Maybe<Array<(
+    { __typename?: 'Reviews' }
+    & Pick<Reviews, 'rating' | 'text' | 'date_created'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
+    ) }
+  )>> }
 );
 
 export type HelloQueryVariables = {};
@@ -655,6 +662,17 @@ export const GymDetailsDocument = gql`
     email
     gym {
       ...gymInfo
+    }
+  }
+  gymReviews(gymId: $id) {
+    rating
+    text
+    date_created
+    creator {
+      id
+      first_name
+      last_name
+      photo_url
     }
   }
 }

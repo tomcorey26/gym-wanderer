@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import { Gyms } from '@gw/controllers';
+import { Gyms, User } from '@gw/controllers';
 import Rating from '@material-ui/lab/Rating';
 import { StyledLink } from './NavComponents/Navbar';
 
@@ -28,9 +28,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ReviewItemProps {
-  gym: {
+  gym?: {
     __typename?: 'Gyms' | undefined;
   } & Pick<Gyms, 'id' | 'gym_name'>;
+  user?: {
+    __typename?: 'User' | undefined;
+  } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>;
   rating: number;
   text: string;
 }
@@ -39,18 +42,37 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
   gym,
   rating,
   text,
+  user,
 }) => {
   const classes = useStyles();
+
+  let entity: any;
+  if (user) {
+    entity = user;
+  } else if (gym) {
+    entity = gym;
+  } else {
+    throw Error('You cant pass both gym and user');
+  }
   return (
     <>
-      <StyledLink to={`/gyms/${gym.id}`} color="black">
+      <StyledLink
+        to={gym ? `/gyms/${entity.id}` : `/user/${entity.id}`}
+        color="black"
+      >
         <ListItem className={classes.item} alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </ListItemAvatar>
+          {!gym && (
+            <ListItemAvatar>
+              <Avatar alt="Remy Sharp" src={entity.photo_url} />
+            </ListItemAvatar>
+          )}
           <div>
             <ListItemText
-              primary={`Gym: ${gym.gym_name}`}
+              primary={
+                gym
+                  ? `Gym: ${entity.gym_name}`
+                  : `${entity.first_name} ${entity.last_name}`
+              }
               secondary={
                 <>
                   <Rating

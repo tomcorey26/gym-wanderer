@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Box, Divider, Chip } from '@material-ui/core';
+import { Grid, Typography, Box, Divider, Chip, List } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import Avatar from '@material-ui/core/Avatar';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { Coords } from '../types/Coords';
+import Maybe from 'graphql/tsutils/Maybe';
+import { Reviews, User } from '@gw/controllers';
+import { ReviewItem } from './ReviewItem';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,6 +39,11 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'space-between',
     },
+    reviewList: {
+      width: '100%',
+      height: 320,
+      overflow: 'auto',
+    },
   })
 );
 
@@ -53,6 +61,17 @@ interface GymDescriptionProps {
     email: string;
   };
   equipment?: string[];
+  reviews: Maybe<
+    Array<
+      {
+        __typename?: 'Reviews';
+      } & Pick<Reviews, 'rating' | 'text' | 'date_created'> & {
+          creator: {
+            __typename?: 'User';
+          } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>;
+        }
+    >
+  >;
 }
 
 const GymDescription: React.FC<GymDescriptionProps> = ({
@@ -64,6 +83,7 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
   membership_cost,
   type,
   equipment,
+  reviews,
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState<number | null>(2);
@@ -131,7 +151,24 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
               <Grid item>
                 <Box className={classes.description}>{description}</Box>
                 <Divider />
-                <Box className={classes.space}>[REVIEWS HERE]</Box>
+                <Box className={classes.space}>
+                  {!reviews || reviews.length === 0 ? (
+                    <div>
+                      <h1>No Reviews Created by this user</h1>
+                    </div>
+                  ) : (
+                    <List className={classes.reviewList}>
+                      {reviews.map(({ creator, rating, text }, i) => (
+                        <ReviewItem
+                          user={creator}
+                          rating={rating}
+                          text={text}
+                          key={i}
+                        />
+                      ))}
+                    </List>
+                  )}
+                </Box>
               </Grid>
             </Grid>
             <Grid item></Grid>

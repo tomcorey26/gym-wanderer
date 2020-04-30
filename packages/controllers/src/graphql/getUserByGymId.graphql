@@ -7,4 +7,15 @@ query gymDetails($id: String) {
       ...gymInfo
     }
   }
+  gymReviews(gymId: $id) {
+    rating
+    text
+    date_created
+    creator {
+      id
+      first_name
+      last_name
+      photo_url
+    }
+  }
 }

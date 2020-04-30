@@ -270,6 +270,13 @@ export declare type GymDetailsQuery = ({
             __typename?: 'Gyms';
         } & GymInfoFragment)>;
     })>;
+    gymReviews: Maybe<Array<({
+        __typename?: 'Reviews';
+    } & Pick<Reviews, 'rating' | 'text' | 'date_created'> & {
+        creator: ({
+            __typename?: 'User';
+        } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>);
+    })>>;
 });
 export declare type HelloQueryVariables = {};
 export declare type HelloQuery = ({
