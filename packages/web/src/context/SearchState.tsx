@@ -10,7 +10,7 @@ type Actions =
   | { type: 'UPDATE_SEARCH_QUERY'; searchQuery: string };
 
 type State = {
-  radiusDist: number | null;
+  radiusDist: number | string | null;
   zoom: number;
   gyms: Gyms[];
   hoveredGymId: number;
@@ -18,7 +18,7 @@ type State = {
 };
 
 const initialState = {
-  radiusDist: null,
+  radiusDist: '',
   zoom: 10,
   gyms: [],
   hoveredGymId: 0,

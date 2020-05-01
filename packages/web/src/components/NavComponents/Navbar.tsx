@@ -144,7 +144,7 @@ export const Navbar = () => {
       onClose={handleMobileMenuClose}
     >
       {IsLoggedIn ? (
-        <>
+        <div>
           <MenuItem onClick={handleAlertMenuOpen}>
             <IconButton aria-label="show 11 new notifications" color="inherit">
               <Badge
@@ -167,9 +167,9 @@ export const Navbar = () => {
             </IconButton>
             <p>Profile</p>
           </MenuItem>
-        </>
+        </div>
       ) : (
-        <>
+        <div>
           <StyledLink
             to="/register"
             color="black"
@@ -182,7 +182,6 @@ export const Navbar = () => {
               <p>Create Account</p>
             </MenuItem>
           </StyledLink>
-
           <StyledLink to="/login" color="black" onClick={handleMobileMenuClose}>
             <MenuItem>
               <IconButton color="inherit">
@@ -191,7 +190,7 @@ export const Navbar = () => {
               <p>Login</p>
             </MenuItem>
           </StyledLink>
-        </>
+        </div>
       )}
     </Menu>
   );

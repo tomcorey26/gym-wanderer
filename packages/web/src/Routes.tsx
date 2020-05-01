@@ -10,7 +10,6 @@ import { Login } from './pages/Login';
 import { Navbar } from './components/NavComponents/Navbar';
 import { CssBaseline } from '@material-ui/core';
 import { useUsersQuery } from '@gw/controllers';
-import { Bye } from './pages/Bye';
 import { UserProfilePage } from './pages/UserProfilePage';
 
 const Routes: React.FC = () => {
