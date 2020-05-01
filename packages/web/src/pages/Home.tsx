@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     item: {
       marginBottom: '0.5rem',
+      [theme.breakpoints.up('sm')]: {
+        fontSize: 25,
+      },
     },
   })
 );
