@@ -86,7 +86,8 @@ const Search: React.FC = () => {
         width: '100vw',
         display: 'flex',
         flexDirection: matches ? 'column' : 'row',
-        overflow: 'auto',
+        position: 'relative',
+        top: 0,
       }}
     >
       <div
@@ -130,8 +131,6 @@ const Search: React.FC = () => {
         <div
           style={{
             display: 'flex',
-            position: 'sticky',
-            top: 0,
           }}
           className="top-bar"
         >
