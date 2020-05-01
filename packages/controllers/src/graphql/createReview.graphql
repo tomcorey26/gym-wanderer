@@ -1,0 +1,3 @@
+mutation createReview($text: String!, $rating: Float!, $gymId: String!) {
+  createReview(text: $text, rating: $rating, gymId: $gymId)
+}

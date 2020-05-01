@@ -4,12 +4,12 @@ import Rating from '@material-ui/lab/Rating';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import Avatar from '@material-ui/core/Avatar';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import { Coords } from '../types/Coords';
 import Maybe from 'graphql/tsutils/Maybe';
 import { Reviews, User } from '@gw/controllers';
 import { ReviewItem } from './ReviewItem';
 import { StyledLink } from './NavComponents/Navbar';
+import { ReviewCreate } from './ReviewCreate';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     description: {
       padding: 10,
+      marginBottom: theme.spacing(3),
     },
     space: {
       minHeight: 600,
@@ -44,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       height: 320,
       overflow: 'auto',
+    },
+    block: {
+      marginBottom: 8,
     },
   })
 );
@@ -76,6 +80,7 @@ interface GymDescriptionProps {
     >
   >;
   currentUserId: string;
+  gymId: string;
 }
 
 const GymDescription: React.FC<GymDescriptionProps> = ({
@@ -89,9 +94,9 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
   equipment,
   reviews,
   currentUserId,
+  gymId,
 }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState<number | null>(2);
 
   return (
     <>
@@ -127,13 +132,23 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
                     <span style={{ fontWeight: 20 }}>per person</span>
                   </Box>
                   <Box className={classes.topSpace}>
-                    <Rating
-                      name="simple-controlled"
-                      value={value}
-                      onChange={(event, newValue) => {
-                        setValue(newValue);
-                      }}
-                    />
+                    {reviews && reviews.length > 0 ? (
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Rating
+                          name="simple-controlled"
+                          readOnly
+                          value={
+                            reviews.reduce((a: number, b) => a + b.rating, 0) /
+                            reviews?.length
+                          }
+                        />
+                        <div style={{ marginLeft: 8 }}>
+                          ({reviews.length} reviews)
+                        </div>
+                      </div>
+                    ) : (
+                      <div>no reviews</div>
+                    )}
                   </Box>
                 </Typography>
                 <Box className={classes.chips}>
@@ -156,15 +171,23 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
                     })}
                 </Box>
               </Grid>
+
+              <Typography variant="overline">Description</Typography>
               <Divider />
 
-              <Grid item>
+              <Grid item style={{ padding: 0 }}>
                 <Box className={classes.description}>{description}</Box>
+
+                <Typography variant="overline">Reviews</Typography>
                 <Divider />
                 <Box className={classes.space}>
+                  {reviews &&
+                    !reviews?.find(
+                      (rev) => rev.creator.id === currentUserId
+                    ) && <ReviewCreate gymId={gymId} />}
                   {!reviews || reviews.length === 0 ? (
                     <div>
-                      <h1>No Reviews Created by this user</h1>
+                      <h1>No Reviews </h1>
                     </div>
                   ) : (
                     <List className={classes.reviewList}>

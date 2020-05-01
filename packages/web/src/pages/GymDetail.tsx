@@ -8,12 +8,17 @@ import { CircularProgress, useMediaQuery } from '@material-ui/core';
 
 const GymDetail: React.FC = () => {
   const { id } = useParams();
-  const { data, loading } = useGymDetailsQuery({
+  const { data, loading, error } = useGymDetailsQuery({
     variables: {
       id: id,
     },
   });
+
   const matches = useMediaQuery('(min-width:1000px)');
+
+  if (error) {
+    console.log('error', error);
+  }
 
   if (loading)
     return (
@@ -73,6 +78,7 @@ const GymDetail: React.FC = () => {
             reviews={data.gymReviews || []}
             loading={loading}
             currentUserId={data.me?.id || ''}
+            gymId={id ? id : ''}
           />
           <GymReservationForm
             gymId={id}

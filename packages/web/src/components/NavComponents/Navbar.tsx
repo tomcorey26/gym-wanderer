@@ -20,7 +20,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useHistory } from 'react-router-dom';
 import { useMeQuery, useLogoutMutation } from '@gw/controllers';
 import { setAccessToken } from '../../accessToken';
 import { useNavStyles } from './NavStyles';
@@ -28,7 +28,7 @@ import { useDropdownMenu } from '../../hooks';
 
 export const Navbar = () => {
   const classes = useNavStyles();
-
+  const history = useHistory();
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
   const [
@@ -98,6 +98,7 @@ export const Navbar = () => {
         <MenuItem
           onClick={async () => {
             handleMenuClose();
+            history.push('/');
             await logout();
             setAccessToken('');
             await client!.resetStore();

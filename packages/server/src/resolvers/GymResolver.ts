@@ -83,7 +83,6 @@ export class GymResolver {
   @Query(() => Gyms, { nullable: true })
   @UseMiddleware(isAuth)
   async myGym(@Ctx() { payload }: MyContext) {
-    console.log('called my gym');
     try {
       return await Gyms.findOne({ where: { ownerId: payload!.userId } });
     } catch (err) {

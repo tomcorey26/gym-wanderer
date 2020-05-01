@@ -277,6 +277,18 @@ export type CreateGymMutation = (
   & Pick<Mutation, 'createGym'>
 );
 
+export type CreateReviewMutationVariables = {
+  text: Scalars['String'];
+  rating: Scalars['Float'];
+  gymId: Scalars['String'];
+};
+
+
+export type CreateReviewMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createReview'>
+);
+
 export type FetchGymsQueryVariables = {};
 
 
@@ -625,6 +637,38 @@ export function useCreateGymMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export const CreateReviewDocument = gql`
+    mutation createReview($text: String!, $rating: Float!, $gymId: String!) {
+  createReview(text: $text, rating: $rating, gymId: $gymId)
+}
+    `;
+export type CreateReviewMutationFn = ApolloReactCommon.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
+
+/**
+ * __useCreateReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createReviewMutation, { data, loading, error }] = useCreateReviewMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *      rating: // value for 'rating'
+ *      gymId: // value for 'gymId'
+ *   },
+ * });
+ */
+export function useCreateReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateReviewMutation, CreateReviewMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateReviewMutation, CreateReviewMutationVariables>(CreateReviewDocument, baseOptions);
+      }
+export type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
+export type CreateReviewMutationResult = ApolloReactCommon.MutationResult<CreateReviewMutation>;
+export type CreateReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export const FetchGymsDocument = gql`
     query FetchGyms {
   gyms {

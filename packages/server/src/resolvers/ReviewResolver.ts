@@ -52,6 +52,7 @@ export class ReviewResolver {
     return await Reviews.find({
       where: { gymId },
       relations: ['creator', 'gym'],
+      order: { date_created: 'DESC' },
     });
   }
 
