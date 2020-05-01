@@ -65,10 +65,11 @@ const Search: React.FC = () => {
   }
 
   //filter by gyms inside radius
+  const mapCoords = lat || lng ? { lat, lng } : geo.position;
   let filteredGyms: Gyms[] = gyms;
   if (radiusDist) {
     filteredGyms = gyms.filter(({ coordinates }) =>
-      isWithinDistance(coordinates, { lat, lng }, radiusDist)
+      isWithinDistance(coordinates, mapCoords, radiusDist)
     );
   }
 
@@ -83,9 +84,10 @@ const Search: React.FC = () => {
     <div
       className="search-gym-page"
       style={{
-        width: '100vw',
         display: 'flex',
+        width: '100vw',
         flexDirection: matches ? 'column' : 'row',
+        alignItems: 'flex-start',
         position: 'relative',
         top: 0,
       }}
@@ -124,13 +126,17 @@ const Search: React.FC = () => {
       <div
         style={{
           width: matches ? '100%' : '65%',
-          height: matches ? '50vh' : '93.5vh',
+          // height: matches ? '50vh' : '5vh',
         }}
         className="scroller-box"
       >
         <div
           style={{
             display: 'flex',
+            position: 'sticky',
+            top: matches ? 'calc(40vh)' : 0,
+            zIndex: 10,
+            backgroundColor: 'white',
           }}
           className="top-bar"
         >
