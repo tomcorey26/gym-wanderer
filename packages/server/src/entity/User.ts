@@ -36,7 +36,7 @@ export class User extends BaseEntity {
   email: string;
 
   @Field()
-  @Column({ length: '30' })
+  @Column({ length: '30', unique: true })
   username: string;
 
   @Column('text')
@@ -46,9 +46,9 @@ export class User extends BaseEntity {
   @Column('date', { nullable: true })
   birthday?: string;
 
-  @Field({ nullable: true })
-  @Column('text', { nullable: true })
-  photo_url?: string;
+  @Field()
+  @Column('text')
+  photo_url: string;
 
   @Column('int', { default: 0 })
   tokenVersion: number;

@@ -1,10 +1,26 @@
 query gymDetails($id: String) {
   gymDetails(id: $id) {
+    owner_id: id
     owner_first_name: first_name
     owner_last_name: last_name
     email
+    owner_photo_url: photo_url
     gym {
       ...gymInfo
     }
+  }
+  gymReviews(gymId: $id) {
+    rating
+    text
+    date_created
+    creator {
+      id
+      first_name
+      last_name
+      photo_url
+    }
+  }
+  me {
+    id
   }
 }

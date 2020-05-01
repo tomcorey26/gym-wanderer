@@ -105,6 +105,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
     >
       {({ values, isSubmitting, errors }) => (
         <FormContainer
+          title="Register"
           pageProgress
           pageNum={currentPage}
           pageCount={pages.length}

@@ -1,11 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  BaseEntity,
+  PrimaryColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { User } from './User';
 import { Gyms } from './Gym';
 import { Field, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
 @Entity()
-export class Reviews {
+export class Reviews extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,10 +28,18 @@ export class Reviews {
   @Column({ length: '500' })
   text: string;
 
+  @Field()
+  @CreateDateColumn()
+  date_created: string;
+
+  @PrimaryColumn()
+  creatorId: string;
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.reviews)
   creator: User;
 
+  @PrimaryColumn()
+  gymId: string;
   @Field(() => Gyms)
   @ManyToOne(() => Gyms, (gym) => gym.reviews)
   gym: Gyms;

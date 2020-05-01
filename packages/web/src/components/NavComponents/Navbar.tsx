@@ -20,7 +20,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useHistory } from 'react-router-dom';
 import { useMeQuery, useLogoutMutation } from '@gw/controllers';
 import { setAccessToken } from '../../accessToken';
 import { useNavStyles } from './NavStyles';
@@ -28,7 +28,7 @@ import { useDropdownMenu } from '../../hooks';
 
 export const Navbar = () => {
   const classes = useNavStyles();
-
+  const history = useHistory();
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
   const [
@@ -80,7 +80,7 @@ export const Navbar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <NavLink to="/" style={menuItemStyle}>
+      <NavLink to={`/user/${data?.me?.id}`} style={menuItemStyle}>
         <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
       </NavLink>
       {!IsLoggedIn && [
@@ -98,6 +98,7 @@ export const Navbar = () => {
         <MenuItem
           onClick={async () => {
             handleMenuClose();
+            history.push('/');
             await logout();
             setAccessToken('');
             await client!.resetStore();
@@ -122,14 +123,15 @@ export const Navbar = () => {
       onClose={handleAlertMenuClose}
       style={{ maxHeight: 600 }}
     >
-      {data &&
-        data.me &&
-        data.me.alerts &&
+      {data && data.me && data.me.alerts && data.me.alerts.length > 0 ? (
         data.me.alerts.map((alert, i) => (
           <NavLink key={i} to={alert.link} style={menuItemStyle}>
             <MenuItem onClick={handleMenuClose}>{alert.message}</MenuItem>
           </NavLink>
-        ))}
+        ))
+      ) : (
+        <MenuItem>No new alerts</MenuItem>
+      )}
     </Menu>
   );
 
@@ -275,8 +277,13 @@ export const Navbar = () => {
   );
 };
 
-const StyledLink: React.FC<any> = ({ children, to, ...props }) => (
-  <Link {...props} to={to} style={{ color: 'white', textDecoration: 'none' }}>
+export const StyledLink: React.FC<any> = ({
+  children,
+  to,
+  color = 'white',
+  ...props
+}) => (
+  <Link {...props} to={to} style={{ color: color, textDecoration: 'none' }}>
     {children}
   </Link>
 );

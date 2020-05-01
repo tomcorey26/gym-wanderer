@@ -6,14 +6,17 @@ import { CloudinaryImg } from '../types';
 interface CloudinaryUploadProps {
   onUpload: (img: CloudinaryImg[]) => void;
   folderName: string;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
   onUpload,
   folderName,
+  setLoading,
 }) => {
   const onDrop = useCallback(async (files) => {
     let imgArr: CloudinaryImg[] = [];
+    setLoading(true);
     await asyncForEach(files, async (file) => {
       const noSpacesFolderName = folderName.split(' ').join('_');
       const data = new FormData();
@@ -31,6 +34,7 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
       imgArr.push(image.url);
       console.log(image);
     });
+    setLoading(false);
     onUpload(imgArr);
   }, []);
 

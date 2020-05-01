@@ -8,16 +8,29 @@ import { CircularProgress, useMediaQuery } from '@material-ui/core';
 
 const GymDetail: React.FC = () => {
   const { id } = useParams();
-  const { data, loading } = useGymDetailsQuery({
+  const { data, loading, error } = useGymDetailsQuery({
     variables: {
       id: id,
     },
   });
+
   const matches = useMediaQuery('(min-width:1000px)');
+
+  if (error) {
+    console.log('error', error);
+  }
 
   if (loading)
     return (
-      <div>
+      <div
+        style={{
+          width: '90vw',
+          height: '90vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <CircularProgress />
       </div>
     );
@@ -49,8 +62,10 @@ const GymDetail: React.FC = () => {
         >
           <GymDescription
             owner={{
+              owner_id: data.gymDetails.owner_id,
               first_name: data.gymDetails.owner_first_name,
               last_name: data.gymDetails.owner_last_name,
+              owner_photo_url: data.gymDetails.owner_photo_url,
               email: data.gymDetails.email,
             }}
             gym_name={data?.gymDetails?.gym?.gym_name}
@@ -60,7 +75,10 @@ const GymDetail: React.FC = () => {
             coordinates={data?.gymDetails?.gym?.coordinates}
             type={data?.gymDetails?.gym?.type}
             equipment={data.gymDetails.gym?.equipment}
+            reviews={data.gymReviews || []}
             loading={loading}
+            currentUserId={data.me?.id || ''}
+            gymId={id ? id : ''}
           />
           <GymReservationForm
             gymId={id}

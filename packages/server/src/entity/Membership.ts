@@ -5,6 +5,7 @@ import {
   ManyToOne,
   BaseEntity,
   PrimaryColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { User } from './User';
 import { Gyms } from './Gym';
@@ -25,6 +26,9 @@ export class Membership extends BaseEntity {
   @Column('int')
   end_date: number;
 
+  @Field()
+  @CreateDateColumn()
+  begin_date: string;
   //these two fields must be unique
   @PrimaryColumn()
   memberId: string;

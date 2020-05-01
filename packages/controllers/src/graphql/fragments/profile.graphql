@@ -5,4 +5,5 @@ fragment profile on User {
   last_name
   username
   birthday
+  photo_url
 }

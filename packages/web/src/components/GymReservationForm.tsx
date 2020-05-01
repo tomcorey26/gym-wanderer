@@ -25,6 +25,7 @@ import {
   MeDocument,
   useUserMembershipsInfoQuery,
   UserMembershipsInfoDocument,
+  useMeQuery,
 } from '@gw/controllers';
 import { useHistory } from 'react-router-dom';
 
@@ -75,11 +76,6 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
   const [joinGym] = useJoinGymMutation();
   const { data, loading, error } = useUserMembershipsInfoQuery();
   const history = useHistory();
-
-  if (error) {
-    history.push('/');
-  }
-
   const classes = useStyles();
 
   const getDate = (monthsFromNow = 0) => (
@@ -92,6 +88,12 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
 
   const handleJoin = async () => {
     if (!gymId) return;
+    // if error that menas user is not auth
+    if (error) {
+      console.log('error', error);
+      history.push('/register');
+      return;
+    }
     setNewMemberText('Thank you For Joining!');
     if (monthCount >= 1) {
       await joinGym({

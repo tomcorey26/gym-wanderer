@@ -69,17 +69,31 @@ export type Membership = {
   id: Scalars['String'];
   isAutoRenewalActive: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  begin_date: Scalars['String'];
   member: User;
   gym: Gyms;
 };
 
 export type Mutation = {
    __typename?: 'Mutation';
+  updateUser: Scalars['Boolean'];
   register: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   createGym: Scalars['Boolean'];
   joinGym: Scalars['Boolean'];
+  createReview: Scalars['Boolean'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  email?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  birthday?: Maybe<Scalars['String']>;
+  photo_url?: Maybe<Scalars['String']>;
+  preferences?: Maybe<PreferencesInput>;
 };
 
 
@@ -97,7 +111,7 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   password: Scalars['String'];
-  email: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
@@ -117,6 +131,13 @@ export type MutationCreateGymArgs = {
 export type MutationJoinGymArgs = {
   auto_renewal: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  gymId: Scalars['String'];
+};
+
+
+export type MutationCreateReviewArgs = {
+  text: Scalars['String'];
+  rating: Scalars['Float'];
   gymId: Scalars['String'];
 };
 
@@ -144,12 +165,22 @@ export type Query = {
   hello: Scalars['String'];
   bye: Scalars['String'];
   users: Array<User>;
+  getUser?: Maybe<User>;
+  deleteUser: Scalars['Boolean'];
   me?: Maybe<User>;
   myGym?: Maybe<Gyms>;
   gymDetails?: Maybe<User>;
   gyms: Array<Gyms>;
   myMemberships?: Maybe<Array<Membership>>;
+  userMemberships?: Maybe<Array<Membership>>;
   gymMemberships?: Maybe<Array<Membership>>;
+  gymReviews?: Maybe<Array<Reviews>>;
+  userReviews?: Maybe<Array<Reviews>>;
+};
+
+
+export type QueryGetUserArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -158,14 +189,30 @@ export type QueryGymDetailsArgs = {
 };
 
 
+export type QueryUserMembershipsArgs = {
+  userId: Scalars['String'];
+};
+
+
 export type QueryGymMembershipsArgs = {
   gymId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGymReviewsArgs = {
+  gymId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryUserReviewsArgs = {
+  userId: Scalars['String'];
 };
 
 export type Reviews = {
    __typename?: 'Reviews';
   rating: Scalars['Int'];
   text: Scalars['String'];
+  date_created: Scalars['String'];
   creator: User;
   gym: Gyms;
 };
@@ -178,7 +225,7 @@ export type User = {
   email: Scalars['String'];
   username: Scalars['String'];
   birthday?: Maybe<Scalars['String']>;
-  photo_url?: Maybe<Scalars['String']>;
+  photo_url: Scalars['String'];
   preferences: Preferences;
   gym?: Maybe<Gyms>;
   reviews?: Maybe<Array<Reviews>>;
@@ -230,6 +277,18 @@ export type CreateGymMutation = (
   & Pick<Mutation, 'createGym'>
 );
 
+export type CreateReviewMutationVariables = {
+  text: Scalars['String'];
+  rating: Scalars['Float'];
+  gymId: Scalars['String'];
+};
+
+
+export type CreateReviewMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createReview'>
+);
+
 export type FetchGymsQueryVariables = {};
 
 
@@ -260,7 +319,7 @@ export type GymInfoFragment = (
 
 export type ProfileFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>
+  & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday' | 'photo_url'>
 );
 
 export type GymDetailsQueryVariables = {
@@ -273,11 +332,21 @@ export type GymDetailsQuery = (
   & { gymDetails: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'email'>
-    & { owner_first_name: User['first_name'], owner_last_name: User['last_name'] }
+    & { owner_id: User['id'], owner_first_name: User['first_name'], owner_last_name: User['last_name'], owner_photo_url: User['photo_url'] }
     & { gym: Maybe<(
       { __typename?: 'Gyms' }
       & GymInfoFragment
     )> }
+  )>, gymReviews: Maybe<Array<(
+    { __typename?: 'Reviews' }
+    & Pick<Reviews, 'rating' | 'text' | 'date_created'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
+    ) }
+  )>>, me: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
   )> }
 );
 
@@ -302,7 +371,7 @@ export type JoinGymMutation = (
 );
 
 export type LoginMutationVariables = {
-  email: Scalars['String'];
+  username: Scalars['String'];
   password: Scalars['String'];
 };
 
@@ -382,6 +451,39 @@ export type RegisterMutation = (
   & Pick<Mutation, 'register'>
 );
 
+export type UserProfileQueryVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type UserProfileQuery = (
+  { __typename?: 'Query' }
+  & { getUser: Maybe<(
+    { __typename?: 'User' }
+    & { preferences: (
+      { __typename?: 'Preferences' }
+      & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
+    ), gym: Maybe<(
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name'>
+    )> }
+    & ProfileFragment
+  )>, userMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & { gym: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type' | 'photo_urls'>
+    ) }
+  )>>, userReviews: Maybe<Array<(
+    { __typename?: 'Reviews' }
+    & Pick<Reviews, 'rating' | 'text'>
+    & { gym: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name'>
+    ) }
+  )>> }
+);
+
 export type UsersQueryVariables = {};
 
 
@@ -426,6 +528,7 @@ export const ProfileFragmentDoc = gql`
   last_name
   username
   birthday
+  photo_url
 }
     `;
 export const UserMembershipsInfoDocument = gql`
@@ -534,6 +637,38 @@ export function useCreateGymMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export const CreateReviewDocument = gql`
+    mutation createReview($text: String!, $rating: Float!, $gymId: String!) {
+  createReview(text: $text, rating: $rating, gymId: $gymId)
+}
+    `;
+export type CreateReviewMutationFn = ApolloReactCommon.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
+
+/**
+ * __useCreateReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createReviewMutation, { data, loading, error }] = useCreateReviewMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *      rating: // value for 'rating'
+ *      gymId: // value for 'gymId'
+ *   },
+ * });
+ */
+export function useCreateReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateReviewMutation, CreateReviewMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateReviewMutation, CreateReviewMutationVariables>(CreateReviewDocument, baseOptions);
+      }
+export type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
+export type CreateReviewMutationResult = ApolloReactCommon.MutationResult<CreateReviewMutation>;
+export type CreateReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export const FetchGymsDocument = gql`
     query FetchGyms {
   gyms {
@@ -569,12 +704,28 @@ export type FetchGymsQueryResult = ApolloReactCommon.QueryResult<FetchGymsQuery,
 export const GymDetailsDocument = gql`
     query gymDetails($id: String) {
   gymDetails(id: $id) {
+    owner_id: id
     owner_first_name: first_name
     owner_last_name: last_name
     email
+    owner_photo_url: photo_url
     gym {
       ...gymInfo
     }
+  }
+  gymReviews(gymId: $id) {
+    rating
+    text
+    date_created
+    creator {
+      id
+      first_name
+      last_name
+      photo_url
+    }
+  }
+  me {
+    id
   }
 }
     ${GymInfoFragmentDoc}`;
@@ -667,8 +818,8 @@ export type JoinGymMutationHookResult = ReturnType<typeof useJoinGymMutation>;
 export type JoinGymMutationResult = ApolloReactCommon.MutationResult<JoinGymMutation>;
 export type JoinGymMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinGymMutation, JoinGymMutationVariables>;
 export const LoginDocument = gql`
-    mutation Login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
+    mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
     accessToken
     user {
       ...profile
@@ -705,7 +856,7 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, 
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *   },
  * });
@@ -860,6 +1011,68 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UserProfileDocument = gql`
+    query userProfile($userId: String!) {
+  getUser(id: $userId) {
+    ...profile
+    preferences {
+      yoga
+      crossfit
+      bodybuilding
+      parkour
+      general
+      boxing
+    }
+    gym {
+      id
+      gym_name
+    }
+  }
+  userMemberships(userId: $userId) {
+    gym {
+      id
+      gym_name
+      location
+      type
+      photo_urls
+    }
+  }
+  userReviews(userId: $userId) {
+    rating
+    text
+    gym {
+      id
+      gym_name
+    }
+  }
+}
+    ${ProfileFragmentDoc}`;
+
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a React component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserProfileQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserProfileQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserProfileQuery, UserProfileQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserProfileQuery, UserProfileQueryVariables>(UserProfileDocument, baseOptions);
+      }
+export function useUserProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserProfileQuery, UserProfileQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserProfileQuery, UserProfileQueryVariables>(UserProfileDocument, baseOptions);
+        }
+export type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
+export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
+export type UserProfileQueryResult = ApolloReactCommon.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

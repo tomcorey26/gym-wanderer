@@ -61,16 +61,28 @@ export declare type Membership = {
     id: Scalars['String'];
     isAutoRenewalActive: Scalars['Boolean'];
     end_date: Scalars['Float'];
+    begin_date: Scalars['String'];
     member: User;
     gym: Gyms;
 };
 export declare type Mutation = {
     __typename?: 'Mutation';
+    updateUser: Scalars['Boolean'];
     register: Scalars['Boolean'];
     login: LoginResponse;
     logout: Scalars['Boolean'];
     createGym: Scalars['Boolean'];
     joinGym: Scalars['Boolean'];
+    createReview: Scalars['Boolean'];
+};
+export declare type MutationUpdateUserArgs = {
+    email?: Maybe<Scalars['String']>;
+    first_name?: Maybe<Scalars['String']>;
+    last_name?: Maybe<Scalars['String']>;
+    username?: Maybe<Scalars['String']>;
+    birthday?: Maybe<Scalars['String']>;
+    photo_url?: Maybe<Scalars['String']>;
+    preferences?: Maybe<PreferencesInput>;
 };
 export declare type MutationRegisterArgs = {
     photo_url?: Maybe<Scalars['String']>;
@@ -84,7 +96,7 @@ export declare type MutationRegisterArgs = {
 };
 export declare type MutationLoginArgs = {
     password: Scalars['String'];
-    email: Scalars['String'];
+    username: Scalars['String'];
 };
 export declare type MutationCreateGymArgs = {
     gym_name: Scalars['String'];
@@ -100,6 +112,11 @@ export declare type MutationCreateGymArgs = {
 export declare type MutationJoinGymArgs = {
     auto_renewal: Scalars['Boolean'];
     end_date: Scalars['Float'];
+    gymId: Scalars['String'];
+};
+export declare type MutationCreateReviewArgs = {
+    text: Scalars['String'];
+    rating: Scalars['Float'];
     gymId: Scalars['String'];
 };
 export declare type Preferences = {
@@ -124,23 +141,41 @@ export declare type Query = {
     hello: Scalars['String'];
     bye: Scalars['String'];
     users: Array<User>;
+    getUser?: Maybe<User>;
+    deleteUser: Scalars['Boolean'];
     me?: Maybe<User>;
     myGym?: Maybe<Gyms>;
     gymDetails?: Maybe<User>;
     gyms: Array<Gyms>;
     myMemberships?: Maybe<Array<Membership>>;
+    userMemberships?: Maybe<Array<Membership>>;
     gymMemberships?: Maybe<Array<Membership>>;
+    gymReviews?: Maybe<Array<Reviews>>;
+    userReviews?: Maybe<Array<Reviews>>;
+};
+export declare type QueryGetUserArgs = {
+    id: Scalars['String'];
 };
 export declare type QueryGymDetailsArgs = {
     id?: Maybe<Scalars['String']>;
 };
+export declare type QueryUserMembershipsArgs = {
+    userId: Scalars['String'];
+};
 export declare type QueryGymMembershipsArgs = {
     gymId?: Maybe<Scalars['String']>;
+};
+export declare type QueryGymReviewsArgs = {
+    gymId?: Maybe<Scalars['String']>;
+};
+export declare type QueryUserReviewsArgs = {
+    userId: Scalars['String'];
 };
 export declare type Reviews = {
     __typename?: 'Reviews';
     rating: Scalars['Int'];
     text: Scalars['String'];
+    date_created: Scalars['String'];
     creator: User;
     gym: Gyms;
 };
@@ -152,7 +187,7 @@ export declare type User = {
     email: Scalars['String'];
     username: Scalars['String'];
     birthday?: Maybe<Scalars['String']>;
-    photo_url?: Maybe<Scalars['String']>;
+    photo_url: Scalars['String'];
     preferences: Preferences;
     gym?: Maybe<Gyms>;
     reviews?: Maybe<Array<Reviews>>;
@@ -194,6 +229,14 @@ export declare type CreateGymMutationVariables = {
 export declare type CreateGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'createGym'>);
+export declare type CreateReviewMutationVariables = {
+    text: Scalars['String'];
+    rating: Scalars['Float'];
+    gymId: Scalars['String'];
+};
+export declare type CreateReviewMutation = ({
+    __typename?: 'Mutation';
+} & Pick<Mutation, 'createReview'>);
 export declare type FetchGymsQueryVariables = {};
 export declare type FetchGymsQuery = ({
     __typename?: 'Query';
@@ -218,7 +261,7 @@ export declare type GymInfoFragment = ({
 });
 export declare type ProfileFragment = ({
     __typename?: 'User';
-} & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday'>);
+} & Pick<User, 'id' | 'email' | 'first_name' | 'last_name' | 'username' | 'birthday' | 'photo_url'>);
 export declare type GymDetailsQueryVariables = {
     id?: Maybe<Scalars['String']>;
 };
@@ -228,13 +271,25 @@ export declare type GymDetailsQuery = ({
     gymDetails: Maybe<({
         __typename?: 'User';
     } & Pick<User, 'email'> & {
+        owner_id: User['id'];
         owner_first_name: User['first_name'];
         owner_last_name: User['last_name'];
+        owner_photo_url: User['photo_url'];
     } & {
         gym: Maybe<({
             __typename?: 'Gyms';
         } & GymInfoFragment)>;
     })>;
+    gymReviews: Maybe<Array<({
+        __typename?: 'Reviews';
+    } & Pick<Reviews, 'rating' | 'text' | 'date_created'> & {
+        creator: ({
+            __typename?: 'User';
+        } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>);
+    })>>;
+    me: Maybe<({
+        __typename?: 'User';
+    } & Pick<User, 'id'>)>;
 });
 export declare type HelloQueryVariables = {};
 export declare type HelloQuery = ({
@@ -249,7 +304,7 @@ export declare type JoinGymMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'joinGym'>);
 export declare type LoginMutationVariables = {
-    email: Scalars['String'];
+    username: Scalars['String'];
     password: Scalars['String'];
 };
 export declare type LoginMutation = ({
@@ -310,6 +365,37 @@ export declare type RegisterMutationVariables = {
 export declare type RegisterMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'register'>);
+export declare type UserProfileQueryVariables = {
+    userId: Scalars['String'];
+};
+export declare type UserProfileQuery = ({
+    __typename?: 'Query';
+} & {
+    getUser: Maybe<({
+        __typename?: 'User';
+    } & {
+        preferences: ({
+            __typename?: 'Preferences';
+        } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
+        gym: Maybe<({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id' | 'gym_name'>)>;
+    } & ProfileFragment)>;
+    userMemberships: Maybe<Array<({
+        __typename?: 'Membership';
+    } & {
+        gym: ({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id' | 'gym_name' | 'location' | 'type' | 'photo_urls'>);
+    })>>;
+    userReviews: Maybe<Array<({
+        __typename?: 'Reviews';
+    } & Pick<Reviews, 'rating' | 'text'> & {
+        gym: ({
+            __typename?: 'Gyms';
+        } & Pick<Gyms, 'id' | 'gym_name'>);
+    })>>;
+});
 export declare type UsersQueryVariables = {};
 export declare type UsersQuery = ({
     __typename?: 'Query';
@@ -394,6 +480,31 @@ export declare function useCreateGymMutation(baseOptions?: ApolloReactHooks.Muta
 export declare type CreateGymMutationHookResult = ReturnType<typeof useCreateGymMutation>;
 export declare type CreateGymMutationResult = ApolloReactCommon.MutationResult<CreateGymMutation>;
 export declare type CreateGymMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateGymMutation, CreateGymMutationVariables>;
+export declare const CreateReviewDocument: import("graphql").DocumentNode;
+export declare type CreateReviewMutationFn = ApolloReactCommon.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
+/**
+ * __useCreateReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createReviewMutation, { data, loading, error }] = useCreateReviewMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *      rating: // value for 'rating'
+ *      gymId: // value for 'gymId'
+ *   },
+ * });
+ */
+export declare function useCreateReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateReviewMutation, CreateReviewMutationVariables>): ApolloReactHooks.MutationTuple<CreateReviewMutation, CreateReviewMutationVariables>;
+export declare type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
+export declare type CreateReviewMutationResult = ApolloReactCommon.MutationResult<CreateReviewMutation>;
+export declare type CreateReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export declare const FetchGymsDocument: import("graphql").DocumentNode;
 /**
  * __useFetchGymsQuery__
@@ -498,7 +609,7 @@ export declare type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMu
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      username: // value for 'username'
  *      password: // value for 'password'
  *   },
  * });
@@ -601,6 +712,28 @@ export declare function useRegisterMutation(baseOptions?: ApolloReactHooks.Mutat
 export declare type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export declare type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export declare type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export declare const UserProfileDocument: import("graphql").DocumentNode;
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a React component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserProfileQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export declare function useUserProfileQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserProfileQuery, UserProfileQueryVariables>): ApolloReactCommon.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
+export declare function useUserProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserProfileQuery, UserProfileQueryVariables>): ApolloReactHooks.QueryTuple<UserProfileQuery, UserProfileQueryVariables>;
+export declare type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
+export declare type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
+export declare type UserProfileQueryResult = ApolloReactCommon.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export declare const UsersDocument: import("graphql").DocumentNode;
 /**
  * __useUsersQuery__

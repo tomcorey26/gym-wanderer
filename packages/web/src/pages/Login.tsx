@@ -11,7 +11,7 @@ import { FormField } from '../components/FormComponents/FormField';
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
 const mock = {
-  email: 'devito@gmail.com',
+  username: 'dvito',
   password: 'Test123@',
 };
 export const Login: React.FC<RouteComponentProps> = ({ history }) => {
@@ -21,11 +21,11 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <Formik
       initialValues={mock}
-      onSubmit={async ({ email, password }, { setSubmitting }) => {
+      onSubmit={async ({ username, password }, { setSubmitting }) => {
         setSubmitting(true);
         const response = await login({
           variables: {
-            email,
+            username,
             password,
           },
           update: (store, { data }) => {
@@ -54,7 +54,7 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
     >
       {({ values, isSubmitting, errors }) => (
         <FormContainer>
-          <FormField placeholder="Email" name="email" type="input" />
+          <FormField placeholder="Username" name="username" type="input" />
           <FormField placeholder="Password" name="password" type="password" />
 
           {showSubmit && (

@@ -1,0 +1,34 @@
+query userProfile($userId: String!) {
+  getUser(id: $userId) {
+    ...profile
+    preferences {
+      yoga
+      crossfit
+      bodybuilding
+      parkour
+      general
+      boxing
+    }
+    gym {
+      id
+      gym_name
+    }
+  }
+  userMemberships(userId: $userId) {
+    gym {
+      id
+      gym_name
+      location
+      type
+      photo_urls
+    }
+  }
+  userReviews(userId: $userId) {
+    rating
+    text
+    gym {
+      id
+      gym_name
+    }
+  }
+}
