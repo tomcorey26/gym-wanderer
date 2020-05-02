@@ -6,8 +6,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import GymPic from '../assets/gymPic.jpg';
-import { Coords } from '../types/Coords';
 import { SearchContext } from '../context/SearchState';
 import { Gyms } from '@gw/controllers';
 
@@ -17,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontSize: '2rem',
+
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1.2rem',
+      fontWeight: 500,
+    },
   },
   avatarItem: {
     height: '90%',
@@ -28,9 +31,17 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: '64%',
     height: '72%',
+
+    [theme.breakpoints.down('xs')]: {
+      width: '60%',
+      height: '50%',
+    },
   },
   item: {
     height: '300px',
+    [theme.breakpoints.down('xs')]: {
+      height: 200,
+    },
   },
   hover: {
     height: '300px',

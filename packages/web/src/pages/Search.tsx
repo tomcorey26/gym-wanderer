@@ -5,13 +5,12 @@ import { useCurrentGeolocation, useInputValue } from '../hooks';
 import GoogleMapReact from 'google-map-react';
 import MapPoint from '../components/MapPoint';
 import RadiusSelect from '../components/RadiusSelect';
-import axios from 'axios';
 import SearchFilter from '../components/SearchFilter';
 import { SearchContext } from '../context/SearchState';
 import { useLocation } from 'react-router-dom';
 import { isWithinDistance } from '../utils';
 import { useFetchGymsQuery, Gyms } from '@gw/controllers';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, useMediaQuery } from '@material-ui/core';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -24,6 +23,7 @@ const Search: React.FC = () => {
   const [{ lat, lng }, setCoords] = useState<Coords>({ lat: 0, lng: 0 });
   const [error, setError] = useState<string>('');
   const { data, loading } = useFetchGymsQuery();
+  const matches = useMediaQuery('(max-width:1048px)');
   let query = useQuery();
 
   useEffect(() => {
@@ -65,10 +65,11 @@ const Search: React.FC = () => {
   }
 
   //filter by gyms inside radius
+  const mapCoords = lat || lng ? { lat, lng } : geo.position;
   let filteredGyms: Gyms[] = gyms;
   if (radiusDist) {
     filteredGyms = gyms.filter(({ coordinates }) =>
-      isWithinDistance(coordinates, { lat, lng }, radiusDist)
+      isWithinDistance(coordinates, mapCoords, radiusDist)
     );
   }
 
@@ -83,16 +84,20 @@ const Search: React.FC = () => {
     <div
       className="search-gym-page"
       style={{
-        width: '100vw',
         display: 'flex',
-        overflow: 'auto',
+        width: '100vw',
+        flexDirection: matches ? 'column' : 'row',
+        alignItems: 'flex-start',
+        position: 'relative',
+        top: 0,
       }}
     >
       <div
         className="gym-map"
         style={{
-          height: '93.5vh',
-          width: '35%',
+          height: matches ? '40vh' : '93.5vh',
+          width: matches ? '100%' : '35%',
+          zIndex: matches ? 20 : 0,
           position: 'sticky',
           top: 0,
         }}
@@ -118,8 +123,23 @@ const Search: React.FC = () => {
           ))}
         </GoogleMapReact>
       </div>
-      <div style={{ width: '65%', height: '93.5vh' }} className="scroller-box">
-        <div style={{ display: 'flex' }} className="top-bar">
+      <div
+        style={{
+          width: matches ? '100%' : '65%',
+          // height: matches ? '50vh' : '5vh',
+        }}
+        className="scroller-box"
+      >
+        <div
+          style={{
+            display: 'flex',
+            position: 'sticky',
+            top: matches ? 'calc(40vh)' : 0,
+            zIndex: 10,
+            backgroundColor: 'white',
+          }}
+          className="top-bar"
+        >
           <SearchFilter value={value} onChange={onChange} />
           <RadiusSelect />
         </div>

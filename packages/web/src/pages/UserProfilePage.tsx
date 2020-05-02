@@ -4,10 +4,10 @@ import {
   makeStyles,
   Theme,
   createStyles,
-  Paper,
   Typography,
   Divider,
   CircularProgress,
+  useMediaQuery,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import { UserProfileTabs } from '../components/UserProfileTabs';
@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       height: '80vh',
       margin: theme.spacing(7),
+      [theme.breakpoints.between('xs', 'sm')]: {
+        display: 'flex',
+        justifyContent: 'center',
+        margin: 0,
+      },
     },
     userGrid: {
       height: '100%',
@@ -30,10 +35,19 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     divider: {
       width: 320,
+
+      [theme.breakpoints.between('xs', 'sm')]: {
+        margin: 'auto',
+      },
     },
     userLeftSide: {
       marginRight: theme.spacing(4),
+      [theme.breakpoints.between('xs', 'sm')]: {
+        textAlign: 'center',
+        marginRight: 0,
+      },
     },
+
     userRightSide: {},
     smallTitle: {
       color: '#9c27b0',
@@ -56,8 +70,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
       userId: id ? id : '',
     },
   });
-
-  console.log('data', data);
+  const matches = useMediaQuery('(max-width:960px)');
 
   if (loading) {
     return (
@@ -84,7 +97,7 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
   }
   return (
     <div className={classes.root}>
-      <Grid className={classes.userGrid} container spacing={6}>
+      <Grid className={classes.userGrid} container spacing={0}>
         <Grid
           className={classes.userLeftSide}
           direction="column"
@@ -104,6 +117,30 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
               className={classes.userProfileImg}
             />
           </Grid>
+
+          {matches && (
+            <Grid item>
+              <div>
+                <Typography variant="h4" color="textPrimary">
+                  {data?.getUser?.first_name} {data?.getUser?.last_name}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  className={classes.smallTitle}
+                  style={{ marginBottom: 32 }}
+                >
+                  {data?.getUser?.gym && 'Gym Owner'}
+                  {data?.getUser?.gym &&
+                    data.userMemberships?.length !== 0 &&
+                    '/'}
+                  {data.userMemberships?.length !== 0 && 'Member'}
+                  {!data?.getUser?.gym &&
+                    !data.userMemberships?.length &&
+                    'User'}
+                </Typography>
+              </div>
+            </Grid>
+          )}
           <Grid item>
             <Typography variant="overline">Gym</Typography>
             <Divider color="primary" className={classes.divider} />
@@ -169,37 +206,45 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = () => {
           className={classes.userRightSide}
         >
           <Grid item md={6}>
-            <Typography variant="h4" color="textPrimary">
-              {data?.getUser?.first_name} {data?.getUser?.last_name}
-            </Typography>
-            <Typography
-              variant="h6"
-              className={classes.smallTitle}
-              style={{ marginBottom: 32 }}
-            >
-              {data?.getUser?.gym && 'Gym Owner'}
-              {data?.getUser?.gym && data.userMemberships?.length !== 0 && '/'}
-              {data.userMemberships?.length !== 0 && 'Member'}
-              {!data?.getUser?.gym && !data.userMemberships?.length && 'User'}
-            </Typography>
-            {/* <Typography variant="subtitle2" gutterBottom>
-              <div>Gym Rating</div>
-              <Rating value={3} readOnly />
-            </Typography> */}
-            <Typography variant="subtitle2">
-              <div>Average review rating</div>
-            </Typography>
-            {data.userReviews && data.userReviews.length ? (
-              <Rating
-                value={
-                  data.userReviews?.reduce((a: number, b) => a + b.rating, 0) /
-                  data.userReviews?.length
-                }
-                readOnly
-              />
-            ) : (
-              <Typography variant="subtitle1">User has no reviews</Typography>
+            {!matches && (
+              <div>
+                <Typography variant="h4" color="textPrimary">
+                  {data?.getUser?.first_name} {data?.getUser?.last_name}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  className={classes.smallTitle}
+                  style={{ marginBottom: 32 }}
+                >
+                  {data?.getUser?.gym && 'Gym Owner'}
+                  {data?.getUser?.gym &&
+                    data.userMemberships?.length !== 0 &&
+                    '/'}
+                  {data.userMemberships?.length !== 0 && 'Member'}
+                  {!data?.getUser?.gym &&
+                    !data.userMemberships?.length &&
+                    'User'}
+                </Typography>
+              </div>
             )}
+            <div style={matches ? { margin: 8 } : {}}>
+              <Typography variant="subtitle2">
+                <div>Average review rating</div>
+              </Typography>
+              {data.userReviews && data.userReviews.length ? (
+                <Rating
+                  value={
+                    data.userReviews?.reduce(
+                      (a: number, b) => a + b.rating,
+                      0
+                    ) / data.userReviews?.length
+                  }
+                  readOnly
+                />
+              ) : (
+                <Typography variant="subtitle1">User has no reviews</Typography>
+              )}
+            </div>
           </Grid>
 
           <Grid item>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GymPicGallery from '../components/GymPicGallery';
 import GymReservationForm from '../components/GymReservationForm';
 import GymDescription from '../components/GymDescription';
@@ -13,8 +13,9 @@ const GymDetail: React.FC = () => {
       id: id,
     },
   });
-
-  const matches = useMediaQuery('(min-width:1000px)');
+  const [photoIndex, setPhotoIndex] = useState<number>(0);
+  const matches = useMediaQuery('(min-width:1050px)');
+  const xs = useMediaQuery('(max-width:700px)');
 
   if (error) {
     console.log('error', error);
@@ -45,7 +46,46 @@ const GymDetail: React.FC = () => {
 
   return (
     <div>
-      {matches && <GymPicGallery photos={photos} />}
+      {(matches || !xs) && <GymPicGallery photos={photos} />}
+      {xs && (
+        <div style={{ width: '100vw', height: '30vh', display: 'flex' }}>
+          <div
+            style={{
+              height: '100%',
+              width: '10%',
+              opacity: 0.5,
+              fontSize: 45,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={() => setPhotoIndex((idx) => idx - 1)}
+          >
+            {'<'}
+          </div>
+          {photos && (
+            <img
+              style={{ width: '80%' }}
+              src={photos[photoIndex % photos.length].src}
+              alt={data.gymDetails.gym?.gym_name}
+            />
+          )}
+          <div
+            style={{
+              height: '100%',
+              width: '10%',
+              opacity: 0.5,
+              fontSize: 45,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={() => setPhotoIndex((idx) => idx + 1)}
+          >
+            {'>'}
+          </div>
+        </div>
+      )}
       <div
         style={{
           width: '100%',
@@ -81,6 +121,7 @@ const GymDetail: React.FC = () => {
             gymId={id ? id : ''}
           />
           <GymReservationForm
+            mediaQuery={matches}
             gymId={id}
             membership_cost={data?.gymDetails?.gym?.membership_cost}
           />

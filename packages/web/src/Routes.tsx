@@ -10,7 +10,6 @@ import { Login } from './pages/Login';
 import { Navbar } from './components/NavComponents/Navbar';
 import { CssBaseline } from '@material-ui/core';
 import { useUsersQuery } from '@gw/controllers';
-import { Bye } from './pages/Bye';
 import { UserProfilePage } from './pages/UserProfilePage';
 
 const Routes: React.FC = () => {
@@ -23,22 +22,11 @@ const Routes: React.FC = () => {
   return (
     <Router>
       <Navbar />
-      {/* <div>
-        <span>users</span>
-        {data.users.map((x) => {
-          return (
-            <li key={x.id}>
-              {x.email}, {x.first_name} {x.last_name} {x.birthday}
-            </li>
-          );
-        })}
-      </div> */}
       <CssBaseline />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/bye" component={Bye} />
         <Route path="/search">
           <SearchProvider>
             <Search />

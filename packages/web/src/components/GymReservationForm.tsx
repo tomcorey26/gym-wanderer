@@ -58,17 +58,32 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: 'pointer',
       width: 250,
     },
+    // mobile
+    mobilePaper: {
+      height: '10vh',
+      width: '100vw',
+      position: 'fixed',
+      bottom: 0,
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    mobileInput: {
+      width: 100,
+    },
   })
 );
 
 interface GymReservationFormProps {
   membership_cost?: string;
   gymId?: string;
+  mediaQuery: boolean;
 }
 
 const GymReservationForm: React.FC<GymReservationFormProps> = ({
   membership_cost,
   gymId,
+  mediaQuery,
 }) => {
   const [monthCount, setMonthCount] = useState<number>(1);
   const [auto_renewal, setAutorenewal] = useState<any>(false);
@@ -154,6 +169,41 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
         <h2>{newMemberText}</h2>
         <h1>Membership id :</h1>
         <h2>{membership.memberId}</h2>
+      </Paper>
+    );
+  }
+
+  if (!mediaQuery) {
+    return (
+      <Paper className={classes.mobilePaper}>
+        <div>
+          <TextField
+            id="outlined-number"
+            label="# of Months"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            className={classes.mobileInput}
+            variant="outlined"
+            value={monthCount}
+            onChange={(e) => setMonthCount(Number(e.target.value))}
+            InputProps={{ inputProps: { min: 1 } }}
+          />
+        </div>
+        <div>
+          <div>Start Date</div>
+          {getDate()}
+        </div>
+        <div>
+          <div>End Date</div>
+          {getDate(monthCount)}
+        </div>
+        <div>
+          <Button variant="contained" color="secondary" onClick={handleJoin}>
+            Join Gym
+          </Button>
+        </div>
       </Paper>
     );
   }
