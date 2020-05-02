@@ -27,21 +27,31 @@ export const FormField: React.FC<FormFieldProps> = ({
         rowsMax={4}
         variant="outlined"
         fullWidth
+        helperText={errorText}
+        error={!!errorText}
         {...field}
       />
     );
   }
   if (type === 'money') {
     return (
-      <OutlinedInput
-        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-        fullWidth
-        style={{ margin: 8 }}
-        placeholder={placeholder}
-        {...field}
-        type="number"
-        error={!!errorText}
-      />
+      <>
+        <OutlinedInput
+          startAdornment={<InputAdornment position="start">$</InputAdornment>}
+          fullWidth
+          style={{ margin: 8 }}
+          placeholder={placeholder}
+          {...field}
+          type="number"
+          required
+          error={!!errorText}
+        />
+        <div style={{ width: '100%', textAlign: 'left' }}>
+          {!!errorText && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errorText}</span>
+          )}
+        </div>
+      </>
     );
   }
 

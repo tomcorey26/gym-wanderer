@@ -30,7 +30,7 @@ export const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({
     if (autoVal) {
       setValue(autoVal);
     }
-  }, [autoVal, setValue]);
+  }, [autoVal]);
 
   return (
     <TextField

@@ -124,6 +124,7 @@ const GymDetail: React.FC = () => {
             mediaQuery={matches}
             gymId={id}
             membership_cost={data?.gymDetails?.gym?.membership_cost}
+            iOwnGym={data.me?.id === data.gymDetails.owner_id}
           />
         </div>
       </div>

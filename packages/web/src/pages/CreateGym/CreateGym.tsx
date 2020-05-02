@@ -8,6 +8,7 @@ import { Page2 } from './Page2';
 import { Page3 } from './Page3';
 import { getAccessToken } from '../../accessToken';
 import { useRouter } from '../../hooks';
+import * as Yup from 'yup';
 import {
   useCreateGymMutation,
   useMeQuery,
@@ -19,6 +20,23 @@ import { Coords } from '../../types/Coords';
 // as a prop to the react-router-dom <Route/> component
 
 const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
+
+const CreateGymSchema = Yup.object().shape({
+  gym_name: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  description: Yup.string().max(1000, 'Too Long!').required('Required'),
+  membership_cost: Yup.number().required('Please specify membership cost'),
+  location: Yup.string().required('Required'),
+  equipment: Yup.array()
+    .min(3, 'You must enter at least 3 peices of equipment')
+    .required('Please Enter equipment'),
+  photo_urls: Yup.array()
+    .required('You must Upload at least 3 photos of your gym')
+    .min(3, 'You must have at least 3 photos of your gym'),
+  type: Yup.string().required('Please specify gym type'),
+});
 export interface CreateGymFormValues {
   gym_name: string;
   description: string;
@@ -63,6 +81,7 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <Formik
       initialValues={initialValues}
+      validationSchema={CreateGymSchema}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
         let res = await createGym({

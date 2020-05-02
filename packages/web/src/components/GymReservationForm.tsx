@@ -75,12 +75,14 @@ interface GymReservationFormProps {
   membership_cost?: string;
   gymId?: string;
   mediaQuery: boolean;
+  iOwnGym: boolean;
 }
 
 const GymReservationForm: React.FC<GymReservationFormProps> = ({
   membership_cost,
   gymId,
   mediaQuery,
+  iOwnGym,
 }) => {
   const [monthCount, setMonthCount] = useState<number>(1);
   const [auto_renewal, setAutorenewal] = useState<any>(false);
@@ -267,8 +269,9 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
             variant="contained"
             color="secondary"
             onClick={handleJoin}
+            disabled={iOwnGym}
           >
-            Join Gym
+            {iOwnGym ? 'This is Your Gym' : 'Join Gym'}
           </Button>
         </Box>
       </Box>
