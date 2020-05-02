@@ -204,7 +204,7 @@ function useHelloLazyQuery(baseOptions) {
     return ApolloReactHooks.useLazyQuery(exports.HelloDocument, baseOptions);
 }
 exports.useHelloLazyQuery = useHelloLazyQuery;
-exports.JoinGymDocument = graphql_tag_1.default(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)\n}\n    "], ["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)\n}\n    "])));
+exports.JoinGymDocument = graphql_tag_1.default(templateObject_11 || (templateObject_11 = __makeTemplateObject(["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!, $payment: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId, payment: $payment)\n}\n    "], ["\n    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!, $payment: Float!) {\n  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId, payment: $payment)\n}\n    "])));
 /**
  * __useJoinGymMutation__
  *
@@ -221,6 +221,7 @@ exports.JoinGymDocument = graphql_tag_1.default(templateObject_11 || (templateOb
  *      gymId: // value for 'gymId'
  *      auto_renewal: // value for 'auto_renewal'
  *      end_date: // value for 'end_date'
+ *      payment: // value for 'payment'
  *   },
  * });
  */

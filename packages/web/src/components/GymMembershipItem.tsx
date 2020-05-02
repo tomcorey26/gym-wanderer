@@ -33,7 +33,7 @@ export const GymMembershipItem: React.FC<GymMembershipItemProps> = ({
   const classes = useStyles();
 
   return (
-    <StyledLink to={`/gyms/${id}`} color="black">
+    <StyledLink to={`/user/${id}`} color="black">
       <List className={classes.root}>
         <ListItem alignItems="flex-start">
           <ListItemAvatar>

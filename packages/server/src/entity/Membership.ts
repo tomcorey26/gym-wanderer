@@ -27,6 +27,10 @@ export class Membership extends BaseEntity {
   end_date: number;
 
   @Field()
+  @Column('int')
+  payment: number;
+
+  @Field()
   @CreateDateColumn()
   begin_date: string;
   //these two fields must be unique

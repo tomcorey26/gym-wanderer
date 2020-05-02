@@ -69,6 +69,7 @@ export type Membership = {
   id: Scalars['String'];
   isAutoRenewalActive: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  payment: Scalars['Float'];
   begin_date: Scalars['String'];
   member: User;
   gym: Gyms;
@@ -129,6 +130,7 @@ export type MutationCreateGymArgs = {
 
 
 export type MutationJoinGymArgs = {
+  payment: Scalars['Float'];
   auto_renewal: Scalars['Boolean'];
   end_date: Scalars['Float'];
   gymId: Scalars['String'];
@@ -368,6 +370,7 @@ export type JoinGymMutationVariables = {
   gymId: Scalars['String'];
   auto_renewal: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  payment: Scalars['Float'];
 };
 
 
@@ -800,8 +803,8 @@ export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
 export const JoinGymDocument = gql`
-    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {
-  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)
+    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!, $payment: Float!) {
+  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId, payment: $payment)
 }
     `;
 export type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutation, JoinGymMutationVariables>;
@@ -822,6 +825,7 @@ export type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutati
  *      gymId: // value for 'gymId'
  *      auto_renewal: // value for 'auto_renewal'
  *      end_date: // value for 'end_date'
+ *      payment: // value for 'payment'
  *   },
  * });
  */

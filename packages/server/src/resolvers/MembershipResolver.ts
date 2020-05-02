@@ -21,7 +21,8 @@ export class MembershipResolver {
     @Ctx() { payload }: MyContext,
     @Arg('gymId') gymId: string,
     @Arg('end_date') end_date: number,
-    @Arg('auto_renewal') auto_renewal: boolean
+    @Arg('auto_renewal') auto_renewal: boolean,
+    @Arg('payment') payment: number
   ) {
     try {
       const memberId = payload!.userId;
@@ -29,6 +30,7 @@ export class MembershipResolver {
         end_date,
         memberId,
         gymId,
+        payment,
         isAutoRenewalActive: auto_renewal,
       }).save();
 

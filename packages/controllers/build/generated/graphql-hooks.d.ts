@@ -61,6 +61,7 @@ export declare type Membership = {
     id: Scalars['String'];
     isAutoRenewalActive: Scalars['Boolean'];
     end_date: Scalars['Float'];
+    payment: Scalars['Float'];
     begin_date: Scalars['String'];
     member: User;
     gym: Gyms;
@@ -110,6 +111,7 @@ export declare type MutationCreateGymArgs = {
     photo_urls: Array<Scalars['String']>;
 };
 export declare type MutationJoinGymArgs = {
+    payment: Scalars['Float'];
     auto_renewal: Scalars['Boolean'];
     end_date: Scalars['Float'];
     gymId: Scalars['String'];
@@ -306,6 +308,7 @@ export declare type JoinGymMutationVariables = {
     gymId: Scalars['String'];
     auto_renewal: Scalars['Boolean'];
     end_date: Scalars['Float'];
+    payment: Scalars['Float'];
 };
 export declare type JoinGymMutation = ({
     __typename?: 'Mutation';
@@ -594,6 +597,7 @@ export declare type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinG
  *      gymId: // value for 'gymId'
  *      auto_renewal: // value for 'auto_renewal'
  *      end_date: // value for 'end_date'
+ *      payment: // value for 'payment'
  *   },
  * });
  */

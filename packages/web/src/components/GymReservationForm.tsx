@@ -23,6 +23,7 @@ import {
   MeDocument,
   useUserMembershipsInfoQuery,
   UserMembershipsInfoDocument,
+  GymDetailsDocument,
 } from '@gw/controllers';
 import { useHistory } from 'react-router-dom';
 
@@ -50,7 +51,9 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     inputLine: {},
-    date: {},
+    date: {
+      textAlign: 'center',
+    },
     reserveButton: {
       cursor: 'pointer',
       width: 250,
@@ -66,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     mobileInput: {
-      width: 100,
+      width: 50,
     },
   })
 );
@@ -87,10 +90,15 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
   const [monthCount, setMonthCount] = useState<number>(1);
   const [auto_renewal, setAutorenewal] = useState<any>(false);
   const [newMemberText, setNewMemberText] = useState<string>('');
-  const [joinGym] = useJoinGymMutation();
+  const [joinGym, { loading: joinLoading }] = useJoinGymMutation();
   const { data, loading, error } = useUserMembershipsInfoQuery();
   const history = useHistory();
   const classes = useStyles();
+
+  let totalJoinCost;
+  if (membership_cost) {
+    totalJoinCost = (Number(membership_cost.slice(1)) * monthCount).toFixed(2);
+  }
 
   const getDate = (monthsFromNow = 0) => (
     <span>
@@ -115,10 +123,12 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           auto_renewal,
           gymId,
           end_date: moment().add(monthCount, 'months').seconds(),
+          payment: Number(totalJoinCost),
         },
         refetchQueries: [
           { query: UserMembershipsInfoDocument },
           { query: MeDocument },
+          { query: GymDetailsDocument, variables: { id: gymId } },
         ],
       });
     }
@@ -131,7 +141,7 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
     }, 2000);
   }, [newMemberText]);
 
-  if (loading) {
+  if ((loading || joinLoading) && mediaQuery) {
     return (
       <Paper
         className={classes.paper}
@@ -153,6 +163,23 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
     );
   }
 
+  if (!mediaQuery && data?.myMemberships && membership) {
+    return (
+      <Paper className={classes.mobilePaper}>
+        {newMemberText && (
+          <div>
+            <span>{newMemberText}</span>
+          </div>
+        )}
+        <div>
+          <span>Membership id :</span>
+        </div>
+        <div style={{ width: 100, fontSize: 8 }}>
+          <span>{membership.memberId}</span>
+        </div>
+      </Paper>
+    );
+  }
   if (data && data.myMemberships && membership) {
     return (
       <Paper
@@ -173,6 +200,13 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
   }
 
   if (!mediaQuery) {
+    if (loading || joinLoading) {
+      return (
+        <Paper className={classes.mobilePaper}>
+          <CircularProgress />
+        </Paper>
+      );
+    }
     return (
       <Paper className={classes.mobilePaper}>
         <div>
@@ -190,17 +224,22 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
             InputProps={{ inputProps: { min: 1 } }}
           />
         </div>
-        <div>
-          <div>Start Date</div>
-          {getDate()}
-        </div>
+
         <div>
           <div>End Date</div>
           {getDate(monthCount)}
         </div>
         <div>
-          <Button variant="contained" color="secondary" onClick={handleJoin}>
-            Join Gym
+          <div>Total</div>${totalJoinCost}
+        </div>
+        <div>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleJoin}
+            disabled={iOwnGym}
+          >
+            {iOwnGym ? 'This is Your Gym' : 'Join Gym'}
           </Button>
         </div>
       </Paper>
@@ -240,9 +279,9 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           InputProps={{ inputProps: { min: 1 } }}
         />
         <Box className={classes.date}>
-          <h1>Start date</h1>
+          <h1>Total</h1>
           <Typography variant="h4" color="textSecondary">
-            {getDate()}
+            ${totalJoinCost}
           </Typography>
         </Box>
 
