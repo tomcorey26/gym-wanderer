@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FieldHookConfig, useField } from 'formik';
+import { useField } from 'formik';
 import { TextField } from '@material-ui/core';
 import { PlaceType } from '../../types/Placetype';
 
@@ -30,7 +30,7 @@ export const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({
     if (autoVal) {
       setValue(autoVal);
     }
-  }, [autoVal]);
+  }, [autoVal, setValue]);
 
   return (
     <TextField

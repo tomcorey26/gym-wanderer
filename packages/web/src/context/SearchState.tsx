@@ -1,5 +1,4 @@
 import React, { createContext, useReducer } from 'react';
-import { mockGymsApi } from '../mock';
 import { Gyms } from '@gw/controllers';
 
 type Actions =

@@ -14,29 +14,32 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
   folderName,
   setLoading,
 }) => {
-  const onDrop = useCallback(async (files) => {
-    let imgArr: CloudinaryImg[] = [];
-    setLoading(true);
-    await asyncForEach(files, async (file) => {
-      const noSpacesFolderName = folderName.split(' ').join('_');
-      const data = new FormData();
-      data.append('file', file);
-      data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET!);
-      data.append('folder', `gym_pics/${noSpacesFolderName}`);
-      const upload = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
-        {
-          method: 'POST',
-          body: data,
-        }
-      );
-      const image = await upload.json();
-      imgArr.push(image.url);
-      console.log(image);
-    });
-    setLoading(false);
-    onUpload(imgArr);
-  }, []);
+  const onDrop = useCallback(
+    async (files) => {
+      let imgArr: CloudinaryImg[] = [];
+      setLoading(true);
+      await asyncForEach(files, async (file) => {
+        const noSpacesFolderName = folderName.split(' ').join('_');
+        const data = new FormData();
+        data.append('file', file);
+        data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET!);
+        data.append('folder', `gym_pics/${noSpacesFolderName}`);
+        const upload = await fetch(
+          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
+          {
+            method: 'POST',
+            body: data,
+          }
+        );
+        const image = await upload.json();
+        imgArr.push(image.url);
+        console.log(image);
+      });
+      setLoading(false);
+      onUpload(imgArr);
+    },
+    [folderName, onUpload, setLoading]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

@@ -7,7 +7,8 @@ import { Button, CircularProgress } from '@material-ui/core';
 
 interface Page3Props {}
 
-export const Page3: React.FC<Page3Props> = ({}) => {
+export const Page3: React.FC<Page3Props> = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, { setValue }] = useField({ name: 'photo_urls' });
   const { values } = useFormikContext<CreateGymFormValues>();
   const [loading, setLoading] = useState<boolean>(false);

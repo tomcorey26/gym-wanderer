@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Page2Props {}
 
-export const Page2: React.FC<Page2Props> = ({}) => {
+export const Page2: React.FC<Page2Props> = () => {
   const classes = useStyles();
   const { values } = useFormikContext<CreateGymFormValues>();
 

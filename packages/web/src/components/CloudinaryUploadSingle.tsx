@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloudinaryImg } from '../types';
 
@@ -11,24 +11,25 @@ export const CloudinaryUploadSingle: React.FC<CloudinaryUploadSingleProps> = ({
   onUpload,
   folderName,
 }) => {
-  const [imageUrl, setImageUrl] = useState<string>('');
-
-  const onDrop = useCallback(async ([file]) => {
-    const noSpacesFolderName = folderName.split(' ').join('_');
-    const data = new FormData();
-    data.append('file', file);
-    data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET!);
-    data.append('folder', `gym_pics/${noSpacesFolderName}`);
-    const upload = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
-      {
-        method: 'POST',
-        body: data,
-      }
-    );
-    const image = await upload.json();
-    onUpload(image);
-  }, []);
+  const onDrop = useCallback(
+    async ([file]) => {
+      const noSpacesFolderName = folderName.split(' ').join('_');
+      const data = new FormData();
+      data.append('file', file);
+      data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET!);
+      data.append('folder', `gym_pics/${noSpacesFolderName}`);
+      const upload = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: data,
+        }
+      );
+      const image = await upload.json();
+      onUpload(image);
+    },
+    [folderName, onUpload]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateTimePicker } from '@material-ui/pickers';
 import {
   Box,
   makeStyles,
@@ -19,13 +18,11 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 // import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import {
   useJoinGymMutation,
   MeDocument,
   useUserMembershipsInfoQuery,
   UserMembershipsInfoDocument,
-  useMeQuery,
 } from '@gw/controllers';
 import { useHistory } from 'react-router-dom';
 

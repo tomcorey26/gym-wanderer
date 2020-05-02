@@ -1,5 +1,4 @@
 import { useField, useFormikContext } from 'formik';
-import { CreateGymFormValues } from '../CreateGym/CreateGym';
 import { CloudinaryImg } from '../../types';
 import React from 'react';
 import { CloudinaryUploadSingle } from '../../components/CloudinaryUploadSingle';
@@ -8,7 +7,8 @@ import { Button } from '@material-ui/core';
 
 interface Page3Props {}
 
-export const Page3: React.FC<Page3Props> = ({}) => {
+export const Page3: React.FC<Page3Props> = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, { setValue }] = useField({ name: 'photo_url' });
   const { values } = useFormikContext<RegisterInput>();
 

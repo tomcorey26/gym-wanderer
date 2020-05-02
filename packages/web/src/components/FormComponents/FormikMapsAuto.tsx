@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Grid from '@material-ui/core/Grid';
@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 //Uncomment line 59-63 to use the api
 export const FormikMapsAuto: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, { setValue }] = useField({ name: 'coordinates' });
   const {
     options,

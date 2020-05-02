@@ -1,5 +1,4 @@
 import React from 'react';
-import { Field } from 'formik';
 import {
   Checkbox,
   FormGroup,
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Page2: React.FC<Page2Props> = ({}) => {
+export const Page2: React.FC<Page2Props> = () => {
   const classes = useStyles();
 
   return (

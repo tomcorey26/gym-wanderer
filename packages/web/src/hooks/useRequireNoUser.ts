@@ -11,7 +11,7 @@ export const useRequireNoUser = (redirectUrl = '/') => {
     if (isUserLoggedIn === true) {
       router.push(redirectUrl);
     }
-  }, [isUserLoggedIn]);
+  }, [isUserLoggedIn, redirectUrl, router]);
 
   return isUserLoggedIn;
 };

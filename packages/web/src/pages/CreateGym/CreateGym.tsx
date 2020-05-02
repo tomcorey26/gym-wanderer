@@ -17,10 +17,6 @@ import {
 import { Coords } from '../../types/Coords';
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
-const mock = {
-  email: 'devito@gmail.com',
-  password: 'Test123@',
-};
 
 const pages: JSX.Element[] = [<Page1 />, <Page2 />, <Page3 />];
 export interface CreateGymFormValues {

@@ -75,6 +75,7 @@ const RegisterSchema = Yup.object().shape({
 
 export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isUserLoggedIn = useRequireNoUser();
   const [register] = useRegisterMutation();
 

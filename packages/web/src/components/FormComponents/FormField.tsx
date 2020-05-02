@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldProps, useField, FieldHookConfig } from 'formik';
+import { useField, FieldHookConfig } from 'formik';
 import { TextField, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField/TextField';
 

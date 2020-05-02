@@ -1,13 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Grid,
-  Typography,
-  Box,
-  Divider,
-  Chip,
-  List,
-  useMediaQuery,
-} from '@material-ui/core';
+import React from 'react';
+import { Grid, Typography, Box, Divider, Chip, List } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import Avatar from '@material-ui/core/Avatar';
@@ -109,7 +101,6 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
   gymId,
 }) => {
   const classes = useStyles();
-  const matches = useMediaQuery('(max-width:1050px)');
 
   return (
     <>
