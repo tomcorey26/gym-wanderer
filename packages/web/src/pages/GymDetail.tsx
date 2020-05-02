@@ -119,6 +119,7 @@ const GymDetail: React.FC = () => {
             loading={loading}
             currentUserId={data.me?.id || ''}
             gymId={id ? id : ''}
+            members={data.gymMemberships || []}
           />
           <GymReservationForm
             mediaQuery={matches}

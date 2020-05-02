@@ -20,6 +20,14 @@ query gymDetails($id: String) {
       photo_url
     }
   }
+  gymMemberships(gymId: $id) {
+    member {
+      id
+      first_name
+      last_name
+      photo_url
+    }
+  }
   me {
     id
   }

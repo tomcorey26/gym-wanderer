@@ -344,6 +344,12 @@ export type GymDetailsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
     ) }
+  )>>, gymMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & { member: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
+    ) }
   )>>, me: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id'>
@@ -718,6 +724,14 @@ export const GymDetailsDocument = gql`
     text
     date_created
     creator {
+      id
+      first_name
+      last_name
+      photo_url
+    }
+  }
+  gymMemberships(gymId: $id) {
+    member {
       id
       first_name
       last_name
