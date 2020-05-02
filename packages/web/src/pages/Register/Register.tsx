@@ -81,12 +81,10 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
 
   const submitUser = async (values: RegisterInput) => {
     //convert exercise types to true false object
-    console.log(values);
-    const response = await register({
+    await register({
       variables: values,
       refetchQueries: [{ query: UsersDocument }],
     });
-    console.log(response);
   };
 
   return (

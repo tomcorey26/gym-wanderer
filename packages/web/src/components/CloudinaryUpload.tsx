@@ -33,7 +33,6 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
         );
         const image = await upload.json();
         imgArr.push(image.url);
-        console.log(image);
       });
       setLoading(false);
       onUpload(imgArr);

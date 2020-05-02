@@ -76,7 +76,6 @@ export class GymResolver {
       console.log(err);
       return false;
     }
-    console.log(GymArgs);
     return true;
   }
 

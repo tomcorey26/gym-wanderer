@@ -43,10 +43,8 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
         });
 
         setSubmitting(false);
-        console.log(response);
 
         if (response && response.data) {
-          console.log('setting token', response.data.login.accessToken);
           setAccessToken(response.data.login.accessToken);
         }
         history.push('/');

@@ -77,7 +77,6 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
           },
           refetchQueries: [{ query: MeDocument }],
         });
-        console.log('response', res);
         setSubmitting(false);
       }}
     >
