@@ -35,20 +35,17 @@ export const CloudinaryUploadSingle: React.FC<CloudinaryUploadSingleProps> = ({
 
   return (
     <div>
+      <h2>Upload Profile Picture</h2>
       <img src="" alt="" />
       <div
-        style={
-          isDragActive
-            ? { width: 300, height: 300, backgroundColor: 'green' }
-            : { width: 300, height: 300, backgroundColor: 'blue' }
-        }
+        className={isDragActive ? 'dropZoneAreaHover' : 'dropZoneArea'}
         {...getRootProps()}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <h3>Drop the files here ...</h3>
         ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <h3>Drag 'n' drop some files here, or click to select files</h3>
         )}
       </div>
     </div>

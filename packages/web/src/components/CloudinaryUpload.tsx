@@ -44,13 +44,10 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({
 
   return (
     <div>
+      <h3>Upload gym photos</h3>
       <img src="" alt="" />
       <div
-        style={
-          isDragActive
-            ? { width: 300, height: 300, backgroundColor: 'green' }
-            : { width: 300, height: 300, backgroundColor: 'blue' }
-        }
+        className={isDragActive ? 'dropZoneAreaHover' : 'dropZoneArea'}
         {...getRootProps()}
       >
         <input {...getInputProps()} />
