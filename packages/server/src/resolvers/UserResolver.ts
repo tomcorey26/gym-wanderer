@@ -68,6 +68,9 @@ class UserUpdateInput {
   username?: string;
 
   @Field({ nullable: true })
+  password?: string;
+
+  @Field({ nullable: true })
   birthday?: string;
 
   @Field({ nullable: true })
@@ -133,6 +136,7 @@ export class UserResolver {
     @Args()
     userArgs: UserUpdateInput
   ) {
+    const prefs = await Preferences.create({ ...userArgs.preferences }).save();
     try {
       await User.update(
         {
@@ -140,6 +144,7 @@ export class UserResolver {
         },
         {
           ...userArgs,
+          preferences: prefs,
         }
       );
     } catch (err) {

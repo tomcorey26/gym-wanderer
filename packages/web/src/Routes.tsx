@@ -26,9 +26,10 @@ const Routes: React.FC = () => {
       <CssBaseline />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/analytics" component={Analytics} />
+        <Route path="/register" component={Register} />
+        <Route path="/updateprofile" component={Register} />
+        <Route path="/login" component={Login} />
+        <Route path="/analytics" component={Analytics} />
         <Route path="/search">
           <SearchProvider>
             <Search />

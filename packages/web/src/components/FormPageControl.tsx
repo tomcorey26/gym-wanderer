@@ -8,6 +8,7 @@ interface FormPageControlProps {
   length: number;
   isSubmitting: boolean;
   errors: any;
+  buttonTitle?: string;
 }
 
 export const FormPageControl: React.FC<FormPageControlProps> = ({
@@ -16,6 +17,7 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
   errors,
   isSubmitting,
   setCurrentPage,
+  buttonTitle,
 }) => {
   let positionCSS;
   if (currentPage === 0) {
@@ -72,7 +74,7 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
               variant="contained"
               color="secondary"
             >
-              Register
+              {buttonTitle ? buttonTitle : 'Register'}
             </Button>
           </div>
         )}

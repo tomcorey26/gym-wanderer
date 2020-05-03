@@ -5,7 +5,7 @@ import { PageProgress } from '../PageProgress';
 
 interface FormContainerProps {
   children: React.ReactNode;
-  pageProgress?: true;
+  pageProgress?: boolean;
   pageNum?: number;
   pageCount?: number;
   title?: string;

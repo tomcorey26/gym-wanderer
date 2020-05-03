@@ -81,6 +81,7 @@ export declare type MutationUpdateUserArgs = {
     first_name?: Maybe<Scalars['String']>;
     last_name?: Maybe<Scalars['String']>;
     username?: Maybe<Scalars['String']>;
+    password?: Maybe<Scalars['String']>;
     birthday?: Maybe<Scalars['String']>;
     photo_url?: Maybe<Scalars['String']>;
     preferences?: Maybe<PreferencesInput>;
@@ -219,6 +220,31 @@ export declare type MyAnalyticsQuery = ({
         } & Pick<Gyms, 'id' | 'gym_name' | 'photo_urls' | 'membership_cost'>);
     })>>;
 });
+export declare type MyProfileQueryVariables = {};
+export declare type MyProfileQuery = ({
+    __typename?: 'Query';
+} & {
+    myProfile: Maybe<({
+        __typename?: 'User';
+    } & {
+        preferences: ({
+            __typename?: 'Preferences';
+        } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
+    } & ProfileFragment)>;
+});
+export declare type UpdateUserMutationVariables = {
+    last_name?: Maybe<Scalars['String']>;
+    first_name?: Maybe<Scalars['String']>;
+    birthday?: Maybe<Scalars['String']>;
+    username?: Maybe<Scalars['String']>;
+    password?: Maybe<Scalars['String']>;
+    email?: Maybe<Scalars['String']>;
+    preferences?: Maybe<PreferencesInput>;
+    photo_url?: Maybe<Scalars['String']>;
+};
+export declare type UpdateUserMutation = ({
+    __typename?: 'Mutation';
+} & Pick<Mutation, 'updateUser'>);
 export declare type UserMembershipsInfoQueryVariables = {};
 export declare type UserMembershipsInfoQuery = ({
     __typename?: 'Query';
@@ -461,6 +487,57 @@ export declare function useMyAnalyticsLazyQuery(baseOptions?: ApolloReactHooks.L
 export declare type MyAnalyticsQueryHookResult = ReturnType<typeof useMyAnalyticsQuery>;
 export declare type MyAnalyticsLazyQueryHookResult = ReturnType<typeof useMyAnalyticsLazyQuery>;
 export declare type MyAnalyticsQueryResult = ApolloReactCommon.QueryResult<MyAnalyticsQuery, MyAnalyticsQueryVariables>;
+export declare const MyProfileDocument: import("graphql").DocumentNode;
+/**
+ * __useMyProfileQuery__
+ *
+ * To run a query within a React component, call `useMyProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export declare function useMyProfileQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyProfileQuery, MyProfileQueryVariables>): ApolloReactCommon.QueryResult<MyProfileQuery, MyProfileQueryVariables>;
+export declare function useMyProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyProfileQuery, MyProfileQueryVariables>): ApolloReactHooks.QueryTuple<MyProfileQuery, MyProfileQueryVariables>;
+export declare type MyProfileQueryHookResult = ReturnType<typeof useMyProfileQuery>;
+export declare type MyProfileLazyQueryHookResult = ReturnType<typeof useMyProfileLazyQuery>;
+export declare type MyProfileQueryResult = ApolloReactCommon.QueryResult<MyProfileQuery, MyProfileQueryVariables>;
+export declare const UpdateUserDocument: import("graphql").DocumentNode;
+export declare type UpdateUserMutationFn = ApolloReactCommon.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      last_name: // value for 'last_name'
+ *      first_name: // value for 'first_name'
+ *      birthday: // value for 'birthday'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *      email: // value for 'email'
+ *      preferences: // value for 'preferences'
+ *      photo_url: // value for 'photo_url'
+ *   },
+ * });
+ */
+export declare function useUpdateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>): ApolloReactHooks.MutationTuple<UpdateUserMutation, UpdateUserMutationVariables>;
+export declare type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export declare type UpdateUserMutationResult = ApolloReactCommon.MutationResult<UpdateUserMutation>;
+export declare type UpdateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export declare const UserMembershipsInfoDocument: import("graphql").DocumentNode;
 /**
  * __useUserMembershipsInfoQuery__
