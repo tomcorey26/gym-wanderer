@@ -38,6 +38,11 @@ const Routes: React.FC = () => {
         <Route path="/gyms/:id" component={GymDetail} />
         <Route path="/user/:id" component={UserProfilePage} />
         <Route path="/newgym" component={CreateGym} />
+        <Route path="*">
+          <div>
+            <h1>404 Not Found</h1>
+          </div>
+        </Route>
       </Switch>
     </Router>
   );

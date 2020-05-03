@@ -77,6 +77,7 @@ export type Membership = {
 
 export type Mutation = {
    __typename?: 'Mutation';
+  deleteUser: Scalars['Boolean'];
   updateUser: Scalars['Boolean'];
   register: Scalars['Boolean'];
   login: LoginResponse;
@@ -169,7 +170,6 @@ export type Query = {
   bye: Scalars['String'];
   users: Array<User>;
   getUser?: Maybe<User>;
-  deleteUser: Scalars['Boolean'];
   me?: Maybe<User>;
   myGym?: Maybe<Gyms>;
   gymDetails?: Maybe<User>;
@@ -235,6 +235,14 @@ export type User = {
   memberships?: Maybe<Array<Membership>>;
   alerts?: Maybe<Array<Alert>>;
 };
+
+export type DeleteMyAccountMutationVariables = {};
+
+
+export type DeleteMyAccountMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteUser'>
+);
 
 export type MyAnalyticsQueryVariables = {};
 
@@ -599,6 +607,35 @@ export const ProfileFragmentDoc = gql`
   photo_url
 }
     `;
+export const DeleteMyAccountDocument = gql`
+    mutation DeleteMyAccount {
+  deleteUser
+}
+    `;
+export type DeleteMyAccountMutationFn = ApolloReactCommon.MutationFunction<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>;
+
+/**
+ * __useDeleteMyAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteMyAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMyAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMyAccountMutation, { data, loading, error }] = useDeleteMyAccountMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDeleteMyAccountMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>(DeleteMyAccountDocument, baseOptions);
+      }
+export type DeleteMyAccountMutationHookResult = ReturnType<typeof useDeleteMyAccountMutation>;
+export type DeleteMyAccountMutationResult = ApolloReactCommon.MutationResult<DeleteMyAccountMutation>;
+export type DeleteMyAccountMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>;
 export const MyAnalyticsDocument = gql`
     query MyAnalytics {
   myGym {

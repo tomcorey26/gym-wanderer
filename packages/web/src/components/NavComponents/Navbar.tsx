@@ -79,10 +79,10 @@ export const Navbar = () => {
       onClose={handleMenuClose}
     >
       {IsLoggedIn && [
-        <NavLink to={`/updateprofile`} style={menuItemStyle}>
+        <NavLink to={`/updateprofile`} style={menuItemStyle} key={1}>
           <MenuItem onClick={clearMenu}>Update Profile</MenuItem>
         </NavLink>,
-        <NavLink to={`/user/${data?.me?.id}`} style={menuItemStyle}>
+        <NavLink to={`/user/${data?.me?.id}`} style={menuItemStyle} key={2}>
           <MenuItem onClick={clearMenu}>My Profile</MenuItem>
         </NavLink>,
       ]}

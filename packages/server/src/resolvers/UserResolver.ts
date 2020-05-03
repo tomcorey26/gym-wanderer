@@ -111,21 +111,22 @@ export class UserResolver {
     return user;
   }
 
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteUser(@Ctx() { payload }: MyContext) {
-    await User.delete({
-      id: payload!.userId,
-    });
     await Membership.delete({
       memberId: payload!.userId,
     });
     await Alert.delete({
       userId: payload!.userId,
     });
+    await User.delete({
+      id: payload!.userId,
+    });
     await Gyms.delete({
       ownerId: payload!.userId,
     });
+
     return true;
   }
 

@@ -5,19 +5,22 @@ import {
   useUpdateUserMutation,
   useMyProfileQuery,
   UserProfileDocument,
+  useDeleteMyAccountMutation,
 } from '@gw/controllers';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { RouteComponentProps, useLocation, useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import { Page1 } from './Page1';
 import { Page2 } from './Page2';
 import { Page3 } from './Page3';
 import * as Yup from 'yup';
 import { prefArrToBoolObj } from '../../utils/prefArrToBoolObj';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { FormContainer } from '../../components/FormComponents/FormContainer';
 import { useRequireNoUser } from '../../hooks/useRequireNoUser';
 import { FormPageControl } from '../../components/FormPageControl';
 import { LoaderBlock } from '../../components/LoaderBlock';
 import { mapPrefObjToArray, deleteEmptyValues } from '../../utils';
+import { Modal, Button, Paper } from '@material-ui/core';
 
 //have preferences on seperate page
 //we get route props because this component is passed
@@ -92,6 +95,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isUserLoggedIn = useRequireNoUser();
   const location = useLocation();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [register, { error, loading }] = useRegisterMutation();
   const [
     updateUser,
@@ -177,11 +181,28 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
               pageCount={pages.length}
             >
               {onRegisterPage ? (
-                <span style={{ color: 'red' }}>{error && error.message}</span>
+                <>
+                  <span style={{ color: 'red' }}>{error && error.message}</span>
+                </>
               ) : (
-                <span style={{ color: 'red' }}>
-                  {updateError && updateError.message}
-                </span>
+                <>
+                  <span style={{ color: 'red' }}>
+                    {updateError && updateError.message}
+                  </span>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<DeleteIcon />}
+                    type="button"
+                    onClick={() => setModalOpen(true)}
+                  >
+                    Delete Account
+                  </Button>
+                  <DeleteAccountModal
+                    modalOpen={modalOpen}
+                    setModalOpen={setModalOpen}
+                  />
+                </>
               )}
 
               {pages[currentPage]}
@@ -198,5 +219,69 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
         </div>
       )}
     </Formik>
+  );
+};
+
+const DeleteAccountModal = ({ modalOpen, setModalOpen }) => {
+  const [deleteMyAccount, { loading }] = useDeleteMyAccountMutation();
+  const history = useHistory();
+  const deleteAccount = async () => {
+    await deleteMyAccount();
+    history.push('/');
+    window.location.reload();
+  };
+
+  if (loading) {
+    return <LoaderBlock />;
+  }
+
+  return (
+    <>
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Paper
+          style={{
+            width: 300,
+            height: 200,
+            backgroundColor: 'white',
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            marginTop: '-100px',
+            marginLeft: '-150px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+          }}
+        >
+          <div style={{ textAlign: 'center' }}>Are You Sure?</div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={deleteAccount}
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={() => setModalOpen(false)}
+              color="primary"
+              variant="outlined"
+            >
+              No
+            </Button>
+          </div>
+        </Paper>
+      </Modal>
+    </>
   );
 };
