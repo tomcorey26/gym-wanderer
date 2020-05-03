@@ -83,7 +83,11 @@ export class GymResolver {
   @UseMiddleware(isAuth)
   async myGym(@Ctx() { payload }: MyContext) {
     try {
-      return await Gyms.findOne({ where: { ownerId: payload!.userId } });
+      const gym = await Gyms.findOne(
+        { ownerId: payload!.userId },
+        { relations: ['memberships', 'memberships.member'] }
+      );
+      return gym;
     } catch (err) {
       console.log(err);
       return null;

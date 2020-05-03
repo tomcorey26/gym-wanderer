@@ -46,7 +46,7 @@ export class MembershipResolver {
       await Alert.create({
         message: `Congrats! ${member?.first_name} ${member?.last_name} has joined your gym`,
         userId: joinedGym?.ownerId,
-        link: `/gyms/${joinedGym?.id}/members`,
+        link: `/analytics`,
       }).save();
     } catch (err) {
       console.log(err);

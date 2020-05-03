@@ -235,6 +235,32 @@ export type User = {
   alerts?: Maybe<Array<Alert>>;
 };
 
+export type MyAnalyticsQueryVariables = {};
+
+
+export type MyAnalyticsQuery = (
+  { __typename?: 'Query' }
+  & { myGym: Maybe<(
+    { __typename?: 'Gyms' }
+    & Pick<Gyms, 'id' | 'gym_name' | 'membership_cost'>
+    & { memberships: Maybe<Array<(
+      { __typename?: 'Membership' }
+      & Pick<Membership, 'id' | 'payment' | 'begin_date' | 'end_date'>
+      & { member: (
+        { __typename?: 'User' }
+        & Pick<User, 'first_name' | 'last_name' | 'id' | 'photo_url'>
+      ) }
+    )>> }
+  )>, myMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & Pick<Membership, 'id' | 'payment' | 'begin_date' | 'end_date'>
+    & { gym: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name' | 'photo_urls' | 'membership_cost'>
+    ) }
+  )>> }
+);
+
 export type UserMembershipsInfoQueryVariables = {};
 
 
@@ -540,6 +566,64 @@ export const ProfileFragmentDoc = gql`
   photo_url
 }
     `;
+export const MyAnalyticsDocument = gql`
+    query MyAnalytics {
+  myGym {
+    id
+    gym_name
+    membership_cost
+    memberships {
+      id
+      payment
+      begin_date
+      end_date
+      member {
+        first_name
+        last_name
+        id
+        photo_url
+      }
+    }
+  }
+  myMemberships {
+    id
+    payment
+    begin_date
+    end_date
+    gym {
+      id
+      gym_name
+      photo_urls
+      membership_cost
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyAnalyticsQuery__
+ *
+ * To run a query within a React component, call `useMyAnalyticsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyAnalyticsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyAnalyticsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyAnalyticsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyAnalyticsQuery, MyAnalyticsQueryVariables>) {
+        return ApolloReactHooks.useQuery<MyAnalyticsQuery, MyAnalyticsQueryVariables>(MyAnalyticsDocument, baseOptions);
+      }
+export function useMyAnalyticsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyAnalyticsQuery, MyAnalyticsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MyAnalyticsQuery, MyAnalyticsQueryVariables>(MyAnalyticsDocument, baseOptions);
+        }
+export type MyAnalyticsQueryHookResult = ReturnType<typeof useMyAnalyticsQuery>;
+export type MyAnalyticsLazyQueryHookResult = ReturnType<typeof useMyAnalyticsLazyQuery>;
+export type MyAnalyticsQueryResult = ApolloReactCommon.QueryResult<MyAnalyticsQuery, MyAnalyticsQueryVariables>;
 export const UserMembershipsInfoDocument = gql`
     query UserMembershipsInfo {
   myMemberships {

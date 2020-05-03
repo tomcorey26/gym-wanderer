@@ -24,6 +24,7 @@ import {
   useUserMembershipsInfoQuery,
   UserMembershipsInfoDocument,
   GymDetailsDocument,
+  MyAnalyticsDocument,
 } from '@gw/controllers';
 import { useHistory } from 'react-router-dom';
 
@@ -122,13 +123,14 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
         variables: {
           auto_renewal,
           gymId,
-          end_date: moment().add(monthCount, 'months').seconds(),
+          end_date: moment().add(monthCount, 'months').unix(),
           payment: Number(totalJoinCost),
         },
         refetchQueries: [
           { query: UserMembershipsInfoDocument },
           { query: MeDocument },
           { query: GymDetailsDocument, variables: { id: gymId } },
+          { query: MyAnalyticsDocument },
         ],
       });
     }

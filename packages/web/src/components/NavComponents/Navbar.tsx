@@ -17,6 +17,7 @@ import { useMeQuery, useLogoutMutation } from '@gw/controllers';
 import { setAccessToken } from '../../accessToken';
 import { useNavStyles } from './NavStyles';
 import { useDropdownMenu } from '../../hooks';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 export const Navbar = () => {
   const classes = useNavStyles();
@@ -90,6 +91,11 @@ export const Navbar = () => {
           <MenuItem onClick={handleMenuClose}>Register</MenuItem>
         </NavLink>,
       ]}
+      {loggedInWithGym ? (
+        <StyledLink to={`/analytics`} color="black">
+          <MenuItem onClick={handleMenuClose}>My Analytics</MenuItem>
+        </StyledLink>
+      ) : null}
       {!loading && data && data.me ? (
         <MenuItem
           onClick={async () => {
@@ -191,6 +197,35 @@ export const Navbar = () => {
           </StyledLink>
         </div>
       )}
+      {loggedInWithGym ? (
+        <StyledLink
+          to={`/gyms/${data?.me?.gym?.id}`}
+          color="black"
+          onClick={handleMobileMenuClose}
+        >
+          <MenuItem>
+            <IconButton color="inherit">
+              <FitnessCenterIcon color="inherit" />
+            </IconButton>
+            <p>My Gym</p>
+          </MenuItem>
+        </StyledLink>
+      ) : null}
+
+      {loggedInWithGym ? (
+        <StyledLink
+          to={`/analytics`}
+          color="black"
+          onClick={handleMobileMenuClose}
+        >
+          <MenuItem>
+            <IconButton color="inherit">
+              <EqualizerIcon color="inherit" />
+            </IconButton>
+            <p>My Analytics</p>
+          </MenuItem>
+        </StyledLink>
+      ) : null}
     </Menu>
   );
 

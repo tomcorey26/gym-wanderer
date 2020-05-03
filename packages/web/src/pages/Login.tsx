@@ -50,7 +50,7 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
       {({ values, isSubmitting, errors }) => (
         <div>
           {isSubmitting ? (
-            <LoaderBlock />
+            <LoaderBlock width="100vw" height="100vh" />
           ) : (
             <FormContainer title="Login">
               {error && (

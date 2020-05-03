@@ -11,6 +11,7 @@ import { Navbar } from './components/NavComponents/Navbar';
 import { CssBaseline } from '@material-ui/core';
 import { useUsersQuery } from '@gw/controllers';
 import { UserProfilePage } from './pages/UserProfilePage';
+import { Analytics } from './pages/Analytics';
 
 const Routes: React.FC = () => {
   const { data } = useUsersQuery({ fetchPolicy: 'network-only' });
@@ -27,6 +28,7 @@ const Routes: React.FC = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/analytics" component={Analytics} />
         <Route path="/search">
           <SearchProvider>
             <Search />
