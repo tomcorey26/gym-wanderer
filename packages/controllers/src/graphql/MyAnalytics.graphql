@@ -1,0 +1,31 @@
+query MyAnalytics {
+  myGym {
+    id
+    gym_name
+    membership_cost
+    memberships {
+      id
+      payment
+      begin_date
+      end_date
+      member {
+        first_name
+        last_name
+        id
+        photo_url
+      }
+    }
+  }
+  myMemberships {
+    id
+    payment
+    begin_date
+    end_date
+    gym {
+      id
+      gym_name
+      photo_urls
+      membership_cost
+    }
+  }
+}

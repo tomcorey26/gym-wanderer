@@ -62,14 +62,19 @@ export const FormPageControl: React.FC<FormPageControlProps> = ({
         }}
       >
         {currentPage === length - 1 && (
-          <Button
-            disabled={isSubmitting || !isObjectEmpty(errors)}
-            type="submit"
-            variant="contained"
-            color="secondary"
-          >
-            Register
-          </Button>
+          <div>
+            <div style={{ color: 'red' }}>
+              {!isObjectEmpty(errors) && 'You are missing fields'}{' '}
+            </div>
+            <Button
+              disabled={isSubmitting || !isObjectEmpty(errors)}
+              type="submit"
+              variant="contained"
+              color="secondary"
+            >
+              Register
+            </Button>
+          </div>
         )}
       </div>
     </>

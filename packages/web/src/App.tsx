@@ -4,7 +4,7 @@ import { setAccessToken } from './accessToken';
 
 interface AppProps {}
 
-export const App: React.FC<AppProps> = ({}) => {
+export const App: React.FC<AppProps> = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,6 @@ export const App: React.FC<AppProps> = ({}) => {
     })
       .then(async (x) => {
         const { accessToken } = await x.json();
-        console.log(accessToken);
         setAccessToken(accessToken);
         setLoading(false);
       })

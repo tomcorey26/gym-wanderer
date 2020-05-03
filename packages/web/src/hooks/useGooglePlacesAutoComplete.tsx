@@ -20,6 +20,7 @@ export const useGooglePlacesAutoComplete = (settings?: Settings) => {
     null
   );
   const [locationString, setLocationString] = React.useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isGoogleMapsApiLoaded = useGoogleMapsApi();
   const coords = useFetchPlaceCoordinates(selectedPlace?.place_id);
   const router = useRouter();
@@ -92,6 +93,7 @@ export const useGooglePlacesAutoComplete = (settings?: Settings) => {
     if (settings?.withFormik && selectedPlace?.place_id && settings.setCoords) {
       settings.setCoords(coords);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPlace?.place_id, coords]);
 
   return { options, handleAutoChange, handleChange, locationString };

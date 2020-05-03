@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 //Uncomment line 59-63 to use the api
 export const GoogleMapsAutoComplete = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isGoogleMapsApiLoaded = useGoogleMapsApi();
   const {
     options,

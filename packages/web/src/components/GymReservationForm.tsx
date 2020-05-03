@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateTimePicker } from '@material-ui/pickers';
 import {
   Box,
   makeStyles,
@@ -19,13 +18,13 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 // import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import {
   useJoinGymMutation,
   MeDocument,
   useUserMembershipsInfoQuery,
   UserMembershipsInfoDocument,
-  useMeQuery,
+  GymDetailsDocument,
+  MyAnalyticsDocument,
 } from '@gw/controllers';
 import { useHistory } from 'react-router-dom';
 
@@ -53,7 +52,9 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     inputLine: {},
-    date: {},
+    date: {
+      textAlign: 'center',
+    },
     reserveButton: {
       cursor: 'pointer',
       width: 250,
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     mobileInput: {
-      width: 100,
+      width: 50,
     },
   })
 );
@@ -78,20 +79,27 @@ interface GymReservationFormProps {
   membership_cost?: string;
   gymId?: string;
   mediaQuery: boolean;
+  iOwnGym: boolean;
 }
 
 const GymReservationForm: React.FC<GymReservationFormProps> = ({
   membership_cost,
   gymId,
   mediaQuery,
+  iOwnGym,
 }) => {
   const [monthCount, setMonthCount] = useState<number>(1);
   const [auto_renewal, setAutorenewal] = useState<any>(false);
   const [newMemberText, setNewMemberText] = useState<string>('');
-  const [joinGym] = useJoinGymMutation();
+  const [joinGym, { loading: joinLoading }] = useJoinGymMutation();
   const { data, loading, error } = useUserMembershipsInfoQuery();
   const history = useHistory();
   const classes = useStyles();
+
+  let totalJoinCost;
+  if (membership_cost) {
+    totalJoinCost = (Number(membership_cost.slice(1)) * monthCount).toFixed(2);
+  }
 
   const getDate = (monthsFromNow = 0) => (
     <span>
@@ -115,11 +123,14 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
         variables: {
           auto_renewal,
           gymId,
-          end_date: moment().add(monthCount, 'months').seconds(),
+          end_date: moment().add(monthCount, 'months').unix(),
+          payment: Number(totalJoinCost),
         },
         refetchQueries: [
           { query: UserMembershipsInfoDocument },
           { query: MeDocument },
+          { query: GymDetailsDocument, variables: { id: gymId } },
+          { query: MyAnalyticsDocument },
         ],
       });
     }
@@ -132,7 +143,7 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
     }, 2000);
   }, [newMemberText]);
 
-  if (loading) {
+  if ((loading || joinLoading) && mediaQuery) {
     return (
       <Paper
         className={classes.paper}
@@ -154,6 +165,23 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
     );
   }
 
+  if (!mediaQuery && data?.myMemberships && membership) {
+    return (
+      <Paper className={classes.mobilePaper}>
+        {newMemberText && (
+          <div>
+            <span>{newMemberText}</span>
+          </div>
+        )}
+        <div>
+          <span>Membership id :</span>
+        </div>
+        <div style={{ width: 100, fontSize: 8 }}>
+          <span>{membership.memberId}</span>
+        </div>
+      </Paper>
+    );
+  }
   if (data && data.myMemberships && membership) {
     return (
       <Paper
@@ -174,6 +202,13 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
   }
 
   if (!mediaQuery) {
+    if (loading || joinLoading) {
+      return (
+        <Paper className={classes.mobilePaper}>
+          <CircularProgress />
+        </Paper>
+      );
+    }
     return (
       <Paper className={classes.mobilePaper}>
         <div>
@@ -191,17 +226,22 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
             InputProps={{ inputProps: { min: 1 } }}
           />
         </div>
-        <div>
-          <div>Start Date</div>
-          {getDate()}
-        </div>
+
         <div>
           <div>End Date</div>
           {getDate(monthCount)}
         </div>
         <div>
-          <Button variant="contained" color="secondary" onClick={handleJoin}>
-            Join Gym
+          <div>Total</div>${totalJoinCost}
+        </div>
+        <div>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleJoin}
+            disabled={iOwnGym}
+          >
+            {iOwnGym ? 'This is Your Gym' : 'Join Gym'}
           </Button>
         </div>
       </Paper>
@@ -241,9 +281,9 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
           InputProps={{ inputProps: { min: 1 } }}
         />
         <Box className={classes.date}>
-          <h1>Start date</h1>
+          <h1>Total</h1>
           <Typography variant="h4" color="textSecondary">
-            {getDate()}
+            ${totalJoinCost}
           </Typography>
         </Box>
 
@@ -270,8 +310,9 @@ const GymReservationForm: React.FC<GymReservationFormProps> = ({
             variant="contained"
             color="secondary"
             onClick={handleJoin}
+            disabled={iOwnGym}
           >
-            Join Gym
+            {iOwnGym ? 'This is Your Gym' : 'Join Gym'}
           </Button>
         </Box>
       </Box>

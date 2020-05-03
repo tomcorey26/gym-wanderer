@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 import * as serviceWorker from './serviceWorker';
-import { Server } from 'miragejs';
-import { mockGymsApi } from './mock';
 import './styles/globals.scss';
 import { getAccessToken, setAccessToken } from './accessToken';
 import { App } from './App';
@@ -15,20 +13,6 @@ import { ApolloLink, Observable } from 'apollo-link';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode from 'jwt-decode';
 
-/////////////////////////
-/* THIS BREAKS GRAPHQL */
-/////////////////////////
-// new Server({
-//   routes() {
-//     this.namespace = 'api';
-//     this.get('/gyms', () => {
-//       //add latitude/ longitude to this
-//       return {
-//         gyms: mockGymsApi
-//       };
-//     });
-//   }
-// });
 const cache = new InMemoryCache({});
 
 //This is basically just setting a header

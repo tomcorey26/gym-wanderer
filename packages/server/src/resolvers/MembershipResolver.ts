@@ -21,7 +21,8 @@ export class MembershipResolver {
     @Ctx() { payload }: MyContext,
     @Arg('gymId') gymId: string,
     @Arg('end_date') end_date: number,
-    @Arg('auto_renewal') auto_renewal: boolean
+    @Arg('auto_renewal') auto_renewal: boolean,
+    @Arg('payment') payment: number
   ) {
     try {
       const memberId = payload!.userId;
@@ -29,6 +30,7 @@ export class MembershipResolver {
         end_date,
         memberId,
         gymId,
+        payment,
         isAutoRenewalActive: auto_renewal,
       }).save();
 
@@ -44,7 +46,7 @@ export class MembershipResolver {
       await Alert.create({
         message: `Congrats! ${member?.first_name} ${member?.last_name} has joined your gym`,
         userId: joinedGym?.ownerId,
-        link: `/gyms/${joinedGym?.id}/members`,
+        link: `/analytics`,
       }).save();
     } catch (err) {
       console.log(err);

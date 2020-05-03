@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRegisterMutation, UsersDocument } from '@gw/controllers';
 import { RouteComponentProps } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -10,22 +10,11 @@ import { prefArrToBoolObj } from '../../utils/prefArrToBoolObj';
 import { FormContainer } from '../../components/FormComponents/FormContainer';
 import { useRequireNoUser } from '../../hooks/useRequireNoUser';
 import { FormPageControl } from '../../components/FormPageControl';
+import { LoaderBlock } from '../../components/LoaderBlock';
 
 //have preferences on seperate page
 //we get route props because this component is passed
 // as a prop to the react-router-dom <Route/> component
-
-const mockUser = {
-  first_name: 'member1',
-  last_name: 'Devito',
-  username: 'dvito',
-  birthday: '1944-11-14',
-  preferences: [],
-  email: 'member1@gmail.com',
-  password: 'Test123@',
-  confirmPassword: 'Test123@',
-  photo_url: '',
-};
 
 interface Preferences {
   bodybuilding: boolean;
@@ -60,7 +49,8 @@ const RegisterSchema = Yup.object().shape({
   username: Yup.string()
     .min(5, 'Too Short!')
     .max(20, 'Too Long!')
-    .required('Required'),
+    .required('Required')
+    .matches(/^\S*$/, 'Username must contain no spaces'),
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
     .required('Please Enter your password')
@@ -75,52 +65,65 @@ const RegisterSchema = Yup.object().shape({
 
 export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isUserLoggedIn = useRequireNoUser();
-  const [register] = useRegisterMutation();
+  const [register, { error, loading }] = useRegisterMutation();
 
   const submitUser = async (values: RegisterInput) => {
     //convert exercise types to true false object
-    console.log(values);
-    const response = await register({
+    await register({
       variables: values,
       refetchQueries: [{ query: UsersDocument }],
     });
-    console.log(response);
   };
 
   return (
     <Formik
-      initialValues={mockUser}
+      initialValues={{
+        first_name: '',
+        last_name: '',
+        username: '',
+        birthday: '',
+        preferences: [],
+        email: '',
+        password: '',
+        confirmPassword: '',
+        photo_url: '',
+      }}
       onSubmit={async (values, { setSubmitting }) => {
         const submitValues = {
           ...values,
           preferences: prefArrToBoolObj(values.preferences),
         };
-        setSubmitting(true);
         await submitUser(submitValues);
-        setSubmitting(false);
-        history.push('/');
+        history.push('/login');
       }}
       validationSchema={RegisterSchema}
     >
       {({ values, isSubmitting, errors }) => (
-        <FormContainer
-          title="Register"
-          pageProgress
-          pageNum={currentPage}
-          pageCount={pages.length}
-        >
-          {pages[currentPage]}
-          <FormPageControl
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            length={pages.length}
-            isSubmitting={isSubmitting}
-            errors={errors}
-          />
-          <pre>{JSON.stringify(values, null, 2)}</pre>
-          <pre>{JSON.stringify(errors, null, 2)}</pre>
-        </FormContainer>
+        <div>
+          {loading ? (
+            <LoaderBlock />
+          ) : (
+            <FormContainer
+              title="Register"
+              pageProgress
+              pageNum={currentPage}
+              pageCount={pages.length}
+            >
+              <span style={{ color: 'red' }}>{error && error.message}</span>
+
+              {pages[currentPage]}
+              <FormPageControl
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                length={pages.length}
+                isSubmitting={isSubmitting}
+                errors={errors}
+              />
+            </FormContainer>
+          )}
+        </div>
       )}
     </Formik>
   );

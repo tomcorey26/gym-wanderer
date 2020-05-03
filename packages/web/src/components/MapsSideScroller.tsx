@@ -30,22 +30,6 @@ const MapsSideScroller: React.FC<Props> = ({ gyms }) => {
             {...gym}
           />
         ))}
-        {gyms.map((gym, i) => (
-          <SideScrollerBox
-            onClick={() => router.push(`/gyms/${gym.id}`)}
-            id={gym.id}
-            key={i}
-            {...gym}
-          />
-        ))}
-        {gyms.map((gym, i) => (
-          <SideScrollerBox
-            onClick={() => router.push(`/gyms/${gym.id}`)}
-            id={gym.id}
-            key={i}
-            {...gym}
-          />
-        ))}
       </List>
     </>
   );

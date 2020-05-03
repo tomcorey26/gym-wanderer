@@ -1,13 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Grid,
-  Typography,
-  Box,
-  Divider,
-  Chip,
-  List,
-  useMediaQuery,
-} from '@material-ui/core';
+import React from 'react';
+import { Grid, Typography, Box, Divider, Chip, List } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import Avatar from '@material-ui/core/Avatar';
@@ -18,6 +10,8 @@ import { Reviews, User } from '@gw/controllers';
 import { ReviewItem } from './ReviewItem';
 import { StyledLink } from './NavComponents/Navbar';
 import { ReviewCreate } from './ReviewCreate';
+import { MembershipItem } from './MembershipItem';
+import { GymMembershipItem } from './GymMembershipItem';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,9 +40,12 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 10,
       marginBottom: theme.spacing(3),
     },
-    space: {
-      minHeight: 600,
+    members: {
+      maxHeight: 400,
+      overflowY: 'auto',
     },
+    memberList: {},
+    space: {},
     spaceBetween: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -93,6 +90,13 @@ interface GymDescriptionProps {
   >;
   currentUserId: string;
   gymId: string;
+  members: ({
+    __typename?: 'Membership' | undefined;
+  } & {
+    member: {
+      __typename?: 'User' | undefined;
+    } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>;
+  })[];
 }
 
 const GymDescription: React.FC<GymDescriptionProps> = ({
@@ -107,9 +111,9 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
   reviews,
   currentUserId,
   gymId,
+  members,
 }) => {
   const classes = useStyles();
-  const matches = useMediaQuery('(max-width:1050px)');
 
   return (
     <>
@@ -185,11 +189,37 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
                 </Box>
               </Grid>
 
-              <Typography variant="overline">Description</Typography>
-              <Divider />
-
               <Grid item style={{ padding: 0 }}>
+                <Typography variant="overline">Description</Typography>
+                <Divider />
                 <Box className={classes.description}>{description}</Box>
+
+                <Typography variant="overline">Members </Typography>
+                <Divider />
+                <Box className={classes.members}>
+                  {!members || members.length === 0 ? (
+                    <div>
+                      <h1>No Memberships </h1>
+                    </div>
+                  ) : (
+                    <List className={classes.memberList}>
+                      {members.map(
+                        (
+                          { member: { first_name, last_name, id, photo_url } },
+                          i
+                        ) => (
+                          <GymMembershipItem
+                            first_name={first_name}
+                            last_name={last_name}
+                            id={id}
+                            photo_url={photo_url}
+                            key={i}
+                          />
+                        )
+                      )}
+                    </List>
+                  )}
+                </Box>
 
                 <Typography variant="overline">Reviews</Typography>
                 <Divider />

@@ -27,12 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Page2Props {}
 
-export const Page2: React.FC<Page2Props> = ({}) => {
+export const Page2: React.FC<Page2Props> = () => {
   const classes = useStyles();
-  const { values } = useFormikContext<CreateGymFormValues>();
+  const { values, errors } = useFormikContext<CreateGymFormValues>();
 
   return (
     <>
+      <span style={{ color: 'red' }}>{errors.type}</span>
       <FormLabel component="legend">Choose Gym type</FormLabel>
       <FormControl component="div" className={classes.formControl}>
         <div>
@@ -80,12 +81,14 @@ export const Page2: React.FC<Page2Props> = ({}) => {
           name="equipment"
           render={(arrayHelpers) => (
             <div>
-              <h2>Enter Gym Equipment</h2>
+              <h2>Enter Gym Equipment (3+)</h2>
               <ChipInput
                 variant="outlined"
                 value={values.equipment}
                 onAdd={(chip) => arrayHelpers.push(chip)}
                 onDelete={(_, index) => arrayHelpers.remove(index)}
+                helperText={errors.equipment}
+                error={!!errors.equipment}
               />
             </div>
           )}

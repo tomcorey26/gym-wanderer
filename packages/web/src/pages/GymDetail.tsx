@@ -119,11 +119,13 @@ const GymDetail: React.FC = () => {
             loading={loading}
             currentUserId={data.me?.id || ''}
             gymId={id ? id : ''}
+            members={data.gymMemberships || []}
           />
           <GymReservationForm
             mediaQuery={matches}
             gymId={id}
             membership_cost={data?.gymDetails?.gym?.membership_cost}
+            iOwnGym={data.me?.id === data.gymDetails.owner_id}
           />
         </div>
       </div>

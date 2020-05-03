@@ -31,7 +31,6 @@ const RadiusSelect: React.FC = () => {
   }, []);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    console.log('event.target.value', event.target.value);
     dispatch({
       type: 'UPDATE_RADIUS_DISTANCE',
       radius: event.target.value ? (event.target.value as number) : null,

@@ -7,9 +7,10 @@ import { Button, CircularProgress } from '@material-ui/core';
 
 interface Page3Props {}
 
-export const Page3: React.FC<Page3Props> = ({}) => {
+export const Page3: React.FC<Page3Props> = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, __, { setValue }] = useField({ name: 'photo_urls' });
-  const { values } = useFormikContext<CreateGymFormValues>();
+  const { values, errors } = useFormikContext<CreateGymFormValues>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const onUpload = (imgArr: CloudinaryImg[]) => {
@@ -26,6 +27,7 @@ export const Page3: React.FC<Page3Props> = ({}) => {
 
   return (
     <div>
+      <span style={{ color: 'red' }}>{errors.photo_urls}</span>
       {values.photo_urls.length > 0 && (
         <div
           style={{
@@ -44,18 +46,15 @@ export const Page3: React.FC<Page3Props> = ({}) => {
           <Button onClick={() => setValue('')}>Change Pictures</Button>
         </div>
       )}
-      {values.gym_name && !values.photo_urls.length ? (
+      {values.gym_name && !values.photo_urls.length && (
         <CloudinaryUpload
           onUpload={onUpload}
           folderName={values.gym_name}
           setLoading={setLoading}
         />
-      ) : (
-        <>
-          {values.photo_urls.length > 0 && (
-            <h2>You have to provide a gym name in order to upload photos</h2>
-          )}
-        </>
+      )}
+      {values.photo_urls.length === 0 && !values.gym_name && (
+        <h2>You have to provide a gym name in order to upload photos</h2>
       )}
     </div>
   );

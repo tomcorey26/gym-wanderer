@@ -69,6 +69,7 @@ export type Membership = {
   id: Scalars['String'];
   isAutoRenewalActive: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  payment: Scalars['Float'];
   begin_date: Scalars['String'];
   member: User;
   gym: Gyms;
@@ -129,6 +130,7 @@ export type MutationCreateGymArgs = {
 
 
 export type MutationJoinGymArgs = {
+  payment: Scalars['Float'];
   auto_renewal: Scalars['Boolean'];
   end_date: Scalars['Float'];
   gymId: Scalars['String'];
@@ -232,6 +234,32 @@ export type User = {
   memberships?: Maybe<Array<Membership>>;
   alerts?: Maybe<Array<Alert>>;
 };
+
+export type MyAnalyticsQueryVariables = {};
+
+
+export type MyAnalyticsQuery = (
+  { __typename?: 'Query' }
+  & { myGym: Maybe<(
+    { __typename?: 'Gyms' }
+    & Pick<Gyms, 'id' | 'gym_name' | 'membership_cost'>
+    & { memberships: Maybe<Array<(
+      { __typename?: 'Membership' }
+      & Pick<Membership, 'id' | 'payment' | 'begin_date' | 'end_date'>
+      & { member: (
+        { __typename?: 'User' }
+        & Pick<User, 'first_name' | 'last_name' | 'id' | 'photo_url'>
+      ) }
+    )>> }
+  )>, myMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & Pick<Membership, 'id' | 'payment' | 'begin_date' | 'end_date'>
+    & { gym: (
+      { __typename?: 'Gyms' }
+      & Pick<Gyms, 'id' | 'gym_name' | 'photo_urls' | 'membership_cost'>
+    ) }
+  )>> }
+);
 
 export type UserMembershipsInfoQueryVariables = {};
 
@@ -344,6 +372,12 @@ export type GymDetailsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
     ) }
+  )>>, gymMemberships: Maybe<Array<(
+    { __typename?: 'Membership' }
+    & { member: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
+    ) }
   )>>, me: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id'>
@@ -362,6 +396,7 @@ export type JoinGymMutationVariables = {
   gymId: Scalars['String'];
   auto_renewal: Scalars['Boolean'];
   end_date: Scalars['Float'];
+  payment: Scalars['Float'];
 };
 
 
@@ -531,6 +566,64 @@ export const ProfileFragmentDoc = gql`
   photo_url
 }
     `;
+export const MyAnalyticsDocument = gql`
+    query MyAnalytics {
+  myGym {
+    id
+    gym_name
+    membership_cost
+    memberships {
+      id
+      payment
+      begin_date
+      end_date
+      member {
+        first_name
+        last_name
+        id
+        photo_url
+      }
+    }
+  }
+  myMemberships {
+    id
+    payment
+    begin_date
+    end_date
+    gym {
+      id
+      gym_name
+      photo_urls
+      membership_cost
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyAnalyticsQuery__
+ *
+ * To run a query within a React component, call `useMyAnalyticsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyAnalyticsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyAnalyticsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyAnalyticsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyAnalyticsQuery, MyAnalyticsQueryVariables>) {
+        return ApolloReactHooks.useQuery<MyAnalyticsQuery, MyAnalyticsQueryVariables>(MyAnalyticsDocument, baseOptions);
+      }
+export function useMyAnalyticsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyAnalyticsQuery, MyAnalyticsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MyAnalyticsQuery, MyAnalyticsQueryVariables>(MyAnalyticsDocument, baseOptions);
+        }
+export type MyAnalyticsQueryHookResult = ReturnType<typeof useMyAnalyticsQuery>;
+export type MyAnalyticsLazyQueryHookResult = ReturnType<typeof useMyAnalyticsLazyQuery>;
+export type MyAnalyticsQueryResult = ApolloReactCommon.QueryResult<MyAnalyticsQuery, MyAnalyticsQueryVariables>;
 export const UserMembershipsInfoDocument = gql`
     query UserMembershipsInfo {
   myMemberships {
@@ -724,6 +817,14 @@ export const GymDetailsDocument = gql`
       photo_url
     }
   }
+  gymMemberships(gymId: $id) {
+    member {
+      id
+      first_name
+      last_name
+      photo_url
+    }
+  }
   me {
     id
   }
@@ -786,8 +887,8 @@ export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
 export const JoinGymDocument = gql`
-    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!) {
-  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId)
+    mutation joinGym($gymId: String!, $auto_renewal: Boolean!, $end_date: Float!, $payment: Float!) {
+  joinGym(auto_renewal: $auto_renewal, end_date: $end_date, gymId: $gymId, payment: $payment)
 }
     `;
 export type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutation, JoinGymMutationVariables>;
@@ -808,6 +909,7 @@ export type JoinGymMutationFn = ApolloReactCommon.MutationFunction<JoinGymMutati
  *      gymId: // value for 'gymId'
  *      auto_renewal: // value for 'auto_renewal'
  *      end_date: // value for 'end_date'
+ *      payment: // value for 'payment'
  *   },
  * });
  */

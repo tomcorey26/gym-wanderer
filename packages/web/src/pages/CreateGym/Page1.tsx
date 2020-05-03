@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormField } from '../../components/FormComponents/FormField';
-import { GoogleMapsAutoComplete } from '../../components/MapsAutoComplete';
 import { FormikMapsAuto } from '../../components/FormComponents/FormikMapsAuto';
 
 interface Page1Props {}

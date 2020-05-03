@@ -102,6 +102,7 @@ const Search: React.FC = () => {
           top: 0,
         }}
       >
+        {error}
         <GoogleMapReact
           zoom={zoom}
           center={!lat && !lng ? geo.position : { lat, lng }}

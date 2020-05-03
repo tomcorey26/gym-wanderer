@@ -43,7 +43,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Field({ nullable: true })
-  @Column('date', { nullable: true })
+  @Column('text', { nullable: true })
   birthday?: string;
 
   @Field()

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { SearchContext } from '../context/SearchState';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   lat: number;
@@ -10,6 +11,7 @@ interface Props {
 
 const MapPoint: React.FC<Props> = ({ text, id }) => {
   const { dispatch, hoveredGymId } = useContext(SearchContext);
+  const history = useHistory();
   let shared = {
     cursor: 'pointer',
     fontSize: 9,
@@ -43,6 +45,7 @@ const MapPoint: React.FC<Props> = ({ text, id }) => {
         dispatch({ type: 'UPDATE_HOVERED_GYM_ID', hoveredGymId: 0 })
       }
       style={hoveredGymId === id ? yesHover : noHover}
+      onClick={() => history.push(`/gyms/${id}`)}
     >
       <h2>{text}</h2>
     </div>
