@@ -1,0 +1,7 @@
+mutation ToggleAlertOff($alertId: Int!) {
+  toggleAlertOff(alertId: $alertId)
+}
+
+mutation ToggleAllAlertsOff {
+  toggleAllAlertsOff
+}

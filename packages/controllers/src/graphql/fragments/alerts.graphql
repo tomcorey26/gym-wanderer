@@ -1,5 +1,6 @@
 fragment alerts on User {
   alerts {
+    id
     message
     isActive
     link

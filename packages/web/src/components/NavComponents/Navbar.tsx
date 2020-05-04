@@ -13,7 +13,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import { NavLink, Link, useHistory } from 'react-router-dom';
-import { useMeQuery, useLogoutMutation } from '@gw/controllers';
+import {
+  useMeQuery,
+  useLogoutMutation,
+  useToggleAlertOffMutation,
+  useToggleAllAlertsOffMutation,
+  MeDocument,
+} from '@gw/controllers';
 import { setAccessToken } from '../../accessToken';
 import { useNavStyles } from './NavStyles';
 import { useDropdownMenu } from '../../hooks';
@@ -24,6 +30,9 @@ export const Navbar = () => {
   const history = useHistory();
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
+  const [toggleAlertOff] = useToggleAlertOffMutation();
+  const [toggleAllAlertsOff] = useToggleAllAlertsOffMutation();
+
   const [
     anchorEl,
     handleProfileMenuOpen,
@@ -116,6 +125,11 @@ export const Navbar = () => {
   );
 
   // NOTIFCATIONS MENU
+
+  const ActiveAlertsCount = data?.me?.alerts?.reduce(
+    (a, b) => a + (b.isActive ? 1 : 0),
+    0
+  );
   const alertId = 'alert-menu';
   const renderAlerts = (
     <Menu
@@ -128,12 +142,46 @@ export const Navbar = () => {
       onClose={handleAlertMenuClose}
       style={{ maxHeight: 600 }}
     >
-      {data && data.me && data.me.alerts && data.me.alerts.length > 0 ? (
-        data.me.alerts.map((alert, i) => (
-          <NavLink key={i} to={alert.link} style={menuItemStyle}>
-            <MenuItem onClick={clearMenu}>{alert.message}</MenuItem>
-          </NavLink>
-        ))
+      {data &&
+      data.me &&
+      data.me.alerts &&
+      data.me.alerts.length > 0 &&
+      !!ActiveAlertsCount ? (
+        <div>
+          <span
+            style={{ color: 'blue', marginLeft: 16, cursor: 'pointer' }}
+            onClick={async () => {
+              clearMenu();
+              await toggleAllAlertsOff({
+                refetchQueries: [{ query: MeDocument }],
+              });
+            }}
+          >
+            Clear all alerts
+          </span>
+          {data.me.alerts.map((alert, i) => {
+            if (alert.isActive) {
+              return (
+                <NavLink key={i} to={alert.link} style={menuItemStyle}>
+                  <MenuItem
+                    onClick={async () => {
+                      clearMenu();
+                      console.log('alert');
+                      let foo = await toggleAlertOff({
+                        variables: { alertId: alert.id },
+                        refetchQueries: [{ query: MeDocument }],
+                      });
+                      console.log('foo', foo);
+                    }}
+                  >
+                    {alert.message}
+                  </MenuItem>
+                </NavLink>
+              );
+            }
+            return null;
+          })}
+        </div>
       ) : (
         <MenuItem>No new alerts</MenuItem>
       )}
@@ -155,10 +203,7 @@ export const Navbar = () => {
         <div>
           <MenuItem onClick={handleAlertMenuOpen}>
             <IconButton aria-label="show 11 new notifications" color="inherit">
-              <Badge
-                badgeContent={data?.me?.alerts?.length || 0}
-                color="secondary"
-              >
+              <Badge badgeContent={ActiveAlertsCount || 0} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -266,11 +311,7 @@ export const Navbar = () => {
                   onClick={handleAlertMenuOpen}
                 >
                   <Badge
-                    badgeContent={
-                      data && data.me && data.me.alerts
-                        ? data.me.alerts.length
-                        : null
-                    }
+                    badgeContent={ActiveAlertsCount || 0}
                     color="secondary"
                   >
                     <NotificationsIcon />

@@ -81,6 +81,7 @@ export class MembershipResolver {
     return await Membership.find({
       where: { gymId },
       relations: ['member', 'gym'],
+      order: { begin_date: 'DESC' },
     });
   }
 

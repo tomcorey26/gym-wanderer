@@ -11,9 +11,11 @@ export declare type Scalars = {
 };
 export declare type Alert = {
     __typename?: 'Alert';
+    id: Scalars['Int'];
     message: Scalars['String'];
     link: Scalars['String'];
     isActive: Scalars['Boolean'];
+    date_created: Scalars['String'];
     user: User;
 };
 export declare type Coordinates = {
@@ -76,6 +78,8 @@ export declare type Mutation = {
     createGym: Scalars['Boolean'];
     joinGym: Scalars['Boolean'];
     createReview: Scalars['Boolean'];
+    toggleAlertOff: Scalars['Boolean'];
+    toggleAllAlertsOff: Scalars['Boolean'];
 };
 export declare type MutationUpdateUserArgs = {
     email?: Maybe<Scalars['String']>;
@@ -123,6 +127,9 @@ export declare type MutationCreateReviewArgs = {
     rating: Scalars['Float'];
     gymId: Scalars['String'];
 };
+export declare type MutationToggleAlertOffArgs = {
+    alertId: Scalars['Int'];
+};
 export declare type Preferences = {
     __typename?: 'Preferences';
     yoga: Scalars['Boolean'];
@@ -155,6 +162,7 @@ export declare type Query = {
     gymMemberships?: Maybe<Array<Membership>>;
     gymReviews?: Maybe<Array<Reviews>>;
     userReviews?: Maybe<Array<Reviews>>;
+    myAlerts: Scalars['Boolean'];
 };
 export declare type QueryGetUserArgs = {
     id: Scalars['String'];
@@ -236,6 +244,16 @@ export declare type MyProfileQuery = ({
         } & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>);
     } & ProfileFragment)>;
 });
+export declare type ToggleAlertOffMutationVariables = {
+    alertId: Scalars['Int'];
+};
+export declare type ToggleAlertOffMutation = ({
+    __typename?: 'Mutation';
+} & Pick<Mutation, 'toggleAlertOff'>);
+export declare type ToggleAllAlertsOffMutationVariables = {};
+export declare type ToggleAllAlertsOffMutation = ({
+    __typename?: 'Mutation';
+} & Pick<Mutation, 'toggleAllAlertsOff'>);
 export declare type UpdateUserMutationVariables = {
     last_name?: Maybe<Scalars['String']>;
     first_name?: Maybe<Scalars['String']>;
@@ -305,7 +323,7 @@ export declare type AlertsFragment = ({
 } & {
     alerts: Maybe<Array<({
         __typename?: 'Alert';
-    } & Pick<Alert, 'message' | 'isActive' | 'link'>)>>;
+    } & Pick<Alert, 'id' | 'message' | 'isActive' | 'link'>)>>;
 });
 export declare type GymInfoFragment = ({
     __typename?: 'Gyms';
@@ -534,6 +552,51 @@ export declare function useMyProfileLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export declare type MyProfileQueryHookResult = ReturnType<typeof useMyProfileQuery>;
 export declare type MyProfileLazyQueryHookResult = ReturnType<typeof useMyProfileLazyQuery>;
 export declare type MyProfileQueryResult = ApolloReactCommon.QueryResult<MyProfileQuery, MyProfileQueryVariables>;
+export declare const ToggleAlertOffDocument: import("graphql").DocumentNode;
+export declare type ToggleAlertOffMutationFn = ApolloReactCommon.MutationFunction<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+/**
+ * __useToggleAlertOffMutation__
+ *
+ * To run a mutation, you first call `useToggleAlertOffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleAlertOffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleAlertOffMutation, { data, loading, error }] = useToggleAlertOffMutation({
+ *   variables: {
+ *      alertId: // value for 'alertId'
+ *   },
+ * });
+ */
+export declare function useToggleAlertOffMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>): ApolloReactHooks.MutationTuple<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+export declare type ToggleAlertOffMutationHookResult = ReturnType<typeof useToggleAlertOffMutation>;
+export declare type ToggleAlertOffMutationResult = ApolloReactCommon.MutationResult<ToggleAlertOffMutation>;
+export declare type ToggleAlertOffMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+export declare const ToggleAllAlertsOffDocument: import("graphql").DocumentNode;
+export declare type ToggleAllAlertsOffMutationFn = ApolloReactCommon.MutationFunction<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
+/**
+ * __useToggleAllAlertsOffMutation__
+ *
+ * To run a mutation, you first call `useToggleAllAlertsOffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleAllAlertsOffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleAllAlertsOffMutation, { data, loading, error }] = useToggleAllAlertsOffMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export declare function useToggleAllAlertsOffMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>): ApolloReactHooks.MutationTuple<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
+export declare type ToggleAllAlertsOffMutationHookResult = ReturnType<typeof useToggleAllAlertsOffMutation>;
+export declare type ToggleAllAlertsOffMutationResult = ApolloReactCommon.MutationResult<ToggleAllAlertsOffMutation>;
+export declare type ToggleAllAlertsOffMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
 export declare const UpdateUserDocument: import("graphql").DocumentNode;
 export declare type UpdateUserMutationFn = ApolloReactCommon.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
 /**

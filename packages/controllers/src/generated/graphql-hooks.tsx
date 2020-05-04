@@ -13,9 +13,11 @@ export type Scalars = {
 
 export type Alert = {
    __typename?: 'Alert';
+  id: Scalars['Int'];
   message: Scalars['String'];
   link: Scalars['String'];
   isActive: Scalars['Boolean'];
+  date_created: Scalars['String'];
   user: User;
 };
 
@@ -85,6 +87,8 @@ export type Mutation = {
   createGym: Scalars['Boolean'];
   joinGym: Scalars['Boolean'];
   createReview: Scalars['Boolean'];
+  toggleAlertOff: Scalars['Boolean'];
+  toggleAllAlertsOff: Scalars['Boolean'];
 };
 
 
@@ -145,6 +149,11 @@ export type MutationCreateReviewArgs = {
   gymId: Scalars['String'];
 };
 
+
+export type MutationToggleAlertOffArgs = {
+  alertId: Scalars['Int'];
+};
+
 export type Preferences = {
    __typename?: 'Preferences';
   yoga: Scalars['Boolean'];
@@ -179,6 +188,7 @@ export type Query = {
   gymMemberships?: Maybe<Array<Membership>>;
   gymReviews?: Maybe<Array<Reviews>>;
   userReviews?: Maybe<Array<Reviews>>;
+  myAlerts: Scalars['Boolean'];
 };
 
 
@@ -285,6 +295,24 @@ export type MyProfileQuery = (
   )> }
 );
 
+export type ToggleAlertOffMutationVariables = {
+  alertId: Scalars['Int'];
+};
+
+
+export type ToggleAlertOffMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'toggleAlertOff'>
+);
+
+export type ToggleAllAlertsOffMutationVariables = {};
+
+
+export type ToggleAllAlertsOffMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'toggleAllAlertsOff'>
+);
+
 export type UpdateUserMutationVariables = {
   last_name?: Maybe<Scalars['String']>;
   first_name?: Maybe<Scalars['String']>;
@@ -373,7 +401,7 @@ export type AlertsFragment = (
   { __typename?: 'User' }
   & { alerts: Maybe<Array<(
     { __typename?: 'Alert' }
-    & Pick<Alert, 'message' | 'isActive' | 'link'>
+    & Pick<Alert, 'id' | 'message' | 'isActive' | 'link'>
   )>> }
 );
 
@@ -574,6 +602,7 @@ export type UsersQuery = (
 export const AlertsFragmentDoc = gql`
     fragment alerts on User {
   alerts {
+    id
     message
     isActive
     link
@@ -734,6 +763,65 @@ export function useMyProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type MyProfileQueryHookResult = ReturnType<typeof useMyProfileQuery>;
 export type MyProfileLazyQueryHookResult = ReturnType<typeof useMyProfileLazyQuery>;
 export type MyProfileQueryResult = ApolloReactCommon.QueryResult<MyProfileQuery, MyProfileQueryVariables>;
+export const ToggleAlertOffDocument = gql`
+    mutation ToggleAlertOff($alertId: Int!) {
+  toggleAlertOff(alertId: $alertId)
+}
+    `;
+export type ToggleAlertOffMutationFn = ApolloReactCommon.MutationFunction<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+
+/**
+ * __useToggleAlertOffMutation__
+ *
+ * To run a mutation, you first call `useToggleAlertOffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleAlertOffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleAlertOffMutation, { data, loading, error }] = useToggleAlertOffMutation({
+ *   variables: {
+ *      alertId: // value for 'alertId'
+ *   },
+ * });
+ */
+export function useToggleAlertOffMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>(ToggleAlertOffDocument, baseOptions);
+      }
+export type ToggleAlertOffMutationHookResult = ReturnType<typeof useToggleAlertOffMutation>;
+export type ToggleAlertOffMutationResult = ApolloReactCommon.MutationResult<ToggleAlertOffMutation>;
+export type ToggleAlertOffMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+export const ToggleAllAlertsOffDocument = gql`
+    mutation ToggleAllAlertsOff {
+  toggleAllAlertsOff
+}
+    `;
+export type ToggleAllAlertsOffMutationFn = ApolloReactCommon.MutationFunction<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
+
+/**
+ * __useToggleAllAlertsOffMutation__
+ *
+ * To run a mutation, you first call `useToggleAllAlertsOffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleAllAlertsOffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleAllAlertsOffMutation, { data, loading, error }] = useToggleAllAlertsOffMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useToggleAllAlertsOffMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>(ToggleAllAlertsOffDocument, baseOptions);
+      }
+export type ToggleAllAlertsOffMutationHookResult = ReturnType<typeof useToggleAllAlertsOffMutation>;
+export type ToggleAllAlertsOffMutationResult = ApolloReactCommon.MutationResult<ToggleAllAlertsOffMutation>;
+export type ToggleAllAlertsOffMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($last_name: String, $first_name: String, $birthday: String, $username: String, $password: String, $email: String, $preferences: PreferencesInput, $photo_url: String) {
   updateUser(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday, photo_url: $photo_url)
