@@ -78,6 +78,7 @@ export declare type Mutation = {
     createGym: Scalars['Boolean'];
     joinGym: Scalars['Boolean'];
     createReview: Scalars['Boolean'];
+    deleteReview: Scalars['Boolean'];
     toggleAlertOff: Scalars['Boolean'];
     toggleAllAlertsOff: Scalars['Boolean'];
 };
@@ -126,6 +127,9 @@ export declare type MutationCreateReviewArgs = {
     text: Scalars['String'];
     rating: Scalars['Float'];
     gymId: Scalars['String'];
+};
+export declare type MutationDeleteReviewArgs = {
+    reviewId: Scalars['Float'];
 };
 export declare type MutationToggleAlertOffArgs = {
     alertId: Scalars['Int'];
@@ -184,6 +188,7 @@ export declare type QueryUserReviewsArgs = {
 };
 export declare type Reviews = {
     __typename?: 'Reviews';
+    id: Scalars['Int'];
     rating: Scalars['Int'];
     text: Scalars['String'];
     date_created: Scalars['String'];
@@ -310,6 +315,12 @@ export declare type CreateReviewMutationVariables = {
 export declare type CreateReviewMutation = ({
     __typename?: 'Mutation';
 } & Pick<Mutation, 'createReview'>);
+export declare type DeleteReviewMutationVariables = {
+    reviewId: Scalars['Float'];
+};
+export declare type DeleteReviewMutation = ({
+    __typename?: 'Mutation';
+} & Pick<Mutation, 'deleteReview'>);
 export declare type FetchGymsQueryVariables = {};
 export declare type FetchGymsQuery = ({
     __typename?: 'Query';
@@ -355,7 +366,7 @@ export declare type GymDetailsQuery = ({
     })>;
     gymReviews: Maybe<Array<({
         __typename?: 'Reviews';
-    } & Pick<Reviews, 'rating' | 'text' | 'date_created'> & {
+    } & Pick<Reviews, 'id' | 'rating' | 'text' | 'date_created'> & {
         creator: ({
             __typename?: 'User';
         } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>);
@@ -725,6 +736,29 @@ export declare function useCreateReviewMutation(baseOptions?: ApolloReactHooks.M
 export declare type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
 export declare type CreateReviewMutationResult = ApolloReactCommon.MutationResult<CreateReviewMutation>;
 export declare type CreateReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
+export declare const DeleteReviewDocument: import("graphql").DocumentNode;
+export declare type DeleteReviewMutationFn = ApolloReactCommon.MutationFunction<DeleteReviewMutation, DeleteReviewMutationVariables>;
+/**
+ * __useDeleteReviewMutation__
+ *
+ * To run a mutation, you first call `useDeleteReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteReviewMutation, { data, loading, error }] = useDeleteReviewMutation({
+ *   variables: {
+ *      reviewId: // value for 'reviewId'
+ *   },
+ * });
+ */
+export declare function useDeleteReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteReviewMutation, DeleteReviewMutationVariables>): ApolloReactHooks.MutationTuple<DeleteReviewMutation, DeleteReviewMutationVariables>;
+export declare type DeleteReviewMutationHookResult = ReturnType<typeof useDeleteReviewMutation>;
+export declare type DeleteReviewMutationResult = ApolloReactCommon.MutationResult<DeleteReviewMutation>;
+export declare type DeleteReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteReviewMutation, DeleteReviewMutationVariables>;
 export declare const FetchGymsDocument: import("graphql").DocumentNode;
 /**
  * __useFetchGymsQuery__
