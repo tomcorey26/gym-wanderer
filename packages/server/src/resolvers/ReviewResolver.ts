@@ -12,6 +12,7 @@ import { Gyms } from '../entity/Gym';
 import { Alert } from '../entity/Alert';
 import { User } from '../entity/User';
 import { Reviews } from '../entity/Reviews';
+import { getConnection } from 'typeorm';
 
 @Resolver()
 export class ReviewResolver {
@@ -47,6 +48,18 @@ export class ReviewResolver {
     return true;
   }
 
+  @Mutation(() => Boolean)
+  async deleteReview(@Arg('reviewId') reviewId: number) {
+    try {
+      await getConnection().query(`delete from reviews where id =${reviewId};`);
+    } catch (err) {
+      console.log('err', err);
+      return false;
+    }
+
+    return true;
+  }
+
   @Query(() => [Reviews], { nullable: true })
   async gymReviews(@Arg('gymId', { nullable: true }) gymId: string) {
     return await Reviews.find({
@@ -64,20 +77,4 @@ export class ReviewResolver {
     });
     return reviews;
   }
-
-  // @Query(() => [Membership], { nullable: true })
-  // @UseMiddleware(isAuth)
-  // async myMemberships(@Ctx() { payload }: MyContext) {
-  //   const memberships = await Membership.find({
-  //     where: { memberId: payload!.userId },
-  //     relations: ['member', 'gym'],
-  //   });
-
-  //   return memberships;
-  // }
-
-  // @Query(() => [Gyms])
-  // gyms() {
-  //   return Gyms.find();
-  // }
 }

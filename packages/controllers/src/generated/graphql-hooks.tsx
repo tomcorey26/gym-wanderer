@@ -13,9 +13,11 @@ export type Scalars = {
 
 export type Alert = {
    __typename?: 'Alert';
+  id: Scalars['Int'];
   message: Scalars['String'];
   link: Scalars['String'];
   isActive: Scalars['Boolean'];
+  date_created: Scalars['String'];
   user: User;
 };
 
@@ -77,6 +79,7 @@ export type Membership = {
 
 export type Mutation = {
    __typename?: 'Mutation';
+  deleteUser: Scalars['Boolean'];
   updateUser: Scalars['Boolean'];
   register: Scalars['Boolean'];
   login: LoginResponse;
@@ -84,6 +87,9 @@ export type Mutation = {
   createGym: Scalars['Boolean'];
   joinGym: Scalars['Boolean'];
   createReview: Scalars['Boolean'];
+  deleteReview: Scalars['Boolean'];
+  toggleAlertOff: Scalars['Boolean'];
+  toggleAllAlertsOff: Scalars['Boolean'];
 };
 
 
@@ -92,6 +98,7 @@ export type MutationUpdateUserArgs = {
   first_name?: Maybe<Scalars['String']>;
   last_name?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
   birthday?: Maybe<Scalars['String']>;
   photo_url?: Maybe<Scalars['String']>;
   preferences?: Maybe<PreferencesInput>;
@@ -143,6 +150,16 @@ export type MutationCreateReviewArgs = {
   gymId: Scalars['String'];
 };
 
+
+export type MutationDeleteReviewArgs = {
+  reviewId: Scalars['Float'];
+};
+
+
+export type MutationToggleAlertOffArgs = {
+  alertId: Scalars['Int'];
+};
+
 export type Preferences = {
    __typename?: 'Preferences';
   yoga: Scalars['Boolean'];
@@ -168,7 +185,6 @@ export type Query = {
   bye: Scalars['String'];
   users: Array<User>;
   getUser?: Maybe<User>;
-  deleteUser: Scalars['Boolean'];
   me?: Maybe<User>;
   myGym?: Maybe<Gyms>;
   gymDetails?: Maybe<User>;
@@ -178,6 +194,7 @@ export type Query = {
   gymMemberships?: Maybe<Array<Membership>>;
   gymReviews?: Maybe<Array<Reviews>>;
   userReviews?: Maybe<Array<Reviews>>;
+  myAlerts: Scalars['Boolean'];
 };
 
 
@@ -212,6 +229,7 @@ export type QueryUserReviewsArgs = {
 
 export type Reviews = {
    __typename?: 'Reviews';
+  id: Scalars['Int'];
   rating: Scalars['Int'];
   text: Scalars['String'];
   date_created: Scalars['String'];
@@ -234,6 +252,14 @@ export type User = {
   memberships?: Maybe<Array<Membership>>;
   alerts?: Maybe<Array<Alert>>;
 };
+
+export type DeleteMyAccountMutationVariables = {};
+
+
+export type DeleteMyAccountMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteUser'>
+);
 
 export type MyAnalyticsQueryVariables = {};
 
@@ -259,6 +285,56 @@ export type MyAnalyticsQuery = (
       & Pick<Gyms, 'id' | 'gym_name' | 'photo_urls' | 'membership_cost'>
     ) }
   )>> }
+);
+
+export type MyProfileQueryVariables = {};
+
+
+export type MyProfileQuery = (
+  { __typename?: 'Query' }
+  & { myProfile: Maybe<(
+    { __typename?: 'User' }
+    & { preferences: (
+      { __typename?: 'Preferences' }
+      & Pick<Preferences, 'yoga' | 'crossfit' | 'bodybuilding' | 'parkour' | 'general' | 'boxing'>
+    ) }
+    & ProfileFragment
+  )> }
+);
+
+export type ToggleAlertOffMutationVariables = {
+  alertId: Scalars['Int'];
+};
+
+
+export type ToggleAlertOffMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'toggleAlertOff'>
+);
+
+export type ToggleAllAlertsOffMutationVariables = {};
+
+
+export type ToggleAllAlertsOffMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'toggleAllAlertsOff'>
+);
+
+export type UpdateUserMutationVariables = {
+  last_name?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
+  birthday?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  preferences?: Maybe<PreferencesInput>;
+  photo_url?: Maybe<Scalars['String']>;
+};
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateUser'>
 );
 
 export type UserMembershipsInfoQueryVariables = {};
@@ -317,6 +393,16 @@ export type CreateReviewMutation = (
   & Pick<Mutation, 'createReview'>
 );
 
+export type DeleteReviewMutationVariables = {
+  reviewId: Scalars['Float'];
+};
+
+
+export type DeleteReviewMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteReview'>
+);
+
 export type FetchGymsQueryVariables = {};
 
 
@@ -332,7 +418,7 @@ export type AlertsFragment = (
   { __typename?: 'User' }
   & { alerts: Maybe<Array<(
     { __typename?: 'Alert' }
-    & Pick<Alert, 'message' | 'isActive' | 'link'>
+    & Pick<Alert, 'id' | 'message' | 'isActive' | 'link'>
   )>> }
 );
 
@@ -367,7 +453,7 @@ export type GymDetailsQuery = (
     )> }
   )>, gymReviews: Maybe<Array<(
     { __typename?: 'Reviews' }
-    & Pick<Reviews, 'rating' | 'text' | 'date_created'>
+    & Pick<Reviews, 'id' | 'rating' | 'text' | 'date_created'>
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>
@@ -533,6 +619,7 @@ export type UsersQuery = (
 export const AlertsFragmentDoc = gql`
     fragment alerts on User {
   alerts {
+    id
     message
     isActive
     link
@@ -566,6 +653,35 @@ export const ProfileFragmentDoc = gql`
   photo_url
 }
     `;
+export const DeleteMyAccountDocument = gql`
+    mutation DeleteMyAccount {
+  deleteUser
+}
+    `;
+export type DeleteMyAccountMutationFn = ApolloReactCommon.MutationFunction<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>;
+
+/**
+ * __useDeleteMyAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteMyAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMyAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMyAccountMutation, { data, loading, error }] = useDeleteMyAccountMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDeleteMyAccountMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>(DeleteMyAccountDocument, baseOptions);
+      }
+export type DeleteMyAccountMutationHookResult = ReturnType<typeof useDeleteMyAccountMutation>;
+export type DeleteMyAccountMutationResult = ApolloReactCommon.MutationResult<DeleteMyAccountMutation>;
+export type DeleteMyAccountMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteMyAccountMutation, DeleteMyAccountMutationVariables>;
 export const MyAnalyticsDocument = gql`
     query MyAnalytics {
   myGym {
@@ -624,6 +740,142 @@ export function useMyAnalyticsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type MyAnalyticsQueryHookResult = ReturnType<typeof useMyAnalyticsQuery>;
 export type MyAnalyticsLazyQueryHookResult = ReturnType<typeof useMyAnalyticsLazyQuery>;
 export type MyAnalyticsQueryResult = ApolloReactCommon.QueryResult<MyAnalyticsQuery, MyAnalyticsQueryVariables>;
+export const MyProfileDocument = gql`
+    query MyProfile {
+  myProfile: me {
+    ...profile
+    preferences {
+      yoga
+      crossfit
+      bodybuilding
+      parkour
+      general
+      boxing
+    }
+  }
+}
+    ${ProfileFragmentDoc}`;
+
+/**
+ * __useMyProfileQuery__
+ *
+ * To run a query within a React component, call `useMyProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfileQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyProfileQuery, MyProfileQueryVariables>) {
+        return ApolloReactHooks.useQuery<MyProfileQuery, MyProfileQueryVariables>(MyProfileDocument, baseOptions);
+      }
+export function useMyProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyProfileQuery, MyProfileQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MyProfileQuery, MyProfileQueryVariables>(MyProfileDocument, baseOptions);
+        }
+export type MyProfileQueryHookResult = ReturnType<typeof useMyProfileQuery>;
+export type MyProfileLazyQueryHookResult = ReturnType<typeof useMyProfileLazyQuery>;
+export type MyProfileQueryResult = ApolloReactCommon.QueryResult<MyProfileQuery, MyProfileQueryVariables>;
+export const ToggleAlertOffDocument = gql`
+    mutation ToggleAlertOff($alertId: Int!) {
+  toggleAlertOff(alertId: $alertId)
+}
+    `;
+export type ToggleAlertOffMutationFn = ApolloReactCommon.MutationFunction<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+
+/**
+ * __useToggleAlertOffMutation__
+ *
+ * To run a mutation, you first call `useToggleAlertOffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleAlertOffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleAlertOffMutation, { data, loading, error }] = useToggleAlertOffMutation({
+ *   variables: {
+ *      alertId: // value for 'alertId'
+ *   },
+ * });
+ */
+export function useToggleAlertOffMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>(ToggleAlertOffDocument, baseOptions);
+      }
+export type ToggleAlertOffMutationHookResult = ReturnType<typeof useToggleAlertOffMutation>;
+export type ToggleAlertOffMutationResult = ApolloReactCommon.MutationResult<ToggleAlertOffMutation>;
+export type ToggleAlertOffMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleAlertOffMutation, ToggleAlertOffMutationVariables>;
+export const ToggleAllAlertsOffDocument = gql`
+    mutation ToggleAllAlertsOff {
+  toggleAllAlertsOff
+}
+    `;
+export type ToggleAllAlertsOffMutationFn = ApolloReactCommon.MutationFunction<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
+
+/**
+ * __useToggleAllAlertsOffMutation__
+ *
+ * To run a mutation, you first call `useToggleAllAlertsOffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleAllAlertsOffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleAllAlertsOffMutation, { data, loading, error }] = useToggleAllAlertsOffMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useToggleAllAlertsOffMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>(ToggleAllAlertsOffDocument, baseOptions);
+      }
+export type ToggleAllAlertsOffMutationHookResult = ReturnType<typeof useToggleAllAlertsOffMutation>;
+export type ToggleAllAlertsOffMutationResult = ApolloReactCommon.MutationResult<ToggleAllAlertsOffMutation>;
+export type ToggleAllAlertsOffMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleAllAlertsOffMutation, ToggleAllAlertsOffMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($last_name: String, $first_name: String, $birthday: String, $username: String, $password: String, $email: String, $preferences: PreferencesInput, $photo_url: String) {
+  updateUser(username: $username, email: $email, password: $password, first_name: $first_name, last_name: $last_name, preferences: $preferences, birthday: $birthday, photo_url: $photo_url)
+}
+    `;
+export type UpdateUserMutationFn = ApolloReactCommon.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      last_name: // value for 'last_name'
+ *      first_name: // value for 'first_name'
+ *      birthday: // value for 'birthday'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *      email: // value for 'email'
+ *      preferences: // value for 'preferences'
+ *      photo_url: // value for 'photo_url'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, baseOptions);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = ApolloReactCommon.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const UserMembershipsInfoDocument = gql`
     query UserMembershipsInfo {
   myMemberships {
@@ -762,6 +1014,36 @@ export function useCreateReviewMutation(baseOptions?: ApolloReactHooks.MutationH
 export type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
 export type CreateReviewMutationResult = ApolloReactCommon.MutationResult<CreateReviewMutation>;
 export type CreateReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
+export const DeleteReviewDocument = gql`
+    mutation DeleteReview($reviewId: Float!) {
+  deleteReview(reviewId: $reviewId)
+}
+    `;
+export type DeleteReviewMutationFn = ApolloReactCommon.MutationFunction<DeleteReviewMutation, DeleteReviewMutationVariables>;
+
+/**
+ * __useDeleteReviewMutation__
+ *
+ * To run a mutation, you first call `useDeleteReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteReviewMutation, { data, loading, error }] = useDeleteReviewMutation({
+ *   variables: {
+ *      reviewId: // value for 'reviewId'
+ *   },
+ * });
+ */
+export function useDeleteReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteReviewMutation, DeleteReviewMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteReviewMutation, DeleteReviewMutationVariables>(DeleteReviewDocument, baseOptions);
+      }
+export type DeleteReviewMutationHookResult = ReturnType<typeof useDeleteReviewMutation>;
+export type DeleteReviewMutationResult = ApolloReactCommon.MutationResult<DeleteReviewMutation>;
+export type DeleteReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteReviewMutation, DeleteReviewMutationVariables>;
 export const FetchGymsDocument = gql`
     query FetchGyms {
   gyms {
@@ -807,6 +1089,7 @@ export const GymDetailsDocument = gql`
     }
   }
   gymReviews(gymId: $id) {
+    id
     rating
     text
     date_created

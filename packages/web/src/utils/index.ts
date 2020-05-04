@@ -23,3 +23,25 @@ export const isWithinDistance = (
 
   return withinLong && withinLat;
 };
+
+export const mapPrefObjToArray = (obj: any) => {
+  if (!obj) return [];
+  let arr: string[] = [];
+  Object.keys(obj).forEach((key: any) => {
+    if (obj[key] === true) {
+      arr.push(key);
+    }
+  });
+  return arr;
+};
+
+export const deleteEmptyValues = (old: any) => {
+  let obj = { ...old };
+  Object.keys(obj).forEach((key: any) => {
+    if (obj[key] === '') {
+      delete obj[key];
+    }
+  });
+
+  return obj;
+};

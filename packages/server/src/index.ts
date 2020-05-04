@@ -11,6 +11,7 @@ import { UserResolver } from './resolvers/UserResolver';
 import { GymResolver } from './resolvers/GymResolver';
 import { MembershipResolver } from './resolvers/MembershipResolver';
 import { ReviewResolver } from './resolvers/ReviewResolver';
+import { AlertResolver } from './resolvers/AlertResolver';
 
 //lambda function (it calls itself!)
 (async () => {
@@ -33,6 +34,7 @@ import { ReviewResolver } from './resolvers/ReviewResolver';
         GymResolver,
         MembershipResolver,
         ReviewResolver,
+        AlertResolver,
       ],
       validate: false,
     }),

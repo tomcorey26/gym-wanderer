@@ -77,17 +77,7 @@ interface GymDescriptionProps {
     owner_id: string;
   };
   equipment?: string[];
-  reviews: Maybe<
-    Array<
-      {
-        __typename?: 'Reviews';
-      } & Pick<Reviews, 'rating' | 'text' | 'date_created'> & {
-          creator: {
-            __typename?: 'User';
-          } & Pick<User, 'id' | 'first_name' | 'last_name' | 'photo_url'>;
-        }
-    >
-  >;
+  reviews: any;
   currentUserId: string;
   gymId: string;
   members: ({
@@ -233,8 +223,9 @@ const GymDescription: React.FC<GymDescriptionProps> = ({
                     </div>
                   ) : (
                     <List className={classes.reviewList}>
-                      {reviews.map(({ creator, rating, text }, i) => (
+                      {reviews.map(({ id, creator, rating, text }, i) => (
                         <ReviewItem
+                          id={id}
                           createdByMe={creator.id === currentUserId}
                           user={creator}
                           rating={rating}

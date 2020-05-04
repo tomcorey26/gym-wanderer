@@ -5,13 +5,15 @@ import {
   ManyToOne,
   BaseEntity,
   PrimaryColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { User } from './User';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType, Int } from 'type-graphql';
 
 @ObjectType()
 @Entity()
 export class Alert extends BaseEntity {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,6 +28,10 @@ export class Alert extends BaseEntity {
   @Field()
   @Column('boolean', { default: true })
   isActive: boolean;
+
+  @Field()
+  @CreateDateColumn()
+  date_created: string;
 
   @PrimaryColumn()
   userId: string;

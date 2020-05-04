@@ -68,6 +68,9 @@ class UserUpdateInput {
   username?: string;
 
   @Field({ nullable: true })
+  password?: string;
+
+  @Field({ nullable: true })
   birthday?: string;
 
   @Field({ nullable: true })
@@ -108,21 +111,22 @@ export class UserResolver {
     return user;
   }
 
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteUser(@Ctx() { payload }: MyContext) {
-    await User.delete({
-      id: payload!.userId,
-    });
     await Membership.delete({
       memberId: payload!.userId,
     });
     await Alert.delete({
       userId: payload!.userId,
     });
+    await User.delete({
+      id: payload!.userId,
+    });
     await Gyms.delete({
       ownerId: payload!.userId,
     });
+
     return true;
   }
 
@@ -133,6 +137,7 @@ export class UserResolver {
     @Args()
     userArgs: UserUpdateInput
   ) {
+    const prefs = await Preferences.create({ ...userArgs.preferences }).save();
     try {
       await User.update(
         {
@@ -140,6 +145,7 @@ export class UserResolver {
         },
         {
           ...userArgs,
+          preferences: prefs,
         }
       );
     } catch (err) {

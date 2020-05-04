@@ -1,0 +1,13 @@
+query MyProfile {
+  myProfile: me {
+    ...profile
+    preferences {
+      yoga
+      crossfit
+      bodybuilding
+      parkour
+      general
+      boxing
+    }
+  }
+}

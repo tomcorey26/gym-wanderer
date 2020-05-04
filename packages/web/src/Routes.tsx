@@ -26,9 +26,10 @@ const Routes: React.FC = () => {
       <CssBaseline />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/analytics" component={Analytics} />
+        <Route path="/register" component={Register} />
+        <Route path="/updateprofile" component={Register} />
+        <Route path="/login" component={Login} />
+        <Route path="/analytics" component={Analytics} />
         <Route path="/search">
           <SearchProvider>
             <Search />
@@ -37,6 +38,11 @@ const Routes: React.FC = () => {
         <Route path="/gyms/:id" component={GymDetail} />
         <Route path="/user/:id" component={UserProfilePage} />
         <Route path="/newgym" component={CreateGym} />
+        <Route path="*">
+          <div>
+            <h1>404 Not Found</h1>
+          </div>
+        </Route>
       </Switch>
     </Router>
   );
