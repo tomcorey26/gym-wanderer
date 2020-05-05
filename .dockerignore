@@ -1,0 +1,10 @@
+*
+
+!./package.json 
+!./packages/server/package.json 
+!./packages/controllers/package.json 
+!./packages/server/dist 
+!./packages/controllers/build  
+!./packages/server/.env.prod
+!./packages/server/.env
+!./ormconfig.json 
