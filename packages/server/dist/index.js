@@ -35,7 +35,9 @@ const AlertResolver_1 = require("./resolvers/AlertResolver");
     app.use(cookie_parser_1.default());
     app.get('/', (_req, res) => res.send('yo'));
     app.post('/refresh_token', refreshToken_1.refreshToken);
+    console.log('wtf work pls :( ');
     yield typeorm_1.createConnection();
+    console.log('wtf work pls :( ');
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
             resolvers: [

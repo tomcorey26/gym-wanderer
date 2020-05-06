@@ -1,40 +1,18 @@
-[
-  {
-    "name": "production",
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "tom",
-    "password": "test",
-    "database": "wanderer-db",
-    "synchronize": true,
-    "logging": false,
-    "entities": ["src/entity/**/*.js"],
-    "migrations": ["src/migration/**/*.js"],
-    "subscribers": ["src/subscriber/**/*.js"],
-    "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-    }
-  },
-  {
-    "name": "development",
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "tom",
-    "password": "test",
-    "database": "wanderer-db",
-    "synchronize": true,
-    "logging": false,
-    "entities": ["src/entity/**/*.ts"],
-    "migrations": ["src/migration/**/*.ts"],
-    "subscribers": ["src/subscriber/**/*.ts"],
-    "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-    }
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "tom",
+  "password": "test",
+  "database": "wanderer-db",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/entity/**/*.ts"],
+  "migrations": ["src/migration/**/*.ts"],
+  "subscribers": ["src/subscriber/**/*.ts"],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
   }
-]
+}

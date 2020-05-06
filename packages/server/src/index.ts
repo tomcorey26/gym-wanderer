@@ -25,7 +25,10 @@ import { AlertResolver } from './resolvers/AlertResolver';
   app.use(cookieParser());
   app.get('/', (_req, res) => res.send('yo'));
   app.post('/refresh_token', refreshToken);
+
+  console.log('wtf work pls :( ');
   await createConnection();
+  console.log('wtf work pls :( ');
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
