@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: tom
+      POSTGRES_DB: wander
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  web:
+    image: wander
+    depends_on:
+      - db
+    ports:
+      - '4000:4000'
