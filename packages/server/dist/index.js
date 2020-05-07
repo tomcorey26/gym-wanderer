@@ -18,7 +18,6 @@ const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const refreshToken_1 = require("./refreshToken");
 const type_graphql_1 = require("type-graphql");
-const typeorm_1 = require("typeorm");
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const UserResolver_1 = require("./resolvers/UserResolver");
@@ -26,6 +25,7 @@ const GymResolver_1 = require("./resolvers/GymResolver");
 const MembershipResolver_1 = require("./resolvers/MembershipResolver");
 const ReviewResolver_1 = require("./resolvers/ReviewResolver");
 const AlertResolver_1 = require("./resolvers/AlertResolver");
+const createtypeormConnection_1 = require("./createtypeormConnection");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const app = express_1.default();
     app.use(cors_1.default({
@@ -35,9 +35,7 @@ const AlertResolver_1 = require("./resolvers/AlertResolver");
     app.use(cookie_parser_1.default());
     app.get('/', (_req, res) => res.send('yo'));
     app.post('/refresh_token', refreshToken_1.refreshToken);
-    console.log('wtf work pls :( ');
-    yield typeorm_1.createConnection();
-    console.log('wtf work pls :( ');
+    yield createtypeormConnection_1.createtypeormConnection();
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
             resolvers: [

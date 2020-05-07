@@ -31,6 +31,8 @@
   },
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc && docker build -t wanderer .",
+    "buildD": " docker build -t wanderer .",
+    "run": "docker run -p 4000:4000 -d wanderer"
   }
 }
