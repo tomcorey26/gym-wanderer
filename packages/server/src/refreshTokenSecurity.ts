@@ -1,7 +1,7 @@
 import { getConnection } from 'typeorm';
 import { User } from 'src/entity/User';
 
-export const revokeRefreshTokensForUser = async (userId: number) => {
+export const revokeRefreshTokensForUser = async (userId: string) => {
   await getConnection()
     .getRepository(User)
     .increment({ id: userId }, 'tokenVersion', 1);
@@ -9,7 +9,7 @@ export const revokeRefreshTokensForUser = async (userId: number) => {
   return true;
 };
 
-export const grantRefreshTokensForUser = async (userId: number) => {
+export const grantRefreshTokensForUser = async (userId: string) => {
   await getConnection()
     .getRepository(User)
     .update({ id: userId }, { tokenVersion: 0 });

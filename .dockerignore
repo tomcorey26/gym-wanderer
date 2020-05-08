@@ -1,0 +1,8 @@
+*
+
+
+!./packages/server/package*.json 
+!./packages/server/dist 
+!./packages/server/.env.prod 
+!./ormconfig.docker.json
+
