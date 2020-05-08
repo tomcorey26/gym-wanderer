@@ -29,6 +29,8 @@ import { createtypeormConnection } from './createtypeormConnection';
   await createtypeormConnection();
 
   const apolloServer = new ApolloServer({
+    introspection: true,
+    playground: true,
     schema: await buildSchema({
       resolvers: [
         UserResolver,

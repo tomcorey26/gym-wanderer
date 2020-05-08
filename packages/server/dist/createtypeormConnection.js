@@ -17,22 +17,20 @@ const User_1 = require("./entity/User");
 const Reviews_1 = require("./entity/Reviews");
 const typeorm_1 = require("typeorm");
 exports.createtypeormConnection = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('aw fuck m8');
-    yield new Promise((res) => setTimeout(res, 10000));
-    console.log('aw cluck m8');
     let retries = 10;
     while (retries) {
         try {
             yield typeorm_1.createConnection(process.env.NODE_ENV === 'production'
                 ? {
                     type: 'postgres',
-                    host: 'db',
+                    host: 'host.docker.internal',
                     port: 5432,
                     username: 'tom',
                     password: 'test',
-                    database: 'wander',
+                    database: 'wanderer-db',
                     synchronize: true,
                     entities: [Alert_1.Alert, Gym_1.Gyms, Membership_1.Membership, Preferences_1.Preferences, User_1.User, Reviews_1.Reviews],
+                    logger: 'debug',
                 }
                 : {
                     type: 'postgres',

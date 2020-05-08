@@ -37,6 +37,8 @@ const createtypeormConnection_1 = require("./createtypeormConnection");
     app.post('/refresh_token', refreshToken_1.refreshToken);
     yield createtypeormConnection_1.createtypeormConnection();
     const apolloServer = new apollo_server_express_1.ApolloServer({
+        introspection: true,
+        playground: true,
         schema: yield type_graphql_1.buildSchema({
             resolvers: [
                 UserResolver_1.UserResolver,
