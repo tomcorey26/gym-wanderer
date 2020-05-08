@@ -11,14 +11,9 @@ export const createtypeormConnection = async () => {
     process.env.NODE_ENV === 'production'
       ? {
           type: 'postgres',
-          host: 'host.docker.internal',
-          port: 5432,
-          username: 'tom',
-          password: 'test',
-          database: 'wanderer-db',
+          url: process.env.DATABASE_URL as string,
           synchronize: true,
           entities: [Alert, Gyms, Membership, Preferences, User, Reviews],
-          logger: 'debug',
         }
       : {
           type: 'postgres',
