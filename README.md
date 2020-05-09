@@ -19,6 +19,8 @@ PostGresql<br/>
 # How to run
 
 # 1) Make sure you have an instance of postgres running on your machine
+Specify the connection infomation to your db inside the createConnection()
+function in server/index.ts
 
 # 2) Clone and install dependencies
 `git clone https://github.com/tomcorey26/gym-wanderer.git`<br/>
