@@ -2,3 +2,5 @@ node_modules
 psql.txt
 ormconfig.json.prod
 wanderer*
+# Local Netlify folder
+.netlify

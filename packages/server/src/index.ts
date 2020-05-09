@@ -12,16 +12,21 @@ import { MembershipResolver } from './resolvers/MembershipResolver';
 import { ReviewResolver } from './resolvers/ReviewResolver';
 import { AlertResolver } from './resolvers/AlertResolver';
 import { createtypeormConnection } from './createtypeormConnection';
+import helmet from 'helmet';
 
 //lambda function (it calls itself!)
 (async () => {
   const app = express();
   app.use(
     cors({
-      origin: 'http://localhost:3000',
+      origin:
+        process.env.NODE_ENV === 'production'
+          ? 'https://gym-wanderer.netlify.app'
+          : 'http://localhost:3000',
       credentials: true,
     })
   );
+  app.use(helmet());
   app.use(cookieParser());
   app.get('/', (_req, res) => res.send('yo'));
   app.post('/refresh_token', refreshToken);
@@ -29,8 +34,8 @@ import { createtypeormConnection } from './createtypeormConnection';
   await createtypeormConnection();
 
   const apolloServer = new ApolloServer({
-    introspection: true,
-    playground: true,
+    // introspection: true,
+    // playground: true,
     schema: await buildSchema({
       resolvers: [
         UserResolver,
@@ -46,7 +51,8 @@ import { createtypeormConnection } from './createtypeormConnection';
 
   apolloServer.applyMiddleware({ app, cors: false });
 
-  app.listen(4000, () => {
+  const port = process.env.PORT || 4000;
+  app.listen(port, () => {
     console.log('express server started');
   });
 })();

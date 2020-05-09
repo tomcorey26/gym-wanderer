@@ -25,3 +25,6 @@ yarn-error.log*
 =======
 node_modules
 
+.env*
+deploy_web.sh
+

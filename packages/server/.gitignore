@@ -7,3 +7,5 @@ temp/
 .env
 .env.*
 /pgdata
+deploy_server.sh
+wander*

@@ -5,12 +5,7 @@
   "description": "Rent out your personal home gym, or find some of your own",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dockBuild": "docker build -t tomcorey/gym-wanderer:1.0.0 .",
-    "dockRun": "docker run -p 4001:3000 tomcorey/gym-wanderer:1.0.0",
-    "dockPush": "docker push tomcorey/gym-wanderer:1.0.0",
-    "connect": "ssh root@64.225.26.189",
-    "runFake": "docker commit (here) my-broken-container &&  docker run -it my-broken-container /bin/bash"
+    "build:web": "cd packages/web && npm run build"
   },
   "repository": {
     "type": "git",
@@ -25,5 +20,8 @@
   "homepage": "https://github.com/tomcorey26/gym-wanderer#readme",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  }
 }

@@ -114,8 +114,6 @@ export const CreateGym: React.FC<RouteComponentProps> = ({ history }) => {
             isSubmitting={isSubmitting}
             errors={errors}
           />
-          <pre>{JSON.stringify(values, null, 2)}</pre>
-          <pre>{JSON.stringify(errors, null, 2)}</pre>
         </FormContainer>
       )}
     </Formik>

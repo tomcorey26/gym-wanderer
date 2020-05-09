@@ -108,10 +108,17 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
     //convert exercise types to true false object
 
     if (onRegisterPage) {
-      await register({
-        variables: values,
-        refetchQueries: [{ query: UsersDocument }],
-      });
+      try {
+        let result = await register({
+          variables: values,
+          refetchQueries: [{ query: UsersDocument }],
+        });
+        console.log(result);
+      } catch (err) {
+        console.log(err);
+        return;
+      }
+
       history.push('/login');
     } else {
       await updateUser({
