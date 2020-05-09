@@ -32,6 +32,7 @@
     "uuid": "^7.0.2"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc -b"
   }
 }

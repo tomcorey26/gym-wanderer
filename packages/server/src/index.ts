@@ -19,7 +19,10 @@ import helmet from 'helmet';
   const app = express();
   app.use(
     cors({
-      origin: 'http://localhost:3000',
+      origin:
+        process.env.NODE_ENV === 'production'
+          ? 'https://gym-wanderer.netlify.app'
+          : 'http://localhost:3000',
       credentials: true,
     })
   );
@@ -31,8 +34,8 @@ import helmet from 'helmet';
   await createtypeormConnection();
 
   const apolloServer = new ApolloServer({
-    introspection: true,
-    playground: true,
+    // introspection: true,
+    // playground: true,
     schema: await buildSchema({
       resolvers: [
         UserResolver,

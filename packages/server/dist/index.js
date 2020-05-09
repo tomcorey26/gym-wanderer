@@ -30,7 +30,9 @@ const helmet_1 = __importDefault(require("helmet"));
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const app = express_1.default();
     app.use(cors_1.default({
-        origin: 'http://localhost:3000',
+        origin: process.env.NODE_ENV === 'production'
+            ? 'https://gym-wanderer.netlify.app'
+            : 'http://localhost:3000',
         credentials: true,
     }));
     app.use(helmet_1.default());
@@ -39,8 +41,6 @@ const helmet_1 = __importDefault(require("helmet"));
     app.post('/refresh_token', refreshToken_1.refreshToken);
     yield createtypeormConnection_1.createtypeormConnection();
     const apolloServer = new apollo_server_express_1.ApolloServer({
-        introspection: true,
-        playground: true,
         schema: yield type_graphql_1.buildSchema({
             resolvers: [
                 UserResolver_1.UserResolver,

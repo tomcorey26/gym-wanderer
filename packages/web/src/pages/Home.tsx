@@ -40,7 +40,7 @@ const Home: React.FC<HomeProps> = () => {
       <Container className={classes.main} maxWidth="xl">
         <Container className={classes.secondary}>
           <Typography className={classes.item} variant="h4" component="h2">
-            Reserve times for personal Gyms anywhere in the World
+            Reserve memberships at personal Gyms anywhere in the World
           </Typography>
           <Typography
             variant="h5"
@@ -49,7 +49,7 @@ const Home: React.FC<HomeProps> = () => {
             color="textSecondary"
             gutterBottom
           >
-            Search for gyms to book your workouts
+            Where would you like to work out?
           </Typography>
           <GoogleMapsAutoComplete />
         </Container>

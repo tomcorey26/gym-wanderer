@@ -106,12 +106,12 @@ const Search: React.FC = () => {
         <GoogleMapReact
           zoom={zoom}
           center={!lat && !lng ? geo.position : { lat, lng }}
-          // bootstrapURLKeys={{
-          //   key: process.env.REACT_APP_GOOGLE_KEY as string,
-          //   libraries: 'places',
-          // }}
+          bootstrapURLKeys={{
+            key: process.env.REACT_APP_GOOGLE_KEY as string,
+            libraries: 'places',
+          }}
           yesIWantToUseGoogleMapApiInternals
-          // onGoogleApiLoaded={({ map, maps }) => handleMapApiLoaded(map, maps)}
+          onGoogleApiLoaded={({ map, maps }) => handleMapApiLoaded(map, maps)}
         >
           {filteredGyms.map(({ id, membership_cost, coordinates }, i) => (
             <MapPoint

@@ -2,7 +2,6 @@ import React from 'react';
 import { loadScript } from '../utils/';
 
 export const useGoogleMapsApi = () => {
-  return;
   const loaded = React.useRef(false);
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
