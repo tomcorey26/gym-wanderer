@@ -8,9 +8,13 @@ paying for an expensive gym membership
 React<br/>
 Node<br/>
 Express<br/>
-Type ORM / Type Graphql<br/>
 GraphQL<br/>
 PostGresql<br/>
+
+# tooling
+Type ORM <br/>
+Type Graphql<br/>
+Graphql Code Generator<br/>
 
 # Directories 
 `/app` React Native<br/>
@@ -31,5 +35,4 @@ function in server/index.ts
 # 3) Run these in two different terminal instances
 
 `cd packages/server && npm start `<br/>
-
 `cd packages/web && npm start `<br/>
