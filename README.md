@@ -34,7 +34,7 @@ Graphql Code Generator<br/>
 Specify the connection infomation to your db inside the createConnection()
 function in server/index.ts
 
-# 3) Run these in two different terminal instances
+# 3) Run these in two  different terminal instances
 
 `cd packages/server && npm start `<br/>
 `cd packages/web && npm start `<br/>
